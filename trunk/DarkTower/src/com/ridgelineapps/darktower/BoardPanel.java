@@ -23,55 +23,44 @@
 
 package com.ridgelineapps.darktower;
 
-import javax.swing.JComponent;
-import javax.swing.ImageIcon;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Dimension;
-import java.awt.AlphaComposite;
-import java.awt.RenderingHints;
-import java.awt.color.ColorSpace;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
-import java.awt.geom.Rectangle2D;
-import java.util.List;
 import java.util.ArrayList;
-import java.lang.Math;
+import java.util.List;
 
-public class BoardPanel extends JComponent
+import android.graphics.Color;
+
+import com.ridgelineapps.darktower.java.Point;
+import com.ridgelineapps.darktower.java.Polygon;
+
+public class BoardPanel // extends JComponent
 {
 	private List territoryList = null;
-	private BufferedImage boardImage = null;
-	private BufferedImage grayBoardImage = null;
+//	private BufferedImage boardImage = null;
+//	private BufferedImage grayBoardImage = null;
 	private List playerList = null;
 	private int playerNo = 0;
 	private int highlightedTerritoryNo = 0;
 	private Dragon dragon = null;
-	private ImageIcon classmImageIcon = null;
-	private ImageIcon dragonImageIcon = null;
-	private ImageIcon isoImageIcon = null;
-	private ImageIcon kingdomImageIcon[] = null;
-	private ImageIcon frontierImageIcon = null;
-	private ImageIcon darkTowerImageIcon = null;
+//	private ImageIcon classmImageIcon = null;
+//	private ImageIcon dragonImageIcon = null;
+//	private ImageIcon isoImageIcon = null;
+//	private ImageIcon kingdomImageIcon[] = null;
+//	private ImageIcon frontierImageIcon = null;
+//	private ImageIcon darkTowerImageIcon = null;
 
 	public BoardPanel()
 	{
-		classmImageIcon = MultiImage.getImageIcon(MultiImage.CLASSM);
-		dragonImageIcon = MultiImage.getImageIcon(MultiImage.DRAGON);
-		isoImageIcon = MultiImage.getImageIcon(MultiImage.ISO);
+		//TODO
+//		classmImageIcon = MultiImage.getImageIcon(MultiImage.CLASSM);
+//		dragonImageIcon = MultiImage.getImageIcon(MultiImage.DRAGON);
+//		isoImageIcon = MultiImage.getImageIcon(MultiImage.ISO);
 		
 		territoryList = newTerritoryList();
-	}
-
-	public void setPreferredSize(Dimension preferredSize)
-	{
-		super.setPreferredSize(preferredSize);
-		setSize(preferredSize);
+//	}
+//
+//	public void setPreferredSize(Dimension preferredSize)
+//	{
+//		super.setPreferredSize(preferredSize);
+//		setSize(preferredSize);
 		createTexture();
 		createTerritories();
 		createNeigbors();
@@ -81,15 +70,16 @@ public class BoardPanel extends JComponent
 
 	public void createTexture()
 	{
-		kingdomImageIcon = new ImageIcon[4];
-		for (int i = 0; i < 4; i++)
-			kingdomImageIcon[i] = MultiImage.getTexture(
-				isoImageIcon, MultiImage.ISO, i, getWidth(), getHeight());
-
-		frontierImageIcon = MultiImage.getTexture(
-			isoImageIcon, MultiImage.ISO, 4, getWidth(), getHeight());
-		darkTowerImageIcon = MultiImage.getTexture(
-			isoImageIcon, MultiImage.ISO, 5, getWidth(), getHeight());
+		//TODO
+//		kingdomImageIcon = new ImageIcon[4];
+//		for (int i = 0; i < 4; i++)
+//			kingdomImageIcon[i] = MultiImage.getTexture(
+//				isoImageIcon, MultiImage.ISO, i, getWidth(), getHeight());
+//
+//		frontierImageIcon = MultiImage.getTexture(
+//			isoImageIcon, MultiImage.ISO, 4, getWidth(), getHeight());
+//		darkTowerImageIcon = MultiImage.getTexture(
+//			isoImageIcon, MultiImage.ISO, 5, getWidth(), getHeight());
 	}
 
 	public void createTerritories()
@@ -545,103 +535,104 @@ public class BoardPanel extends JComponent
 		this.dragon = dragon;
 	}
 
-	public void paintComponent(Graphics g)
-	{
-		Graphics2D g2D = (Graphics2D) g;
-		Player player = null;
-		Territory territory = null;
-		Color color = null;
-		Point point = null;
-		int r = (int) (getTerritoryRadius() * 0.7);
-		
-		g.drawImage(boardImage, 0, 0, this);
-
-		// draw highlighted territory
-		if ( highlightedTerritoryNo > 0 )
-		{
-			territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
-			g.setColor(Territory.COLORLIST[playerNo]);
-			g.fillPolygon(territory.getPolygon());
-
-			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
-			g.setClip(territory.getPolygon());
-			g2D.setComposite(ac);
-			g.drawImage(grayBoardImage, 0, 0, this);
-			g.setClip(0, 0, getWidth(), getHeight());
-			g2D.setComposite(AlphaComposite.SrcOver);
-
-			g.setColor(new Color(0, 0, 0));
-			g.drawPolygon(territory.getPolygon());
-		}
-
-		// draw buildings
-		for (int i = 0; i < territoryList.size(); i++)
-		{
-			territory = (Territory) territoryList.get(i);
-			point = territory.getCentre();
-			switch ( territory.getType() )
-			{
-				case Territory.BAZAAR:
-					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-						MultiImage.BAZAAR[territory.getKingdomNo()], point.x, point.y);
-					break;
-				case Territory.SANCTUARY:
-					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-						MultiImage.SANCTUARY[territory.getKingdomNo()], point.x, point.y);
-					break;
-				case Territory.RUIN:
-					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-						MultiImage.RUIN[territory.getKingdomNo()], point.x, point.y);
-					break;
-				case Territory.TOMB:
-					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-						MultiImage.TOMB[territory.getKingdomNo()], point.x, point.y);
-					break;
-				default:
-					break;
-			}
-		}
-		MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-			221, getWidth() / 2, getHeight() / 2);
-
-		// draw citatel
-		for (int i = 0; i < 4; i++)
-		{
-			territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
-			point = territory.getCentre();
-			MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-				MultiImage.CITADEL[i], point.x, point.y);
-		}
-
-		// draw player
-		if ( playerList != null )
-		{
-			for (int i = 0; i < playerList.size(); i++)
-			{
-				player = (Player) playerList.get(i);
-				point = nextCoord(player);
-				MultiImage.drawSubImage(g, classmImageIcon, MultiImage.CLASSM, 
-					MultiImage.PLAYER[i], point.x, point.y);
-			}
-		}
-
-		// draw dragon
-		if ( dragon != null )
-		{
-			if ( dragon.getStartTerritoryNo() != 0 )
-			{
-				point = nextCoord(dragon);
-				MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
-			}
-			else if ( dragon.getEndTerritoryNo() != 0 )
-			{
-				territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
-				point = territory.getCentre();
-				MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
-				dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
-			}
-		}
-	}
+	//TODO
+//	public void paintComponent(Graphics g)
+//	{
+//		Graphics2D g2D = (Graphics2D) g;
+//		Player player = null;
+//		Territory territory = null;
+//		Color color = null;
+//		Point point = null;
+//		int r = (int) (getTerritoryRadius() * 0.7);
+//		
+//		g.drawImage(boardImage, 0, 0, this);
+//
+//		// draw highlighted territory
+//		if ( highlightedTerritoryNo > 0 )
+//		{
+//			territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
+//			g.setColor(Territory.COLORLIST[playerNo]);
+//			g.fillPolygon(territory.getPolygon());
+//
+//			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+//			g.setClip(territory.getPolygon());
+//			g2D.setComposite(ac);
+//			g.drawImage(grayBoardImage, 0, 0, this);
+//			g.setClip(0, 0, getWidth(), getHeight());
+//			g2D.setComposite(AlphaComposite.SrcOver);
+//
+//			g.setColor(new Color(0, 0, 0));
+//			g.drawPolygon(territory.getPolygon());
+//		}
+//
+//		// draw buildings
+//		for (int i = 0; i < territoryList.size(); i++)
+//		{
+//			territory = (Territory) territoryList.get(i);
+//			point = territory.getCentre();
+//			switch ( territory.getType() )
+//			{
+//				case Territory.BAZAAR:
+//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//						MultiImage.BAZAAR[territory.getKingdomNo()], point.x, point.y);
+//					break;
+//				case Territory.SANCTUARY:
+//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//						MultiImage.SANCTUARY[territory.getKingdomNo()], point.x, point.y);
+//					break;
+//				case Territory.RUIN:
+//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//						MultiImage.RUIN[territory.getKingdomNo()], point.x, point.y);
+//					break;
+//				case Territory.TOMB:
+//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//						MultiImage.TOMB[territory.getKingdomNo()], point.x, point.y);
+//					break;
+//				default:
+//					break;
+//			}
+//		}
+//		MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//			221, getWidth() / 2, getHeight() / 2);
+//
+//		// draw citatel
+//		for (int i = 0; i < 4; i++)
+//		{
+//			territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
+//			point = territory.getCentre();
+//			MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//				MultiImage.CITADEL[i], point.x, point.y);
+//		}
+//
+//		// draw player
+//		if ( playerList != null )
+//		{
+//			for (int i = 0; i < playerList.size(); i++)
+//			{
+//				player = (Player) playerList.get(i);
+//				point = nextCoord(player);
+//				MultiImage.drawSubImage(g, classmImageIcon, MultiImage.CLASSM, 
+//					MultiImage.PLAYER[i], point.x, point.y);
+//			}
+//		}
+//
+//		// draw dragon
+//		if ( dragon != null )
+//		{
+//			if ( dragon.getStartTerritoryNo() != 0 )
+//			{
+//				point = nextCoord(dragon);
+//				MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
+//			}
+//			else if ( dragon.getEndTerritoryNo() != 0 )
+//			{
+//				territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
+//				point = territory.getCentre();
+//				MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
+//				dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
+//			}
+//		}
+//	}
 
 	public Point nextCoord(Figure figure)
 	{

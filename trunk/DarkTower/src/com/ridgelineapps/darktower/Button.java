@@ -23,8 +23,6 @@
 
 package com.ridgelineapps.darktower;
 
-import java.lang.String;
-import javax.swing.JButton;
 
 public class Button
 {
@@ -59,15 +57,16 @@ public class Button
 		  "Ruin", "Move", "Sanctuary",
 		  "Dark Tower", "Frontier", "Inventory" };
 
-	public static JButton getButton(int buttonNo)
-	{
-		JButton button = null;
-		
-		if ( buttonNo > NA )
-			button = new JButton(BUTTON[buttonNo - 1]);
-		
-		return button;
-	}
+	//TODO
+//	public static JButton getButton(int buttonNo)
+//	{
+//		JButton button = null;
+//		
+//		if ( buttonNo > NA )
+//			button = new JButton(BUTTON[buttonNo - 1]);
+//		
+//		return button;
+//	}
 
 	public static int getCount()
 	{

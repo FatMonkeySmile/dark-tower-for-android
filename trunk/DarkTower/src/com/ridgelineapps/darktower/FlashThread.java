@@ -42,7 +42,8 @@ public class FlashThread extends Thread
 		{
 			while ( !interrupted() )
 			{
-				darkTowerPanel.repaint();
+				//TODO
+//				darkTowerPanel.repaint();
 				sleep(300);
 			}
 		}

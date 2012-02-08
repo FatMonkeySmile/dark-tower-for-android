@@ -23,9 +23,6 @@
 
 package com.ridgelineapps.darktower;
 
-import java.lang.String;
-import java.applet.Applet;
-import java.applet.AudioClip;
 
 public class Audio
 {
@@ -60,21 +57,22 @@ public class Audio
 		  "player-hit", "sanctuary", "tomb", "tomb-battle",
 		  "tomb-nothing", "wrong", "starving" };
 		
-	public static AudioClip getAudioClip(int audioNo)
-	{
-		AudioClip audio = null;
-		
-		if ( audioNo > NA )
-			audio = Applet.newAudioClip(
-				Util.class.getResource("audio/" + AUDIO[audioNo - 1] + ".wav"));
-		
-		return audio;
-	}
-
-	public static void play(int audioNo)
-	{
-		AudioClip audio = getAudioClip(audioNo);
-		if ( audio != null )
-			audio.play();	
-	}
+	//TODO
+//	public static AudioClip getAudioClip(int audioNo)
+//	{
+//		AudioClip audio = null;
+//		
+//		if ( audioNo > NA )
+//			audio = Applet.newAudioClip(
+//				Util.class.getResource("audio/" + AUDIO[audioNo - 1] + ".wav"));
+//		
+//		return audio;
+//	}
+//
+//	public static void play(int audioNo)
+//	{
+//		AudioClip audio = getAudioClip(audioNo);
+//		if ( audio != null )
+//			audio.play();	
+//	}
 }

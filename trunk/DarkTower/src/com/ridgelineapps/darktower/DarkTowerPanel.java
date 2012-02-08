@@ -23,20 +23,12 @@
 
 package com.ridgelineapps.darktower;
 
-import javax.swing.JComponent;
-import javax.swing.ImageIcon;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
 
-public class DarkTowerPanel extends JComponent
+public class DarkTowerPanel //extends JComponent
 {
 	private String label = null;
-	private ImageIcon image = null;
-	private Color color = new Color(255, 0, 0);
+//	private ImageIcon image = null;
+	private int color; // = new Color(255, 0, 0);
 	private boolean flash = false;
 	private int flashInterval = 0;
 	private boolean enabled = false;
@@ -44,25 +36,26 @@ public class DarkTowerPanel extends JComponent
 	public DarkTowerPanel()
 	{
 		label = "1";
-		image = Image.getImageIcon(Image.BLACK);
+//		image = Image.getImageIcon(Image.BLACK);
 	}
 
-	public void setColor(Color color)
+	public void setColor(int color)
 	{
 		this.color = color;
 	}
 
-	public void setLabel(String label)
-	{
-		this.label = label;
-		repaint();
-	}
-	
-	public void setImage(ImageIcon image)
-	{
-		this.image = image;
-		repaint();
-	}
+	//TODO
+//	public void setLabel(String label)
+//	{
+//		this.label = label;
+//		repaint();
+//	}
+//	
+//	public void setImage(ImageIcon image)
+//	{
+//		this.image = image;
+//		repaint();
+//	}
 
 	public void setFlash(boolean flash)
 	{
@@ -74,33 +67,34 @@ public class DarkTowerPanel extends JComponent
 		this.enabled = enabled;
 	}
 
-	public void paintComponent(Graphics g)
-	{
-		Graphics2D g2D = (Graphics2D) g;
-		
-		Font font = new Font("Arial", Font.BOLD, 20);
-		Rectangle2D fontrec = font.getStringBounds(label, g2D.getFontRenderContext());
-//		Rectangle2D standardrec = font.getStringBounds("00", g2D.getFontRenderContext());
-
-//		int labelx = ( getWidth() + (int) standardrec.getWidth() ) / 2 - (int) fontrec.getWidth() + 1;
-		int labelx = ( getWidth() - (int) fontrec.getWidth() ) / 2;
-		int labely = 20;
-		int imagex = ( getWidth() - image.getIconWidth() ) / 2;
-		int imagey = 26;
-
-		if ( flash )
-			flashInterval++;
-		else
-			flashInterval = 0;
-		
-		g.clearRect(0, 0, getWidth(), getHeight());
-		g.setColor(new Color(0, 0, 0));
-		g.fillRect(0, 0, getWidth() - 2, getHeight());
-		g.setFont(font);
-		g.setColor(color);
-		if ( flashInterval % 2 == 0 )
-			g.drawString(label, labelx, labely);
-		if ( enabled )
-			g.drawImage(image.getImage(), imagex, imagey, this);
-	}
+	//TODO
+//	public void paintComponent(Graphics g)
+//	{
+//		Graphics2D g2D = (Graphics2D) g;
+//		
+//		Font font = new Font("Arial", Font.BOLD, 20);
+//		Rectangle2D fontrec = font.getStringBounds(label, g2D.getFontRenderContext());
+////		Rectangle2D standardrec = font.getStringBounds("00", g2D.getFontRenderContext());
+//
+////		int labelx = ( getWidth() + (int) standardrec.getWidth() ) / 2 - (int) fontrec.getWidth() + 1;
+//		int labelx = ( getWidth() - (int) fontrec.getWidth() ) / 2;
+//		int labely = 20;
+//		int imagex = ( getWidth() - image.getIconWidth() ) / 2;
+//		int imagey = 26;
+//
+//		if ( flash )
+//			flashInterval++;
+//		else
+//			flashInterval = 0;
+//		
+//		g.clearRect(0, 0, getWidth(), getHeight());
+//		g.setColor(new Color(0, 0, 0));
+//		g.fillRect(0, 0, getWidth() - 2, getHeight());
+//		g.setFont(font);
+//		g.setColor(color);
+//		if ( flashInterval % 2 == 0 )
+//			g.drawString(label, labelx, labely);
+//		if ( enabled )
+//			g.drawImage(image.getImage(), imagex, imagey, this);
+//	}
 }

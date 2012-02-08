@@ -23,13 +23,6 @@
 
 package com.ridgelineapps.darktower;
 
-import java.lang.String;
-import javax.swing.ImageIcon;
-import javax.swing.Icon;
-import java.awt.Image;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 public class MultiImage
 {
@@ -59,97 +52,98 @@ public class MultiImage
 	public static final int[] TOMB =
 		{ 166, 164, 167, 165 };
 
-	public static ImageIcon getImageIcon(int imageNo)
-	{
-		ImageIcon icon = null;
-		
-		if ( imageNo > NA )
-			icon = new ImageIcon(
-				Util.class.getResource("images/" + IMAGE[imageNo - 1] + ".gif"));
-		
-		return icon;
-	}
-
-	public static ImageIcon getTexture(ImageIcon icon, int imageNo, int indexNo, int dx, int dy)
-	{
-		int width = DIMENSION[imageNo - 1][0];
-		int height = DIMENSION[imageNo - 1][1] - 23;
-		
-		int imagesPerRow = dx / width + 1;
-		int imagesPerCol = dy / height * 2 + 2;
-		
-		int index = 0;
-		double random = 0.0;
-
-		BufferedImage bufferedImage = new BufferedImage(
-			dx, dy, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = bufferedImage.createGraphics();
-		
-		for (int row = -1; row < imagesPerCol; row++)
-		{
-			for (int col = -1; col < imagesPerRow; col++)
-			{
-				random = Math.random();
-				index = INDEX[indexNo][(int) (random * INDEX[indexNo].length)];
-				drawTexture(g, icon, imageNo, index, row / 2 + col, (row - 1) / 2 - col);
-			}
-		}
-		
-		return new ImageIcon(bufferedImage);
-	}
-	
-	public static void drawTexture(Graphics g, ImageIcon icon, int imageNo, int index, int col, int row)
-	{
-		int width = DIMENSION[imageNo - 1][0];
-		int height = DIMENSION[imageNo - 1][1];
-
-		int x = (col - row ) * width / 2;
-		int y = (col + row) * (height - 23) / 2 - 23;
-
-		int imagesPerRow = icon.getIconWidth() / width;
-		int srcX = (index % imagesPerRow) * width;
-		int srcY = (index / imagesPerRow) * height;
-
-		g.drawImage(icon.getImage(), 
-			x, y, x + width, y + height, 
-			srcX, srcY, srcX + width, srcY + height, null);
-	}
-
-	public static ImageIcon getSubImage(ImageIcon icon, int imageNo, int index)
-	{
-		int width = DIMENSION[imageNo - 1][0];
-		int height = DIMENSION[imageNo - 1][1];
-		
-		int imagesPerRow = icon.getIconWidth() / width;
-		int srcX = (index % imagesPerRow) * width;
-		int srcY = (index / imagesPerRow) * height;
-
-		BufferedImage bufferedImage = new BufferedImage(
-			width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = bufferedImage.createGraphics();
-		
-		g.drawImage(icon.getImage(),
-			0, 0,
-			width, height,
-			srcX, srcY, 
-			srcX + width, srcY + height, null);
-		
-		return new ImageIcon(bufferedImage);
-	}
-
-	public static void drawSubImage(Graphics g, ImageIcon icon, int imageNo, int index, int x, int y)
-	{
-		int width = DIMENSION[imageNo - 1][0];
-		int height = DIMENSION[imageNo - 1][1];
-		
-		int imagesPerRow = icon.getIconWidth() / width;
-		int srcX = (index % imagesPerRow) * width;
-		int srcY = (index / imagesPerRow) * height;
-
-		g.drawImage(icon.getImage(), 
-			x - width / 2, y - height / 2, 
-			x + width / 2, y + height / 2, 
-			srcX, srcY, 
-			srcX + width, srcY + height, null);
-	}
+	//TODO
+//	public static ImageIcon getImageIcon(int imageNo)
+//	{
+//		ImageIcon icon = null;
+//		
+//		if ( imageNo > NA )
+//			icon = new ImageIcon(
+//				Util.class.getResource("images/" + IMAGE[imageNo - 1] + ".gif"));
+//		
+//		return icon;
+//	}
+//
+//	public static ImageIcon getTexture(ImageIcon icon, int imageNo, int indexNo, int dx, int dy)
+//	{
+//		int width = DIMENSION[imageNo - 1][0];
+//		int height = DIMENSION[imageNo - 1][1] - 23;
+//		
+//		int imagesPerRow = dx / width + 1;
+//		int imagesPerCol = dy / height * 2 + 2;
+//		
+//		int index = 0;
+//		double random = 0.0;
+//
+//		BufferedImage bufferedImage = new BufferedImage(
+//			dx, dy, BufferedImage.TYPE_INT_ARGB);
+//		Graphics2D g = bufferedImage.createGraphics();
+//		
+//		for (int row = -1; row < imagesPerCol; row++)
+//		{
+//			for (int col = -1; col < imagesPerRow; col++)
+//			{
+//				random = Math.random();
+//				index = INDEX[indexNo][(int) (random * INDEX[indexNo].length)];
+//				drawTexture(g, icon, imageNo, index, row / 2 + col, (row - 1) / 2 - col);
+//			}
+//		}
+//		
+//		return new ImageIcon(bufferedImage);
+//	}
+//	
+//	public static void drawTexture(Graphics g, ImageIcon icon, int imageNo, int index, int col, int row)
+//	{
+//		int width = DIMENSION[imageNo - 1][0];
+//		int height = DIMENSION[imageNo - 1][1];
+//
+//		int x = (col - row ) * width / 2;
+//		int y = (col + row) * (height - 23) / 2 - 23;
+//
+//		int imagesPerRow = icon.getIconWidth() / width;
+//		int srcX = (index % imagesPerRow) * width;
+//		int srcY = (index / imagesPerRow) * height;
+//
+//		g.drawImage(icon.getImage(), 
+//			x, y, x + width, y + height, 
+//			srcX, srcY, srcX + width, srcY + height, null);
+//	}
+//
+//	public static ImageIcon getSubImage(ImageIcon icon, int imageNo, int index)
+//	{
+//		int width = DIMENSION[imageNo - 1][0];
+//		int height = DIMENSION[imageNo - 1][1];
+//		
+//		int imagesPerRow = icon.getIconWidth() / width;
+//		int srcX = (index % imagesPerRow) * width;
+//		int srcY = (index / imagesPerRow) * height;
+//
+//		BufferedImage bufferedImage = new BufferedImage(
+//			width, height, BufferedImage.TYPE_INT_ARGB);
+//		Graphics2D g = bufferedImage.createGraphics();
+//		
+//		g.drawImage(icon.getImage(),
+//			0, 0,
+//			width, height,
+//			srcX, srcY, 
+//			srcX + width, srcY + height, null);
+//		
+//		return new ImageIcon(bufferedImage);
+//	}
+//
+//	public static void drawSubImage(Graphics g, ImageIcon icon, int imageNo, int index, int x, int y)
+//	{
+//		int width = DIMENSION[imageNo - 1][0];
+//		int height = DIMENSION[imageNo - 1][1];
+//		
+//		int imagesPerRow = icon.getIconWidth() / width;
+//		int srcX = (index % imagesPerRow) * width;
+//		int srcY = (index / imagesPerRow) * height;
+//
+//		g.drawImage(icon.getImage(), 
+//			x - width / 2, y - height / 2, 
+//			x + width / 2, y + height / 2, 
+//			srcX, srcY, 
+//			srcX + width, srcY + height, null);
+//	}
 }
