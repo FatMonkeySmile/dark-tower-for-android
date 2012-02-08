@@ -24,7 +24,6 @@
 package com.ridgelineapps.darktower;
 
 import java.util.ArrayList;
-import java.awt.Point;
 
 public class IntegerList extends ArrayList
 {

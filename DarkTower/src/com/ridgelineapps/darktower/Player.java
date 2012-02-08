@@ -24,7 +24,6 @@
 package com.ridgelineapps.darktower;
 
 import java.util.List;
-import java.awt.Point;
 
 public class Player extends Figure
 {

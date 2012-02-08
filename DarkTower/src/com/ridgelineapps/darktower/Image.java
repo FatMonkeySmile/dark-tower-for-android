@@ -23,8 +23,6 @@
 
 package com.ridgelineapps.darktower;
 
-import java.lang.String;
-import javax.swing.ImageIcon;
 
 public class Image
 {
@@ -59,14 +57,15 @@ public class Image
 		  "scout", "silverkey", "sword", "victory", "warrior",
 		  "warriors", "wizard" };
 
-	public static ImageIcon getImageIcon(int imageNo)
-	{
-		ImageIcon icon = null;
-		
-		if ( imageNo > NA )
-			icon = new ImageIcon(
-				Util.class.getResource("images/" + IMAGE[imageNo - 1] + ".jpg"));
-		
-		return icon;
-	}
+	//TODO
+//	public static ImageIcon getImageIcon(int imageNo)
+//	{
+//		ImageIcon icon = null;
+//		
+//		if ( imageNo > NA )
+//			icon = new ImageIcon(
+//				Util.class.getResource("images/" + IMAGE[imageNo - 1] + ".jpg"));
+//		
+//		return icon;
+//	}
 }

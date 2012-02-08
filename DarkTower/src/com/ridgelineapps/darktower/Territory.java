@@ -23,10 +23,10 @@
 
 package com.ridgelineapps.darktower;
 
-import java.awt.Point;
 import java.util.List;
-import java.awt.Polygon;
-import java.awt.Color;
+
+import com.ridgelineapps.darktower.java.Point;
+import com.ridgelineapps.darktower.java.Polygon;
 
 public class Territory
 {
@@ -49,14 +49,15 @@ public class Territory
 	public static int[] RUINLIST = { 21, 51, 81, 111 };
 	public static int[] BAZAARLIST = { 14, 44, 74, 104 };
 
-	public static final Color[] COLORLIST = 
-		{ new Color(255, 0, 0), new Color(0, 255, 0),
-		  new Color(0, 0, 255), new Color(255, 255, 0) };
+	//TODO
+//	public static final Color[] COLORLIST = 
+//		{ new Color(255, 0, 0), new Color(0, 255, 0),
+//		  new Color(0, 0, 255), new Color(255, 255, 0) };
 
 	private int territoryNo = 0;
 	private int kingdomNo = 0;
 	private int type = STANDARD;
-	private Color color = null;
+	private int color;
 	private Polygon polygon = null;
 	private Point centre = null;
 	private List neigborList = null;
@@ -65,7 +66,7 @@ public class Territory
 	{
 	}
 
-	public Territory(int territoryNo, int kingdomNo, int type, Color color)
+	public Territory(int territoryNo, int kingdomNo, int type, int color)
 	{
 		this.territoryNo = territoryNo;
 		this.kingdomNo = kingdomNo;
@@ -103,12 +104,12 @@ public class Territory
 		return type;
 	}
 
-	public void setColor(Color color)
+	public void setColor(int color)
 	{
 		this.color = color;
 	}
 
-	public Color getColor()
+	public int getColor()
 	{
 		return color;
 	}

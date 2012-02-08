@@ -23,12 +23,10 @@
 
 package com.ridgelineapps.darktower;
 
-import java.lang.Thread;
 import java.util.ArrayList;
 import java.util.List;
-import java.applet.AudioClip;
-import java.awt.Polygon;
-import javax.swing.ImageIcon;
+
+import com.ridgelineapps.darktower.java.Polygon;
 
 public class DarkTowerThread extends Thread
 {
@@ -56,7 +54,8 @@ public class DarkTowerThread extends Thread
 	private Dragon dragon = null;
 	private Dragon lastDragon = null;
 	private boolean reset = false;
-	private AudioClip audio = null;
+	//TODO
+//	private AudioClip audio = null;
 
 	public DarkTowerThread(DarkTower darkTower)
 	{
@@ -1224,14 +1223,15 @@ public class DarkTowerThread extends Thread
 
 			if ( enabled )
 			{
-				getDarkTowerPanel().setColor(Territory.COLORLIST[playerNo]);
-
-				if ( label != null )
-					getDarkTowerPanel().setLabel(label);
-
-				ImageIcon image = Image.getImageIcon(imageNo);
-				if ( image != null )
-					getDarkTowerPanel().setImage(image);
+				//TODO
+//				getDarkTowerPanel().setColor(Territory.COLORLIST[playerNo]);
+//
+//				if ( label != null )
+//					getDarkTowerPanel().setLabel(label);
+//
+//				ImageIcon image = Image.getImageIcon(imageNo);
+//				if ( image != null )
+//					getDarkTowerPanel().setImage(image);
 			}
 
 			play(audioNo, forcePlay);
@@ -1256,11 +1256,12 @@ public class DarkTowerThread extends Thread
 			 ( darkTower.getDisplay() == 0 ) || ( forcePlay ) )
 			enabled = true;
 
-		if ( ( audioNo != Audio.NA ) && ( audio != null ) )
-			audio.stop();
-		audio = Audio.getAudioClip(audioNo);
-		if ( ( audio != null ) && ( enabled ) )
-			audio.play();
+		//TODO
+//		if ( ( audioNo != Audio.NA ) && ( audio != null ) )
+//			audio.stop();
+//		audio = Audio.getAudioClip(audioNo);
+//		if ( ( audio != null ) && ( enabled ) )
+//			audio.play();
 	}
 
 	//
@@ -1289,7 +1290,10 @@ public class DarkTowerThread extends Thread
 			boardPanel.setHighlightedTerritoryNo(highlightedTerritoryNo);
 			boardPanel.setDragon(dragon);
 			if ( ( isBoardVisible() ) && ( !isBoardIcon() ) )
-				boardPanel.repaint();
+			{
+				//TODO
+//				boardPanel.repaint();
+			}
 			else
 			{
 				// move player
@@ -1463,9 +1467,10 @@ public class DarkTowerThread extends Thread
 		return darkTower.getBoardPanel();
 	}
 
+	//TODO
 	public void setInventory()
 	{
-		darkTower.setInventory();
+//		darkTower.setInventory();
 	}
 
 	public List getPlayerList()
@@ -1689,14 +1694,18 @@ public class DarkTowerThread extends Thread
 		this.imageNo = imageNo;
 	}
 
+	//TODO
 	public boolean isBoardVisible()
 	{
-		return darkTower.getBoardFrame().isVisible();
+		return true;
+//		return darkTower.getBoardFrame().isVisible();
 	}
 	
+	//TODO
 	public boolean isBoardIcon()
 	{
-		return darkTower.getBoardFrame().isIcon();
+		return false;
+//		return darkTower.getBoardFrame().isIcon();
 	}
 
 	public void reset()
