@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2012 Dark Tower for Android
+ *   (http://code.google.com/p/dark-tower-for-android)
+ * 
+ * This program is free software: you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License as published 
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *   
+ * This source code is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Originally from --
  * 07/24/2002 - 20:37:20
  *
  * BoardPanel.java
@@ -26,15 +43,26 @@ package com.ridgelineapps.darktower;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.view.View;
 
 import com.ridgelineapps.darktower.java.Point;
 import com.ridgelineapps.darktower.java.Polygon;
 
-public class BoardPanel // extends JComponent
+public class BoardView extends View
 {
+   Resources res;
+   Paint paint;
+   
 	private List territoryList = null;
-//	private BufferedImage boardImage = null;
+	private Bitmap boardBitmap = null;
 //	private BufferedImage grayBoardImage = null;
 	private List playerList = null;
 	private int playerNo = 0;
@@ -47,28 +75,132 @@ public class BoardPanel // extends JComponent
 //	private ImageIcon frontierImageIcon = null;
 //	private ImageIcon darkTowerImageIcon = null;
 
-	public BoardPanel()
+	public BoardView(Context context)
 	{
+	   super(context);
+	   
+	   res = context.getResources();
+//	   paint = new Paint();
+	   paint = new Paint();
+	   paint.setARGB(255, 220, 255, 110);
+	   paint.setStyle(Paint.Style.FILL);
+	   
 		//TODO
 //		classmImageIcon = MultiImage.getImageIcon(MultiImage.CLASSM);
 //		dragonImageIcon = MultiImage.getImageIcon(MultiImage.DRAGON);
 //		isoImageIcon = MultiImage.getImageIcon(MultiImage.ISO);
 		
 		territoryList = newTerritoryList();
-//	}
-//
-//	public void setPreferredSize(Dimension preferredSize)
-//	{
-//		super.setPreferredSize(preferredSize);
-//		setSize(preferredSize);
 		createTexture();
 		createTerritories();
 		createNeigbors();
-		createTerritoryPlaces(true);
+		//TODO
+//		createTerritoryPlaces(true);
 		createBoard();
 	}
+	
+	@Override
+   protected void onDraw(Canvas canvas) {
+	   
+//    Graphics2D g2D = (Graphics2D) g;
+    Player player = null;
+    Territory territory = null;
+    int color;
+    Point point = null;
+    int r = (int) (getTerritoryRadius() * 0.7);
+    
+//    canvas.drawBitmap(boardBitmap, 0, 0, paint);
+    canvas.drawRect(new Rect(50, 50, 100, 100), paint);
+//
+//    // draw highlighted territory
+//    if ( highlightedTerritoryNo > 0 )
+//    {
+//       territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
+//       g.setColor(Territory.COLORLIST[playerNo]);
+//       g.fillPolygon(territory.getPolygon());
+//
+//       AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+//       g.setClip(territory.getPolygon());
+//       g2D.setComposite(ac);
+//       g.drawImage(grayBoardImage, 0, 0, this);
+//       g.setClip(0, 0, getWidth(), getHeight());
+//       g2D.setComposite(AlphaComposite.SrcOver);
+//
+//       g.setColor(new Color(0, 0, 0));
+//       g.drawPolygon(territory.getPolygon());
+//    }
+//
+//    // draw buildings
+//    for (int i = 0; i < territoryList.size(); i++)
+//    {
+//       territory = (Territory) territoryList.get(i);
+//       point = territory.getCentre();
+//       switch ( territory.getType() )
+//       {
+//          case Territory.BAZAAR:
+//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//                MultiImage.BAZAAR[territory.getKingdomNo()], point.x, point.y);
+//             break;
+//          case Territory.SANCTUARY:
+//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//                MultiImage.SANCTUARY[territory.getKingdomNo()], point.x, point.y);
+//             break;
+//          case Territory.RUIN:
+//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//                MultiImage.RUIN[territory.getKingdomNo()], point.x, point.y);
+//             break;
+//          case Territory.TOMB:
+//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//                MultiImage.TOMB[territory.getKingdomNo()], point.x, point.y);
+//             break;
+//          default:
+//             break;
+//       }
+//    }
+//    MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//       221, getWidth() / 2, getHeight() / 2);
+//
+//    // draw citatel
+//    for (int i = 0; i < 4; i++)
+//    {
+//       territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
+//       point = territory.getCentre();
+//       MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
+//          MultiImage.CITADEL[i], point.x, point.y);
+//    }
+//
+//    // draw player
+//    if ( playerList != null )
+//    {
+//       for (int i = 0; i < playerList.size(); i++)
+//       {
+//          player = (Player) playerList.get(i);
+//          point = nextCoord(player);
+//          MultiImage.drawSubImage(g, classmImageIcon, MultiImage.CLASSM, 
+//             MultiImage.PLAYER[i], point.x, point.y);
+//       }
+//    }
+//
+//    // draw dragon
+//    if ( dragon != null )
+//    {
+//       if ( dragon.getStartTerritoryNo() != 0 )
+//       {
+//          point = nextCoord(dragon);
+//          MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
+//       }
+//       else if ( dragon.getEndTerritoryNo() != 0 )
+//       {
+//          territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
+//          point = territory.getCentre();
+//          MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
+//          dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
+//       }
+//    }
+	   
+   }
 
-	public void createTexture()
+   public void createTexture()
 	{
 		//TODO
 //		kingdomImageIcon = new ImageIcon[4];
@@ -267,53 +399,55 @@ public class BoardPanel // extends JComponent
 
 	public void createBoard()
 	{
-		boardImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-
-		Territory territory = null;
-		Graphics2D g = boardImage.createGraphics();
-		
-		// draw territories
-		g.setColor(new Color(0, 0, 0));
-		g.fillRect(0, 0, getWidth(), getHeight());
-		for (int i = 0; i < territoryList.size(); i++)
-		{
-			territory = (Territory) territoryList.get(i);
-			switch ( territory.getType() )
-			{
-				case Territory.DARKTOWER:
-					g.setClip(territory.getPolygon());
-					darkTowerImageIcon.paintIcon(this, g, 0, 0);
-					break;
-				case Territory.FRONTIER:
-					g.setClip(territory.getPolygon());
-					frontierImageIcon.paintIcon(this, g, 0, 0);
-					g.setClip(0, 0, getWidth(), getHeight());
-					g.setColor(new Color(0, 0, 0));
-					g.drawPolygon(territory.getPolygon());
-					break;
-				default:
-					g.setClip(territory.getPolygon());
-					kingdomImageIcon[territory.getKingdomNo()].paintIcon(this, g, 0, 0);
-					g.setClip(0, 0, getWidth(), getHeight());
-					g.setColor(new Color(0, 0, 0));
-					g.drawPolygon(territory.getPolygon());
-					break;
-			}
-			
-//			g.setColor(new Color(255, 255, 255));
-//			Point point = territory.getCentre();
-//			g.drawString(Integer.toString(territory.getTerritoryNo()), 
-//				point.x - 4, point.y + 4);
-//			g.setColor(new Color(0, 0, 0));
-//			g.drawString(Integer.toString(territory.getTerritoryNo()), 
-//				point.x - 3, point.y + 3);
-		}
-
-		RenderingHints renderingHints = g.getRenderingHints();
-		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-		ColorConvertOp colorConvertOp = new ColorConvertOp(colorSpace, renderingHints);
-		grayBoardImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-		colorConvertOp.filter(boardImage, grayBoardImage);
+	   //TODO
+	   
+		boardBitmap = BitmapFactory.decodeResource(res, R.drawable.board);
+//
+//		Territory territory = null;
+//		Graphics2D g = boardImage.createGraphics();
+//		
+//		// draw territories
+//		g.setColor(new Color(0, 0, 0));
+//		g.fillRect(0, 0, getWidth(), getHeight());
+//		for (int i = 0; i < territoryList.size(); i++)
+//		{
+//			territory = (Territory) territoryList.get(i);
+//			switch ( territory.getType() )
+//			{
+//				case Territory.DARKTOWER:
+//					g.setClip(territory.getPolygon());
+//					darkTowerImageIcon.paintIcon(this, g, 0, 0);
+//					break;
+//				case Territory.FRONTIER:
+//					g.setClip(territory.getPolygon());
+//					frontierImageIcon.paintIcon(this, g, 0, 0);
+//					g.setClip(0, 0, getWidth(), getHeight());
+//					g.setColor(new Color(0, 0, 0));
+//					g.drawPolygon(territory.getPolygon());
+//					break;
+//				default:
+//					g.setClip(territory.getPolygon());
+//					kingdomImageIcon[territory.getKingdomNo()].paintIcon(this, g, 0, 0);
+//					g.setClip(0, 0, getWidth(), getHeight());
+//					g.setColor(new Color(0, 0, 0));
+//					g.drawPolygon(territory.getPolygon());
+//					break;
+//			}
+//			
+////			g.setColor(new Color(255, 255, 255));
+////			Point point = territory.getCentre();
+////			g.drawString(Integer.toString(territory.getTerritoryNo()), 
+////				point.x - 4, point.y + 4);
+////			g.setColor(new Color(0, 0, 0));
+////			g.drawString(Integer.toString(territory.getTerritoryNo()), 
+////				point.x - 3, point.y + 3);
+//		}
+//
+//		RenderingHints renderingHints = g.getRenderingHints();
+//		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+//		ColorConvertOp colorConvertOp = new ColorConvertOp(colorSpace, renderingHints);
+//		grayBoardImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+//		colorConvertOp.filter(boardImage, grayBoardImage);
 	}
 
 	public Point getCartCoord(int radius, double angDeg)
@@ -368,19 +502,19 @@ public class BoardPanel // extends JComponent
 		int number = 9;
 		int type = Territory.STANDARD;
 		Territory territory = null;
-		Color color = null;
+		int color;
 		ArrayList territoryList = new ArrayList();
 
 		for (int i = 0; i < 4; i++)
 		{
-			color = new Color(0, 0, 0);
+			color = Color.rgb(0,  0, 0);
 			territory = new Territory(i + 1, i, Territory.DARKTOWER, color);
 			territoryList.add(territory);
 		}
 
 		for (int i = 0; i < 4; i++)
 		{
-			color = new Color(250, 190, 110);
+			color = Color.rgb(250, 190, 110);
 			territory = new Territory(i + 5, i, Territory.FRONTIER, color);
 			territoryList.add(territory);
 		}
@@ -392,7 +526,7 @@ public class BoardPanel // extends JComponent
 				for (int k = 0; k < 4 + j; k++)
 				{
 					type = Territory.STANDARD;
-					color = new Color(0, (int) (100 + Math.random() * 30), 0);
+					color = Color.rgb(0, (int) (100 + Math.random() * 30), 0);
 					// if ( Util.contains(Territory.SANCTUARYLIST, number) )
 					// 	type = Territory.SANCTUARY;
 					// else if ( Util.contains(Territory.TOMBLIST, number) )
@@ -534,105 +668,6 @@ public class BoardPanel // extends JComponent
 	{
 		this.dragon = dragon;
 	}
-
-	//TODO
-//	public void paintComponent(Graphics g)
-//	{
-//		Graphics2D g2D = (Graphics2D) g;
-//		Player player = null;
-//		Territory territory = null;
-//		Color color = null;
-//		Point point = null;
-//		int r = (int) (getTerritoryRadius() * 0.7);
-//		
-//		g.drawImage(boardImage, 0, 0, this);
-//
-//		// draw highlighted territory
-//		if ( highlightedTerritoryNo > 0 )
-//		{
-//			territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
-//			g.setColor(Territory.COLORLIST[playerNo]);
-//			g.fillPolygon(territory.getPolygon());
-//
-//			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
-//			g.setClip(territory.getPolygon());
-//			g2D.setComposite(ac);
-//			g.drawImage(grayBoardImage, 0, 0, this);
-//			g.setClip(0, 0, getWidth(), getHeight());
-//			g2D.setComposite(AlphaComposite.SrcOver);
-//
-//			g.setColor(new Color(0, 0, 0));
-//			g.drawPolygon(territory.getPolygon());
-//		}
-//
-//		// draw buildings
-//		for (int i = 0; i < territoryList.size(); i++)
-//		{
-//			territory = (Territory) territoryList.get(i);
-//			point = territory.getCentre();
-//			switch ( territory.getType() )
-//			{
-//				case Territory.BAZAAR:
-//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//						MultiImage.BAZAAR[territory.getKingdomNo()], point.x, point.y);
-//					break;
-//				case Territory.SANCTUARY:
-//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//						MultiImage.SANCTUARY[territory.getKingdomNo()], point.x, point.y);
-//					break;
-//				case Territory.RUIN:
-//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//						MultiImage.RUIN[territory.getKingdomNo()], point.x, point.y);
-//					break;
-//				case Territory.TOMB:
-//					MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//						MultiImage.TOMB[territory.getKingdomNo()], point.x, point.y);
-//					break;
-//				default:
-//					break;
-//			}
-//		}
-//		MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//			221, getWidth() / 2, getHeight() / 2);
-//
-//		// draw citatel
-//		for (int i = 0; i < 4; i++)
-//		{
-//			territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
-//			point = territory.getCentre();
-//			MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//				MultiImage.CITADEL[i], point.x, point.y);
-//		}
-//
-//		// draw player
-//		if ( playerList != null )
-//		{
-//			for (int i = 0; i < playerList.size(); i++)
-//			{
-//				player = (Player) playerList.get(i);
-//				point = nextCoord(player);
-//				MultiImage.drawSubImage(g, classmImageIcon, MultiImage.CLASSM, 
-//					MultiImage.PLAYER[i], point.x, point.y);
-//			}
-//		}
-//
-//		// draw dragon
-//		if ( dragon != null )
-//		{
-//			if ( dragon.getStartTerritoryNo() != 0 )
-//			{
-//				point = nextCoord(dragon);
-//				MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
-//			}
-//			else if ( dragon.getEndTerritoryNo() != 0 )
-//			{
-//				territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
-//				point = territory.getCentre();
-//				MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
-//				dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
-//			}
-//		}
-//	}
 
 	public Point nextCoord(Figure figure)
 	{
