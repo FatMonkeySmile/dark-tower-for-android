@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2012 Dark Tower for Android
+ *   (http://code.google.com/p/dark-tower-for-android)
+ * 
+ * This program is free software: you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License as published 
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *   
+ * This source code is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Originally from --
  * 07/24/2002 - 20:37:20
  *
  * DarkTower.java - The Dark Tower game for Java
@@ -34,7 +51,7 @@ public class DarkTower
 	private FlashThread flashThread = null;
 //	private JFrame frame = null;
 	private DarkTowerPanel darkTowerPanel = null;
-	private BoardPanel boardPanel = null;
+	private BoardView boardPanel = null;
 //	private JDesktopPane desktop = null;
 	private ArrayList playerList = null;
 	private ArrayList lastPlayerList = null;
@@ -952,7 +969,7 @@ public class DarkTower
 		return darkTowerPanel;
 	}
 
-	public BoardPanel getBoardPanel()
+	public BoardView getBoardPanel()
 	{
 		return boardPanel;
 	}
