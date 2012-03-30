@@ -42,6 +42,8 @@ package com.ridgelineapps.darktower;
 
 import java.util.List;
 
+import android.graphics.Path;
+
 import com.ridgelineapps.darktower.java.Point;
 import com.ridgelineapps.darktower.java.Polygon;
 
@@ -76,6 +78,7 @@ public class Territory
 	private int type = STANDARD;
 	private int color;
 	private Polygon polygon = null;
+	private Path path = null;
 	private Point centre = null;
 	private List neigborList = null;
 
@@ -140,6 +143,26 @@ public class Territory
 	public Polygon getPolygon()
 	{
 		return polygon;
+	}
+	
+	public Path getPath() {
+	   if(path == null && polygon != null) {
+	      path = new Path();
+	      for(int i=0; i < polygon.npoints; i++) {
+	         int x = polygon.xpoints[i];
+	         int y = polygon.ypoints[i];
+
+	         if(i == 0) {
+	            path.moveTo(x, y);
+	         }
+	         else {
+               path.lineTo(x, y);	            
+	         }
+	      }
+	      path.close();
+	   }
+	   
+	   return path;
 	}
 
 	public boolean intersects(Territory territory)
