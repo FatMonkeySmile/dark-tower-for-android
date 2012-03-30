@@ -43,16 +43,18 @@ package com.ridgelineapps.darktower;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Region;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.ridgelineapps.darktower.java.Point;
@@ -76,10 +78,13 @@ public class BoardView extends View
 	private Bitmap kingdomBitmap[] = null;
 	private Bitmap frontierBitmap = null;
 	private Bitmap darkTowerBitmap = null;
+	
+	DarkTowerActivity context;
 
-	public BoardView(Context context)
+	public BoardView(DarkTowerActivity context)
 	{
 	   super(context);
+	   this.context = context;
 	   
 	   res = context.getResources();
 //	   paint = new Paint();
@@ -98,7 +103,9 @@ public class BoardView extends View
 		createNeigbors();
 		//TODO
 //		createTerritoryPlaces(true);
-		createBoard();
+      DisplayMetrics dm = new DisplayMetrics();
+      context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+      createBoard(dm.widthPixels, dm.heightPixels);
 	}
 	
 	@Override
@@ -208,7 +215,6 @@ public class BoardView extends View
 
    public void createTexture()
 	{
-		//TODO
 //		kingdomImageIcon = new ImageIcon[4];
 //		for (int i = 0; i < 4; i++)
 //			kingdomImageIcon[i] = MultiImage.getTexture(
@@ -403,20 +409,24 @@ public class BoardView extends View
 		return false;
 	}
 
-	public void createBoard()
+	public void createBoard(int width, int height)
 	{
 	   //TODO
 	   
-		boardBitmap = BitmapFactory.decodeResource(res, R.drawable.board);
-
-		Territory territory = null;
-		Canvas canvas = new Canvas(boardBitmap);
-		
-		// draw territories
-		Paint paint = new Paint();
+      Paint paint = new Paint(Paint.FAKE_BOLD_TEXT_FLAG);
       paint.setStyle(Paint.Style.FILL);
       paint.setARGB(255, 0, 0, 0);
       
+		boardBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		
+		Territory territory = null;
+		Canvas canvas = new Canvas(boardBitmap);
+      Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.board);
+      int x = 100;
+      int y = 100;
+      canvas.drawBitmap(bitmap, x, y, paint);
+		
+		// draw territories
 		canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
 		for (int i = 0; i < territoryList.size(); i++)
 		{
