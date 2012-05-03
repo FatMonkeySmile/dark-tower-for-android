@@ -43,16 +43,12 @@ package com.ridgelineapps.darktower;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Region;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -64,6 +60,9 @@ public class BoardView extends View
 {
    Resources res;
    Paint paint;
+
+   int width;
+   int height;
    
 	private List territoryList = null;
 	private Bitmap boardBitmap = null;
@@ -72,9 +71,9 @@ public class BoardView extends View
 	private int playerNo = 0;
 	private int highlightedTerritoryNo = 0;
 	private Dragon dragon = null;
-//	private ImageIcon classmImageIcon = null;
-//	private ImageIcon dragonImageIcon = null;
-//	private ImageIcon isoImageIcon = null;
+	private Bitmap classmImageIcon = null;
+	private Bitmap dragonImageIcon = null;
+	private Bitmap isoImageIcon = null;
 	private Bitmap kingdomBitmap[] = null;
 	private Bitmap frontierBitmap = null;
 	private Bitmap darkTowerBitmap = null;
@@ -87,44 +86,45 @@ public class BoardView extends View
 	   this.context = context;
 	   
 	   res = context.getResources();
-//	   paint = new Paint();
 	   paint = new Paint();
-	   paint.setARGB(255, 220, 255, 110);
 	   paint.setStyle(Paint.Style.FILL);
 	   
-		//TODO
-//		classmImageIcon = MultiImage.getImageIcon(MultiImage.CLASSM);
-//		dragonImageIcon = MultiImage.getImageIcon(MultiImage.DRAGON);
-//		isoImageIcon = MultiImage.getImageIcon(MultiImage.ISO);
+		classmImageIcon = MultiImage.getBitmap(res, MultiImage.CLASSM);
+		dragonImageIcon = MultiImage.getBitmap(res, MultiImage.DRAGON);
+		isoImageIcon = MultiImage.getBitmap(res, MultiImage.ISO);
+
+      DisplayMetrics dm = new DisplayMetrics();
+      context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+      width = dm.widthPixels;
+      height = dm.heightPixels;
+      
+      width = Math.min(width, height);
+      height = width;
 		
 		territoryList = newTerritoryList();
 		createTexture();
 		createTerritories();
 		createNeigbors();
-		//TODO
-//		createTerritoryPlaces(true);
-      DisplayMetrics dm = new DisplayMetrics();
-      context.getWindowManager().getDefaultDisplay().getMetrics(dm);
-      createBoard(dm.widthPixels, dm.heightPixels);
+		createTerritoryPlaces(true);
+      createBoard();
 	}
 	
-	@Override
+   @Override
    protected void onDraw(Canvas canvas) {
 
-	   int width = canvas.getWidth();
-	   int height = canvas.getHeight();
-	 float dx = width / 2;
-	 float dy = height / 2;
-	 canvas.translate(dx, dy);
-    Player player = null;
-    Territory territory = null;
-    int color;
-    Point point = null;
-    int r = (int) (getTerritoryRadius() * 0.7);
-    
-    canvas.drawBitmap(boardBitmap, 0, 0, paint);
-    canvas.drawRect(new Rect(50, 50, 100, 100), paint);
-//
+//      int width = canvas.getWidth();
+//      int height = canvas.getHeight();
+//      float dx = width / 2;
+//      float dy = height / 2;
+//      canvas.translate(dx, dy);
+      Player player = null;
+      Territory territory = null;
+      int color;
+      Point point = null;
+      int r = (int) (getTerritoryRadius() * 0.7);
+
+      canvas.drawBitmap(boardBitmap, 0, 0, paint);
+
 //    // draw highlighted territory
 //    if ( highlightedTerritoryNo > 0 )
 //    {
@@ -136,95 +136,90 @@ public class BoardView extends View
 //       g.setClip(territory.getPolygon());
 //       g2D.setComposite(ac);
 //       g.drawImage(grayBoardImage, 0, 0, this);
-//       g.setClip(0, 0, getWidth(), getHeight());
+//       g.setClip(0, 0, width, height);
 //       g2D.setComposite(AlphaComposite.SrcOver);
 //
 //       g.setColor(new Color(0, 0, 0));
 //       g.drawPolygon(territory.getPolygon());
 //    }
 //
-//    // draw buildings
-//    for (int i = 0; i < territoryList.size(); i++)
-//    {
-//       territory = (Territory) territoryList.get(i);
-//       point = territory.getCentre();
-//       switch ( territory.getType() )
-//       {
-//          case Territory.BAZAAR:
-//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//                MultiImage.BAZAAR[territory.getKingdomNo()], point.x, point.y);
-//             break;
-//          case Territory.SANCTUARY:
-//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//                MultiImage.SANCTUARY[territory.getKingdomNo()], point.x, point.y);
-//             break;
-//          case Territory.RUIN:
-//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//                MultiImage.RUIN[territory.getKingdomNo()], point.x, point.y);
-//             break;
-//          case Territory.TOMB:
-//             MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//                MultiImage.TOMB[territory.getKingdomNo()], point.x, point.y);
-//             break;
-//          default:
-//             break;
-//       }
-//    }
-//    MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//       221, getWidth() / 2, getHeight() / 2);
-//
-//    // draw citatel
-//    for (int i = 0; i < 4; i++)
-//    {
-//       territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
-//       point = territory.getCentre();
-//       MultiImage.drawSubImage(g, isoImageIcon, MultiImage.ISO, 
-//          MultiImage.CITADEL[i], point.x, point.y);
-//    }
-//
-//    // draw player
-//    if ( playerList != null )
-//    {
-//       for (int i = 0; i < playerList.size(); i++)
-//       {
-//          player = (Player) playerList.get(i);
-//          point = nextCoord(player);
-//          MultiImage.drawSubImage(g, classmImageIcon, MultiImage.CLASSM, 
-//             MultiImage.PLAYER[i], point.x, point.y);
-//       }
-//    }
-//
-//    // draw dragon
-//    if ( dragon != null )
-//    {
-//       if ( dragon.getStartTerritoryNo() != 0 )
-//       {
-//          point = nextCoord(dragon);
-//          MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
-//       }
-//       else if ( dragon.getEndTerritoryNo() != 0 )
-//       {
-//          territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
-//          point = territory.getCentre();
-//          MultiImage.drawSubImage(g, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
-//          dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
-//       }
-//    }
+    // draw buildings
+    for (int i = 0; i < territoryList.size(); i++)
+    {
+       territory = (Territory) territoryList.get(i);
+       point = territory.getCentre();
+       switch ( territory.getType() )
+       {
+          case Territory.BAZAAR:
+             MultiImage.drawSubImage(canvas, isoImageIcon, MultiImage.ISO, 
+                MultiImage.BAZAAR[territory.getKingdomNo()], point.x, point.y);
+             break;
+          case Territory.SANCTUARY:
+             MultiImage.drawSubImage(canvas, isoImageIcon, MultiImage.ISO, 
+                MultiImage.SANCTUARY[territory.getKingdomNo()], point.x, point.y);
+             break;
+          case Territory.RUIN:
+             MultiImage.drawSubImage(canvas, isoImageIcon, MultiImage.ISO, 
+                MultiImage.RUIN[territory.getKingdomNo()], point.x, point.y);
+             break;
+          case Territory.TOMB:
+             MultiImage.drawSubImage(canvas, isoImageIcon, MultiImage.ISO, 
+                MultiImage.TOMB[territory.getKingdomNo()], point.x, point.y);
+             break;
+          default:
+             break;
+       }
+    }
+    MultiImage.drawSubImage(canvas, isoImageIcon, MultiImage.ISO, MultiImage.DARKTOWER, width / 2, height / 2);
+
+    // draw citadel
+    for (int i = 0; i < 4; i++)
+    {
+       territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
+       point = territory.getCentre();
+       MultiImage.drawSubImage(canvas, isoImageIcon, MultiImage.ISO, 
+          MultiImage.CITADEL[i], point.x, point.y);
+    }
+
+    // draw player
+    if ( playerList != null )
+    {
+       for (int i = 0; i < playerList.size(); i++)
+       {
+          player = (Player) playerList.get(i);
+          point = nextCoord(player);
+          MultiImage.drawSubImage(canvas, classmImageIcon, MultiImage.CLASSM, 
+             MultiImage.PLAYER[i], point.x, point.y);
+       }
+    }
+
+    // draw dragon
+    if ( dragon != null )
+    {
+       if ( dragon.getStartTerritoryNo() != 0 )
+       {
+          point = nextCoord(dragon);
+          MultiImage.drawSubImage(canvas, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
+       }
+       else if ( dragon.getEndTerritoryNo() != 0 )
+       {
+          territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
+          point = territory.getCentre();
+          MultiImage.drawSubImage(canvas, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
+          dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
+       }
+    }
 	   
    }
 
-   public void createTexture()
-	{
-//		kingdomImageIcon = new ImageIcon[4];
-//		for (int i = 0; i < 4; i++)
-//			kingdomImageIcon[i] = MultiImage.getTexture(
-//				isoImageIcon, MultiImage.ISO, i, getWidth(), getHeight());
-//
-//		frontierImageIcon = MultiImage.getTexture(
-//			isoImageIcon, MultiImage.ISO, 4, getWidth(), getHeight());
-//		darkTowerImageIcon = MultiImage.getTexture(
-//			isoImageIcon, MultiImage.ISO, 5, getWidth(), getHeight());
-	}
+   public void createTexture() {
+      kingdomBitmap = new Bitmap[4];
+      for (int i = 0; i < 4; i++)
+         kingdomBitmap[i] = MultiImage.getTexture(isoImageIcon, MultiImage.ISO, i, width, height);
+
+      frontierBitmap = MultiImage.getTexture(isoImageIcon, MultiImage.ISO, 4, width, height);
+      darkTowerBitmap = MultiImage.getTexture(isoImageIcon, MultiImage.ISO, 5, width, height);
+   }
 
 	public void createTerritories()
 	{
@@ -409,25 +404,42 @@ public class BoardView extends View
 		return false;
 	}
 
-	public void createBoard(int width, int height)
+	public void createBoard()
 	{
-	   //TODO
-	   
-      Paint paint = new Paint(Paint.FAKE_BOLD_TEXT_FLAG);
-      paint.setStyle(Paint.Style.FILL);
-      paint.setARGB(255, 0, 0, 0);
+	   //TODO: anti-alias and dither?
+      Paint p = new Paint();
+      p.setDither(true);
+      p.setAntiAlias(true);
+      p.setStyle(Paint.Style.FILL);
+      p.setARGB(255, 0, 0, 0);
+      
+//      Paint textP = new Paint();
+//      textP.setDither(true);
+//      textP.setAntiAlias(true);
+//      textP.setStyle(Paint.Style.FILL);
+//      textP.setARGB(255, 255, 255, 255);
+      
+      Paint outlineP = new Paint();
+      outlineP.setDither(true);
+      outlineP.setAntiAlias(true);
+      outlineP.setStyle(Paint.Style.STROKE);
+      outlineP.setARGB(255, 0, 0, 0);
+      
+//      Paint debugP = new Paint();
+//      debugP.setStyle(Paint.Style.STROKE);
+//      debugP.setARGB(255, 0, 255, 0);
+//      
+//      Paint debugFillP = new Paint();
+//      debugP.setStyle(Paint.Style.FILL);
+//      debugP.setARGB(255, 0, 0, 255);
       
 		boardBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		
 		Territory territory = null;
 		Canvas canvas = new Canvas(boardBitmap);
-      Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.board);
-      int x = 100;
-      int y = 100;
-      canvas.drawBitmap(bitmap, x, y, paint);
+//      canvas.drawRect(0, 0, width, height, p);
 		
 		// draw territories
-		canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
 		for (int i = 0; i < territoryList.size(); i++)
 		{
 			territory = (Territory) territoryList.get(i);
@@ -435,31 +447,24 @@ public class BoardView extends View
 			{
 				case Territory.DARKTOWER:
 					canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-					canvas.drawBitmap(darkTowerBitmap, 0, 0, paint);
+					canvas.drawBitmap(darkTowerBitmap, 0, 0, p);
 					break;
 				case Territory.FRONTIER:
-               canvas.clipPath(territory.getPath());
-               canvas.drawBitmap(frontierBitmap, 0, 0, paint);
-               canvas.clipRect(0, 0, canvas.getWidth(), canvas.getHeight(), Region.Op.REPLACE);
-//             paint.setARGB(255, 0, 0, 0);
-               canvas.drawPath(territory.getPath(), paint);
+               canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
+               canvas.drawBitmap(frontierBitmap, 0, 0, p);
+               canvas.drawPath(territory.getPath(), outlineP);
 					break;
 				default:
-               canvas.clipPath(territory.getPath());
-               canvas.drawBitmap(kingdomBitmap[territory.getKingdomNo()], 0, 0, paint);
-               canvas.clipRect(0, 0, canvas.getWidth(), canvas.getHeight(), Region.Op.REPLACE);
-//					paint.setARGB(255, 0, 0, 0);
-               canvas.drawPath(territory.getPath(), paint);
+               canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
+               canvas.drawBitmap(kingdomBitmap[territory.getKingdomNo()], 0, 0, p);
+               canvas.drawPath(territory.getPath(), outlineP);
 					break;
 			}
 			
-//			g.setColor(new Color(255, 255, 255));
+//       canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
 //			Point point = territory.getCentre();
-//			g.drawString(Integer.toString(territory.getTerritoryNo()), 
-//				point.x - 4, point.y + 4);
-//			g.setColor(new Color(0, 0, 0));
-//			g.drawString(Integer.toString(territory.getTerritoryNo()), 
-//				point.x - 3, point.y + 3);
+//			canvas.drawText(Integer.toString(territory.getTerritoryNo()), point.x - 4, point.y + 4, textP);
+//			canvas.drawText(Integer.toString(territory.getTerritoryNo()), point.x - 3, point.y + 3, p);
 		}
 
 		//TODO
@@ -468,15 +473,15 @@ public class BoardView extends View
 //		RenderingHints renderingHints = g.getRenderingHints();
 //		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 //		ColorConvertOp colorConvertOp = new ColorConvertOp(colorSpace, renderingHints);
-//		grayBoardImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+//		grayBoardImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 //		colorConvertOp.filter(boardImage, grayBoardImage);
 	}
 
 	public Point getCartCoord(int radius, double angDeg)
 	{
 		double angRad = Math.toRadians(angDeg);
-		int x = (int) ( getWidth() / 2 + radius * Math.cos(angRad) );
-		int y = (int) ( getHeight() / 2 - radius * Math.sin(angRad) );
+		int x = (int) ( width / 2 + radius * Math.cos(angRad) );
+		int y = (int) ( height / 2 - radius * Math.sin(angRad) );
 		return new Point(x, y);
 	}
 
@@ -511,7 +516,7 @@ public class BoardView extends View
 
 	public int getMinExtension()
 	{
-		return ( getWidth() < getHeight() ) ? getWidth() : getHeight();
+		return ( width < height ) ? width : height;
 	}
 
 	public int getTerritoryRadius()
@@ -601,8 +606,7 @@ public class BoardView extends View
 		return polygon;
 	}
 
-	public Polygon getFrontierPolygon(int territoryCount, int radius,
-		double startAngDeg)
+	public Polygon getFrontierPolygon(int territoryCount, int radius, double startAngDeg)
 	{
 		int territoryHeight = getTerritoryRadius();
 		double frontierAngDeg = 10.0;
@@ -611,8 +615,7 @@ public class BoardView extends View
 
 		for (int i = 0; i < territoryCount + 1; i++)
 		{
-			point = getCartCoord(radius + (i * territoryHeight), 
-				startAngDeg + frontierAngDeg);
+			point = getCartCoord(radius + (i * territoryHeight), startAngDeg + frontierAngDeg);
 			polygon.addPoint(point.x, point.y);
 		}
 		for (int i = territoryCount; i >= 0; i--)
