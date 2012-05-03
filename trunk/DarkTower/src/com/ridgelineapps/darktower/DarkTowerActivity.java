@@ -20,6 +20,10 @@ package com.ridgelineapps.darktower;
 import android.app.Activity;
 import android.os.Bundle;
 
+//TODO
+//
+// Classic vs. 8 bit look (switchable in prefs)
+
 public class DarkTowerActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
