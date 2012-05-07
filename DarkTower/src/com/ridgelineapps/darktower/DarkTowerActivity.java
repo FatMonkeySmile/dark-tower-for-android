@@ -19,17 +19,38 @@ package com.ridgelineapps.darktower;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 //TODO
 //
 // Classic vs. 8 bit look (switchable in prefs)
 
 public class DarkTowerActivity extends Activity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-//        BoardView view = new BoardView(this);
-//        setContentView(view);
-    }
+   public DarkTower darkTower;
+   
+   @Override
+   public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.main);
+      // BoardView view = new BoardView(this);
+      // setContentView(view);
+      darkTower = new DarkTower(this);
+   }
+   
+   public BoardView getBoardView() {
+      return (BoardView) findViewById(R.id.boardview);
+   }
+   
+   public DarkTowerView getDarkTowerView() {
+      return (DarkTowerView) findViewById(R.id.darktowerview);
+   }
+   
+   public void yesBuyButton(View target) {
+      System.out.println("yes/buy");
+   }
+   
+   public void repeatButton(View target) {
+      System.out.println("repeat");
+   }
 }
