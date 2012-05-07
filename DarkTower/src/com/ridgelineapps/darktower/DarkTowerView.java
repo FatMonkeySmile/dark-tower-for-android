@@ -40,8 +40,14 @@
 
 package com.ridgelineapps.darktower;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.View;
 
-public class DarkTowerPanel //extends JComponent
+
+public class DarkTowerView extends View
 {
 	private String label = null;
 //	private ImageIcon image = null;
@@ -50,8 +56,18 @@ public class DarkTowerPanel //extends JComponent
 	private int flashInterval = 0;
 	private boolean enabled = false;
 	
-	public DarkTowerPanel()
-	{
+   DarkTowerActivity context;
+
+   public DarkTowerView(Context context, AttributeSet attributes)
+   {
+      this((DarkTowerActivity) context);
+   }
+   
+	public DarkTowerView(DarkTowerActivity context)
+   {
+      super(context);
+      this.context = context;
+      
 		label = "1";
 //		image = Image.getImageIcon(Image.BLACK);
 	}
@@ -84,11 +100,17 @@ public class DarkTowerPanel //extends JComponent
 		this.enabled = enabled;
 	}
 
-	//TODO
-//	public void paintComponent(Graphics g)
-//	{
-//		Graphics2D g2D = (Graphics2D) g;
-//		
+   @Override
+   protected void onDraw(Canvas canvas) {
+
+//      int width = canvas.getWidth();
+//      int height = canvas.getHeight();
+//      float dx = width / 2;
+//      float dy = height / 2;
+//      canvas.translate(dx, dy);
+      Paint paint = new Paint();
+      paint.setARGB(255, 0, 255, 210);
+      canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
 //		Font font = new Font("Arial", Font.BOLD, 20);
 //		Rectangle2D fontrec = font.getStringBounds(label, g2D.getFontRenderContext());
 ////		Rectangle2D standardrec = font.getStringBounds("00", g2D.getFontRenderContext());
@@ -113,5 +135,10 @@ public class DarkTowerPanel //extends JComponent
 //			g.drawString(label, labelx, labely);
 //		if ( enabled )
 //			g.drawImage(image.getImage(), imagex, imagey, this);
-//	}
+	}
+
+   @Override
+   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      setMeasuredDimension(100, 100);
+   }
 }
