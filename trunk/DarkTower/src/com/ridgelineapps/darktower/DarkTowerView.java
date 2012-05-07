@@ -52,6 +52,7 @@ public class DarkTowerView extends View {
    private Bitmap bitmap = null;
    private boolean flash = false;
    private int flashInterval = 0;
+   private FlashThread flashThread = null;
    private boolean enabled = false;
    Paint backgroundP;
    Paint textP;
@@ -86,6 +87,22 @@ public class DarkTowerView extends View {
       label = "1";
       // TODO (?)
       // image = Image.getImageIcon(Image.BLACK);
+      
+      flashThread = new FlashThread();
+   }
+   
+   @Override
+   protected void onVisibilityChanged(View changedView, int visibility) {
+      super.onVisibilityChanged(changedView, visibility);
+      if(visibility == View.VISIBLE) {
+         if(flashThread == null) {
+            flashThread = new FlashThread();
+         }
+      }
+      else if(flashThread != null) {
+         flashThread.kill = true;
+         flashThread = null;
+      }
    }
 
    public void setColor(int color) {
@@ -140,6 +157,26 @@ public class DarkTowerView extends View {
 
    @Override
    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-      setMeasuredDimension(170, 170);
+      setMeasuredDimension(255, 255);
+   }
+   
+   class FlashThread extends Thread {
+      boolean kill = false;
+ 
+      public void run()
+      {
+         try
+         {
+            while (!kill)
+            {
+               invalidate();
+               sleep(300);
+            }
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }      
    }
 }

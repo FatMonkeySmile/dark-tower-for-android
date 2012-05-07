@@ -44,14 +44,14 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.ridgelineapps.darktower.DarkTowerView.FlashThread;
+
 public class DarkTower 
 //	implements ActionListener, MouseListener, MouseMotionListener
 {
 	private DarkTowerThread thread = null;
 	private FlashThread flashThread = null;
 //	private JFrame frame = null;
-	private DarkTowerView darkTowerView = null;
-	private BoardView boardView = null;
 //	private JDesktopPane desktop = null;
 	private ArrayList playerList = null;
 	private ArrayList lastPlayerList = null;
@@ -72,10 +72,11 @@ public class DarkTower
 //	private JDialog aboutDialog = null;
 	private int offset = 0;
 	private int level = 0;
-
-	public DarkTower()
+	DarkTowerActivity activity;
+	
+	public DarkTower(DarkTowerActivity activity)
 	{
-		System.out.println("init");
+	   this.activity = activity;
 
 //		// main frame
 //		frame = new JFrame("Dark Tower");
@@ -222,7 +223,7 @@ public class DarkTower
 
 
 		// init player list
-		List territoryList = boardView.getTerritoryList();
+		List territoryList = getBoardView().getTerritoryList();
 		playerList = new ArrayList();
 		playerList.add(new Player(0, playerList, territoryList, true, false, Player.NONEPC));
 		playerList.add(new Player(1, playerList, territoryList, true, false, Player.PC));
@@ -765,10 +766,6 @@ public class DarkTower
 		thread = new DarkTowerThread(this);
 		thread.start();
 
-		// init flash thread
-		flashThread = new FlashThread(this);
-		flashThread.start();
-
 //		// make visible
 //		boardFrame.setVisible(true);
 //		darkTowerFrame.setVisible(true);
@@ -964,16 +961,6 @@ public class DarkTower
 		return lastPlayerList;
 	}
 
-	public DarkTowerView getDarkTowerView()
-	{
-		return darkTowerView;
-	}
-
-	public BoardView getBoardView()
-	{
-		return boardView;
-	}
-
 //	public JInternalFrame getBoardFrame()
 //	{
 //		return boardFrame;
@@ -1008,4 +995,12 @@ public class DarkTower
 		//TODO
 		return true;
 	}
+	
+	public BoardView getBoardView() {
+	   return activity.getBoardView();
+	}
+
+   public DarkTowerView getDarkTowerView() {
+      return activity.getDarkTowerView();
+   }
 }
