@@ -45,12 +45,12 @@ import java.lang.Thread;
 public class FlashThread extends Thread
 {
 	private DarkTower darkTower = null;
-	private DarkTowerPanel darkTowerPanel = null;
+	private DarkTowerView darkTowerPanel = null;
 
 	public FlashThread(DarkTower darkTower)
 	{
 		this.darkTower = darkTower;
-		this.darkTowerPanel = darkTower.getDarkTowerPanel();
+		this.darkTowerPanel = darkTower.getDarkTowerView();
 	}
 
 	public void run()

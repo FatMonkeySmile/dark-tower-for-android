@@ -43,6 +43,7 @@ package com.ridgelineapps.darktower;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -50,6 +51,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Region;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 
@@ -80,6 +82,11 @@ public class BoardView extends View
 	
 	DarkTowerActivity context;
 
+   public BoardView(Context context, AttributeSet attributes)
+   {
+      this((DarkTowerActivity) context);
+   }
+   
 	public BoardView(DarkTowerActivity context)
 	{
 	   super(context);
@@ -108,6 +115,11 @@ public class BoardView extends View
 		createTerritoryPlaces(true);
       createBoard();
 	}
+	
+   @Override
+   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      setMeasuredDimension(width, height);
+   }
 	
    @Override
    protected void onDraw(Canvas canvas) {

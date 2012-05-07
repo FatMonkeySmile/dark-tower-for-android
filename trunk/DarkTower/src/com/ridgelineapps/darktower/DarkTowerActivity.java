@@ -25,12 +25,11 @@ import android.os.Bundle;
 // Classic vs. 8 bit look (switchable in prefs)
 
 public class DarkTowerActivity extends Activity {
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main);
-        BoardView view = new BoardView(this);
-        setContentView(view);
+        setContentView(R.layout.main);
+//        BoardView view = new BoardView(this);
+//        setContentView(view);
     }
 }

@@ -78,7 +78,7 @@ public class DarkTowerThread extends Thread
 	{
 		this.darkTower = darkTower;
 		this.playerList = darkTower.getPlayerList();
-		this.boardPanel = darkTower.getBoardPanel();
+		this.boardPanel = darkTower.getBoardView();
 		this.territoryList = boardPanel.getTerritoryList();
 		initQueues();
 		initPlayerList();
@@ -1474,14 +1474,14 @@ public class DarkTowerThread extends Thread
 		return darkTower;
 	}
 
-	public DarkTowerPanel getDarkTowerPanel()
+	public DarkTowerView getDarkTowerPanel()
 	{
-		return darkTower.getDarkTowerPanel();
+		return darkTower.getDarkTowerView();
 	}
 
 	public BoardView getBoardPanel()
 	{
-		return darkTower.getBoardPanel();
+		return darkTower.getBoardView();
 	}
 
 	//TODO

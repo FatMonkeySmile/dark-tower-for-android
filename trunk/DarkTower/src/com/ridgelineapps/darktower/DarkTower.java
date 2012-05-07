@@ -50,8 +50,8 @@ public class DarkTower
 	private DarkTowerThread thread = null;
 	private FlashThread flashThread = null;
 //	private JFrame frame = null;
-	private DarkTowerPanel darkTowerPanel = null;
-	private BoardView boardPanel = null;
+	private DarkTowerView darkTowerView = null;
+	private BoardView boardView = null;
 //	private JDesktopPane desktop = null;
 	private ArrayList playerList = null;
 	private ArrayList lastPlayerList = null;
@@ -222,7 +222,7 @@ public class DarkTower
 
 
 		// init player list
-		List territoryList = boardPanel.getTerritoryList();
+		List territoryList = boardView.getTerritoryList();
 		playerList = new ArrayList();
 		playerList.add(new Player(0, playerList, territoryList, true, false, Player.NONEPC));
 		playerList.add(new Player(1, playerList, territoryList, true, false, Player.PC));
@@ -964,14 +964,14 @@ public class DarkTower
 		return lastPlayerList;
 	}
 
-	public DarkTowerPanel getDarkTowerPanel()
+	public DarkTowerView getDarkTowerView()
 	{
-		return darkTowerPanel;
+		return darkTowerView;
 	}
 
-	public BoardView getBoardPanel()
+	public BoardView getBoardView()
 	{
-		return boardPanel;
+		return boardView;
 	}
 
 //	public JInternalFrame getBoardFrame()
