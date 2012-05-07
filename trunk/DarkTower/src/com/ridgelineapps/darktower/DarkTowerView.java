@@ -41,104 +41,105 @@
 package com.ridgelineapps.darktower;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+public class DarkTowerView extends View {
+   private String label = null;
+   private Bitmap bitmap = null;
+   private boolean flash = false;
+   private int flashInterval = 0;
+   private boolean enabled = false;
+   Paint backgroundP;
+   Paint textP;
+   Paint imageP;
 
-public class DarkTowerView extends View
-{
-	private String label = null;
-//	private ImageIcon image = null;
-	private int color; // = new Color(255, 0, 0);
-	private boolean flash = false;
-	private int flashInterval = 0;
-	private boolean enabled = false;
-	
    DarkTowerActivity context;
 
-   public DarkTowerView(Context context, AttributeSet attributes)
-   {
+   public DarkTowerView(Context context, AttributeSet attributes) {
       this((DarkTowerActivity) context);
+      textP = new Paint();
+      textP.setTextSize(20);
+      textP.setFakeBoldText(true);
+      textP.setAntiAlias(true);
+      // TODO Don't use pure red, use more pleasing colors...
+      textP.setARGB(255, 255, 0, 0);
+
+      imageP = new Paint();
+      imageP.setAntiAlias(true);
+      // TODO set this for all images
+      imageP.setFilterBitmap(true);
+      imageP.setDither(true);
+      imageP.setARGB(255, 0, 0, 0);
+
+      backgroundP = new Paint();
+      backgroundP.setARGB(255, 0, 0, 0);
    }
-   
-	public DarkTowerView(DarkTowerActivity context)
-   {
+
+   public DarkTowerView(DarkTowerActivity context) {
       super(context);
       this.context = context;
-      
-		label = "1";
-//		image = Image.getImageIcon(Image.BLACK);
-	}
 
-	public void setColor(int color)
-	{
-		this.color = color;
-	}
+      label = "1";
+      // TODO (?)
+      // image = Image.getImageIcon(Image.BLACK);
+   }
 
-	//TODO
-//	public void setLabel(String label)
-//	{
-//		this.label = label;
-//		repaint();
-//	}
-//	
-//	public void setImage(ImageIcon image)
-//	{
-//		this.image = image;
-//		repaint();
-//	}
+   public void setColor(int color) {
+      textP.setColor(color);
+   }
 
-	public void setFlash(boolean flash)
-	{
-		this.flash = flash;
-	}
+   public void setLabel(String label) {
+      this.label = label;
+      invalidate();
+   }
 
-	public void setEnabled(boolean enabled)
-	{
-		this.enabled = enabled;
-	}
+   public void setBitmap(Bitmap bitmap) {
+      this.bitmap = bitmap;
+      invalidate();
+   }
+
+   public void setFlash(boolean flash) {
+      this.flash = flash;
+   }
+
+   public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+   }
 
    @Override
    protected void onDraw(Canvas canvas) {
+      int width = canvas.getWidth();
+      int height = canvas.getHeight();
+      float dx = width / 2;
+      float dy = height / 2;
+      canvas.translate(dx, dy);
 
-//      int width = canvas.getWidth();
-//      int height = canvas.getHeight();
-//      float dx = width / 2;
-//      float dy = height / 2;
-//      canvas.translate(dx, dy);
-      Paint paint = new Paint();
-      paint.setARGB(255, 0, 255, 210);
-      canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
-//		Font font = new Font("Arial", Font.BOLD, 20);
-//		Rectangle2D fontrec = font.getStringBounds(label, g2D.getFontRenderContext());
-////		Rectangle2D standardrec = font.getStringBounds("00", g2D.getFontRenderContext());
-//
-////		int labelx = ( getWidth() + (int) standardrec.getWidth() ) / 2 - (int) fontrec.getWidth() + 1;
-//		int labelx = ( getWidth() - (int) fontrec.getWidth() ) / 2;
-//		int labely = 20;
-//		int imagex = ( getWidth() - image.getIconWidth() ) / 2;
-//		int imagey = 26;
-//
-//		if ( flash )
-//			flashInterval++;
-//		else
-//			flashInterval = 0;
-//		
-//		g.clearRect(0, 0, getWidth(), getHeight());
-//		g.setColor(new Color(0, 0, 0));
-//		g.fillRect(0, 0, getWidth() - 2, getHeight());
-//		g.setFont(font);
-//		g.setColor(color);
-//		if ( flashInterval % 2 == 0 )
-//			g.drawString(label, labelx, labely);
-//		if ( enabled )
-//			g.drawImage(image.getImage(), imagex, imagey, this);
-	}
+      if (flash)
+         flashInterval++;
+      else
+         flashInterval = 0;
+
+      canvas.drawRect(0, 0, width, height, backgroundP);
+      if (flashInterval % 2 == 0) {
+         // g.setFont(font);
+         float textWidth = textP.measureText(label);
+         int labelx = (width - (int) textWidth) / 2;
+         int labely = 20;
+         canvas.drawText(label, labelx, labely, textP);
+      }
+      if (enabled && bitmap != null) {
+         int imagex = (getWidth() - bitmap.getWidth()) / 2;
+         int imagey = 26;
+         canvas.drawBitmap(bitmap, imagex, imagey, imageP);
+      }
+   }
 
    @Override
    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-      setMeasuredDimension(100, 100);
+      setMeasuredDimension(170, 170);
    }
 }
