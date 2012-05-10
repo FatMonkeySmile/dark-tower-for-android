@@ -75,8 +75,6 @@ public class DarkTowerThread extends Thread
 	private Dragon dragon = null;
 	private Dragon lastDragon = null;
 	private boolean reset = false;
-	//TODO
-//	private AudioClip audio = null;
 	
 	DarkTowerActivity activity;
 
@@ -1364,12 +1362,11 @@ public class DarkTowerThread extends Thread
 			 ( darkTower.getDisplay() == 0 ) || ( forcePlay ) )
 			enabled = true;
 
-		//TODO
-//		if ( ( audioNo != Audio.NA ) && ( audio != null ) )
+//		if ( ( audioNo != Audio.NA ) )
 //			audio.stop();
-//		audio = Audio.getAudioClip(audioNo);
-//		if ( ( audio != null ) && ( enabled ) )
-//			audio.play();
+		if ( enabled ) {
+		   Audio.play(activity, audioNo);
+		}
 	}
 
 	//
