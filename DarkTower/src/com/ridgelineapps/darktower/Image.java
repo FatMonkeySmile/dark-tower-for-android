@@ -66,23 +66,4 @@ public class Image
 	public static final int WARRIOR = 20;
 	public static final int WARRIORS = 21;
 	public static final int WIZARD = 22;
-	
-	public static final String[] IMAGE =
-		{ "bazaar", "beast", "black", "brasskey", "brigands", 
-		  "cursed", "dragon", "food", "gold", "goldkey", 
-		  "healer", "keymissing", "lost", "pegasus", "plague",
-		  "scout", "silverkey", "sword", "victory", "warrior",
-		  "warriors", "wizard" };
-
-	//TODO
-//	public static ImageIcon getImageIcon(int imageNo)
-//	{
-//		ImageIcon icon = null;
-//		
-//		if ( imageNo > NA )
-//			icon = new ImageIcon(
-//				Util.class.getResource("images/" + IMAGE[imageNo - 1] + ".jpg"));
-//		
-//		return icon;
-//	}
 }

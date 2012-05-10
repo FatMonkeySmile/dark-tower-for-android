@@ -117,7 +117,7 @@ public class Move extends ActionEvent
 				thread.sleep();
 				thread.paintDarkTower("", Image.SCOUT, Audio.BEEP);
 				thread.sleep();
-				thread.getDarkTowerPanel().setFlash(true);
+				thread.getDarkTowerView().setFlash(true);
 				thread.paintDarkTower(Integer.toString(thread.getPlayerNo() + 1),
 					Image.BLACK, Audio.NA, true, false);
 				thread.sleep();

@@ -84,26 +84,4 @@ public class Button
 	public static final int BATTLE = 21;
 	public static final int CITADEL = 22;
 	public static final int DISPLAY = 23;
-	
-	public static final String[] BUTTON =
-		{ "Yes / Buy", "Repeat", "No / End",
-		  "Haggle", "Bazaar", "Clear",
-		  "Ruin", "Move", "Sanctuary",
-		  "Dark Tower", "Frontier", "Inventory" };
-
-	//TODO
-//	public static JButton getButton(int buttonNo)
-//	{
-//		JButton button = null;
-//		
-//		if ( buttonNo > NA )
-//			button = new JButton(BUTTON[buttonNo - 1]);
-//		
-//		return button;
-//	}
-
-	public static int getCount()
-	{
-		return INVENTORY;
-	}
 }

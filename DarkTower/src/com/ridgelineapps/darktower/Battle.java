@@ -156,7 +156,7 @@ public class Battle extends ActionEvent
 		{
 			if ( finalBattle )
 			{
-				thread.getDarkTowerPanel().setFlash(true);
+				thread.getDarkTowerView().setFlash(true);
 				thread.paintDarkTower(score, Image.VICTORY, Audio.INTRO, true, true);
 				while ( true )
 					thread.sleep();

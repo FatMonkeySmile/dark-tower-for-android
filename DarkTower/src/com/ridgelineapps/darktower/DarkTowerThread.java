@@ -43,6 +43,10 @@ package com.ridgelineapps.darktower;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.View;
+
 import com.ridgelineapps.darktower.java.Polygon;
 
 public class DarkTowerThread extends Thread
@@ -73,9 +77,12 @@ public class DarkTowerThread extends Thread
 	private boolean reset = false;
 	//TODO
 //	private AudioClip audio = null;
+	
+	DarkTowerActivity activity;
 
-	public DarkTowerThread(DarkTower darkTower)
+	public DarkTowerThread(DarkTowerActivity activity, DarkTower darkTower)
 	{
+	   this.activity = activity;
 		this.darkTower = darkTower;
 		this.playerList = darkTower.getPlayerList();
 		this.boardPanel = darkTower.getBoardView();
@@ -134,7 +141,7 @@ public class DarkTowerThread extends Thread
 			while ( !interrupted() )
 			{
 				Player player = (Player) playerList.get(playerNo);
-				getDarkTowerPanel().setFlash(true);
+				getDarkTowerView().setFlash(true);
 
 				try
 				{
@@ -190,7 +197,7 @@ public class DarkTowerThread extends Thread
 					player.setLastTerritoryNo(player.getEndTerritoryNo());
 
 					setInventory();
-					getBoardPanel().setPlayerNo(playerNo + 1);
+					getBoardView().setPlayerNo(playerNo + 1);
 					setPlayerNo(playerNo + 1);
 					paintDarkTowerEx(Integer.toString(playerNo + 1), 
 						Image.BLACK, Audio.NA, true, false);
@@ -233,7 +240,7 @@ public class DarkTowerThread extends Thread
 		else
 		{
 			// System.out.print("P" + (player.getPlayerNo() + 1) + ": from " + player.getEndTerritoryNo() + " to " + territoryNo);
-			getBoardPanel().deepFirstSearch(
+			getBoardView().deepFirstSearch(
 				search, player.getEndTerritoryNo(), territoryNo);
 			territoryNo = search.getTerritoryNo();
 			// System.out.println(" step " + territoryNo);
@@ -285,10 +292,10 @@ public class DarkTowerThread extends Thread
 				return Territory.BAZAARLIST[player.getKingdomNo()];
 			else
 			{
-				getBoardPanel().deepFirstSearch(search, 
+				getBoardView().deepFirstSearch(search, 
 					player.getEndTerritoryNo(), Territory.SANCTUARYLIST[player.getKingdomNo()]);
 				int sanctuaryDistance = search.getDistance();
-				getBoardPanel().deepFirstSearch(search, 
+				getBoardView().deepFirstSearch(search, 
 					player.getEndTerritoryNo(), Territory.CITADELLIST[player.getKingdomNo()]);
 				int citadelDistance = search.getDistance();
 
@@ -305,10 +312,10 @@ public class DarkTowerThread extends Thread
 					performTerritoryAction(playerNo);
 
 					territoryNo = getPCTerritoryNo();
-					getBoardPanel().deepFirstSearch(search, 
+					getBoardView().deepFirstSearch(search, 
 						Territory.SANCTUARYLIST[player.getKingdomNo()], territoryNo);
 					fromSanctuaryDistance = search.getDistance();
-					getBoardPanel().deepFirstSearch(search, 
+					getBoardView().deepFirstSearch(search, 
 						Territory.CITADELLIST[player.getKingdomNo()], territoryNo);
 					fromCitadelDistance = search.getDistance();
 
@@ -339,10 +346,10 @@ public class DarkTowerThread extends Thread
 		if ( player.getGold() >= 25 )
 			return Territory.BAZAARLIST[player.getKingdomNo()];
 
-		getBoardPanel().deepFirstSearch(search, 
+		getBoardView().deepFirstSearch(search, 
 			player.getEndTerritoryNo(), Territory.RUINLIST[player.getKingdomNo()]);
 		int ruinDistance = search.getDistance();
-		getBoardPanel().deepFirstSearch(search, 
+		getBoardView().deepFirstSearch(search, 
 			player.getEndTerritoryNo(), Territory.TOMBLIST[player.getKingdomNo()]);
 		int tombDistance = search.getDistance();
 
@@ -359,10 +366,10 @@ public class DarkTowerThread extends Thread
 			performTerritoryAction(playerNo);
 
 			territoryNo = getPCTerritoryNo();
-			getBoardPanel().deepFirstSearch(search, 
+			getBoardView().deepFirstSearch(search, 
 				Territory.RUINLIST[player.getKingdomNo()], territoryNo);
 			fromRuinDistance = search.getDistance();
-			getBoardPanel().deepFirstSearch(search, 
+			getBoardView().deepFirstSearch(search, 
 				Territory.TOMBLIST[player.getKingdomNo()], territoryNo);
 			fromTombDistance = search.getDistance();
 
@@ -405,7 +412,7 @@ public class DarkTowerThread extends Thread
 			// loose?
 			if ( player.getWarriors() < 1 )
 			{
-				getDarkTowerPanel().setFlash(true);
+				getDarkTowerView().setFlash(true);
 				paintDarkTower("00", Image.BLACK, Audio.NA, true, false);
 				while ( true )
 					sleep();
@@ -415,7 +422,7 @@ public class DarkTowerThread extends Thread
 			{
 				do
 				{
-					getDarkTowerPanel().setFlash(true);
+					getDarkTowerView().setFlash(true);
 					paintDarkTower("-" + Integer.toString(playerNo + 1), 
 						Image.BLACK, Audio.NA);
 					if ( player.isPlaceDragon() )
@@ -467,7 +474,7 @@ public class DarkTowerThread extends Thread
 				sleep(1000);
 			}
 
-			getBoardPanel().setPlayerNo(playerNo + 1);
+			getBoardView().setPlayerNo(playerNo + 1);
 			setPlayerNo(playerNo + 1);
 			resetMouseActionQueue();
 			resetActionQueue();
@@ -536,7 +543,7 @@ public class DarkTowerThread extends Thread
 	{
 		Player player = getPlayerListItem(playerNo);
 		player.getDisplayList().clear();
-		getDarkTowerPanel().setFlash(false);
+		getDarkTowerView().setFlash(false);
 
 		int food = player.getFood();
 		player.setMoves(player.getMoves() + 1);
@@ -669,6 +676,9 @@ public class DarkTowerThread extends Thread
 					break;
 				case MouseAction.CLICKED:
 					territoryNo = findTerritoryNo(action.getX(), action.getY());
+					if(territoryNo == 0) {
+					   break;
+					}
 					territory = (Territory) territoryList.get(territoryNo - 1);
 					if ( isNeigbor(territoryNo) )
 					{
@@ -852,7 +862,7 @@ public class DarkTowerThread extends Thread
 
 			do
 			{
-				getBoardPanel().deepFirstSearch(
+				getBoardView().deepFirstSearch(
 					search, victimEndTerritoryNo, victimTerritoryNo);
 				victimTerritoryNo = search.getTerritoryNo();
 				if ( victimTerritoryNo == victimEndTerritoryNo )
@@ -907,7 +917,7 @@ public class DarkTowerThread extends Thread
 	{
 		int action = Button.NA;
 		Player player = getPlayerListItem(playerNo);
-		getDarkTowerPanel().setFlash(true);
+		getDarkTowerView().setFlash(true);
 
 		while ( true )
 		{
@@ -948,7 +958,7 @@ public class DarkTowerThread extends Thread
 			sleep(100);
 		}
 
-		getDarkTowerPanel().setFlash(false);
+		getDarkTowerView().setFlash(false);
 		return action;
 	}
 
@@ -1236,19 +1246,100 @@ public class DarkTowerThread extends Thread
 
 		if ( player.isPerformAction() )
 		{
-			getDarkTowerPanel().setEnabled(enabled);
+			getDarkTowerView().setEnabled(enabled);
 
 			if ( enabled )
 			{
-				//TODO
-//				getDarkTowerPanel().setColor(Territory.COLORLIST[playerNo]);
-//
-//				if ( label != null )
-//					getDarkTowerPanel().setLabel(label);
-//
-//				ImageIcon image = Image.getImageIcon(imageNo);
-//				if ( image != null )
-//					getDarkTowerPanel().setImage(image);
+				getDarkTowerView().setColor(Territory.COLORLIST[playerNo]);
+
+				if ( label != null )
+					getDarkTowerView().setLabel(label);
+
+				if(imageNo > 0) {
+				   int id;
+   				switch(imageNo) {
+      			   case Image.BAZAAR:
+                     id = R.drawable.bazaar;
+                     break;
+      			   case Image.BEAST:
+                     id = R.drawable.beast;
+                     break;
+      			   case Image.BLACK:
+                     id = R.drawable.black;
+                     break;
+      			   case Image.BRASSKEY:
+                     id = R.drawable.brasskey;
+                     break;
+      			   case Image.BRIGANDS:
+                     id = R.drawable.brigands;
+                     break;
+      			   case Image.CURSED:
+                     id = R.drawable.cursed;
+                     break;
+      			   case Image.DRAGON:
+                     id = R.drawable.dragon;
+                     break;
+      			   case Image.FOOD:
+                     id = R.drawable.food;
+                     break;
+      			   case Image.GOLD:
+                     id = R.drawable.gold;
+                     break;
+      			   case Image.GOLDKEY:
+                     id = R.drawable.goldkey;
+                     break;
+      			   case Image.HEALER:
+                     id = R.drawable.healer;
+                     break;
+      			   case Image.KEYMISSING:
+                     id = R.drawable.keymissing;
+                     break;
+      			   case Image.LOST:
+                     id = R.drawable.lost;
+                     break;
+      			   case Image.PEGASUS:
+                     id = R.drawable.pegasus;
+                     break;
+      			   case Image.PLAGUE:
+                     id = R.drawable.plague;
+                     break;
+      			   case Image.SCOUT:
+                     id = R.drawable.scout;
+                     break;
+      			   case Image.SILVERKEY:
+                     id = R.drawable.silverkey;
+                     break;
+      			   case Image.DRAGONSWORD:
+                     id = R.drawable.sword;
+                     break;
+      			   case Image.VICTORY:
+                     id = R.drawable.victory;
+                     break;
+      				case Image.WARRIOR:
+      				   id = R.drawable.warrior;
+      				   break;
+                  case Image.WARRIORS:
+                     id = R.drawable.warriors;
+                     break;
+                  case Image.WIZARD:
+                     id = R.drawable.wizard;
+                     break;
+                  case Image.NA:
+      				default:
+      				   id = -1;
+      				   break;
+   				}
+   				
+   				if(id == -1) {
+   				   getDarkTowerView().setBitmap(null);
+   				}
+   				else {
+                  Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), id);
+      				if(bitmap != null) {
+      				   getDarkTowerView().setBitmap(bitmap);
+      				}
+   				}
+				}
 			}
 
 			play(audioNo, forcePlay);
@@ -1303,13 +1394,12 @@ public class DarkTowerThread extends Thread
 
 		if ( player.isPerformAction() )
 		{
-			BoardView boardPanel =	getBoardPanel();
-			boardPanel.setHighlightedTerritoryNo(highlightedTerritoryNo);
-			boardPanel.setDragon(dragon);
+			BoardView boardView = getBoardView();
+			boardView.setHighlightedTerritoryNo(highlightedTerritoryNo);
+			boardView.setDragon(dragon);
 			if ( ( isBoardVisible() ) && ( !isBoardIcon() ) )
 			{
-				//TODO
-//				boardPanel.repaint();
+			   getBoardView().postInvalidate();
 			}
 			else
 			{
@@ -1319,14 +1409,14 @@ public class DarkTowerThread extends Thread
 					for (int i = 0; i < playerList.size(); i++)
 					{
 						player = (Player) playerList.get(i);
-						boardPanel.nextCoord(player);
+						boardView.nextCoord(player);
 					}
 				}
 				// move dragon
 				if ( dragon != null )
 				{
 					if ( dragon.getStartTerritoryNo() != 0 )
-						boardPanel.nextCoord(dragon);
+						boardView.nextCoord(dragon);
 					else if ( dragon.getEndTerritoryNo() != 0 )
 						dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
 				}
@@ -1338,7 +1428,7 @@ public class DarkTowerThread extends Thread
 	{
 		Territory territory = null;
 		Polygon polygon = null;
-		List territoryList = getBoardPanel().getTerritoryList();
+		List territoryList = getBoardView().getTerritoryList();
 		
 		for (int i = 0; i < territoryList.size(); i++)
 		{
@@ -1354,7 +1444,7 @@ public class DarkTowerThread extends Thread
 	{
 		if ( territoryNo > 0 )
 		{
-			List territoryList = getBoardPanel().getTerritoryList();
+			List territoryList = getBoardView().getTerritoryList();
 			Territory territory = (Territory) territoryList.get(territoryNo - 1);
 			Player player = getPlayerListItem(playerNo);
 			
@@ -1393,7 +1483,7 @@ public class DarkTowerThread extends Thread
 	{
 		if ( territoryNo > 0 )
 		{
-			List territoryList = getBoardPanel().getTerritoryList();
+			List territoryList = getBoardView().getTerritoryList();
 			Territory territory = (Territory) territoryList.get(territoryNo - 1);
 			Player player = getPlayerListItem(playerNo);
 			
@@ -1418,7 +1508,7 @@ public class DarkTowerThread extends Thread
 
 		if ( territoryNo > 0 )
 		{
-			List territoryList = getBoardPanel().getTerritoryList();
+			List territoryList = getBoardView().getTerritoryList();
 			Territory territory = (Territory) territoryList.get(territoryNo - 1);
 			if ( territory.getType() != Territory.STANDARD )
 				return false;
@@ -1474,20 +1564,19 @@ public class DarkTowerThread extends Thread
 		return darkTower;
 	}
 
-	public DarkTowerView getDarkTowerPanel()
+	public DarkTowerView getDarkTowerView()
 	{
 		return darkTower.getDarkTowerView();
 	}
 
-	public BoardView getBoardPanel()
+	public BoardView getBoardView()
 	{
 		return darkTower.getBoardView();
 	}
 
-	//TODO
 	public void setInventory()
 	{
-//		darkTower.setInventory();
+		darkTower.setInventory();
 	}
 
 	public List getPlayerList()
@@ -1711,18 +1800,14 @@ public class DarkTowerThread extends Thread
 		this.imageNo = imageNo;
 	}
 
-	//TODO
 	public boolean isBoardVisible()
 	{
-		return true;
-//		return darkTower.getBoardFrame().isVisible();
+	   return darkTower.getBoardView().getVisibility() == View.VISIBLE;
 	}
 	
-	//TODO
 	public boolean isBoardIcon()
 	{
 		return false;
-//		return darkTower.getBoardFrame().isIcon();
 	}
 
 	public void reset()
