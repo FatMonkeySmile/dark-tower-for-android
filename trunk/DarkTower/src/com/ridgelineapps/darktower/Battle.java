@@ -112,7 +112,7 @@ public class Battle extends ActionEvent
 						if ( brigands > 0 )
 						{
 							brigands = (int) (brigands / 2);
-							audioNo = Audio.ENIMYHIT;
+							audioNo = Audio.ENEMYHIT;
 						}
 						if ( brigands < 1 )
 						{

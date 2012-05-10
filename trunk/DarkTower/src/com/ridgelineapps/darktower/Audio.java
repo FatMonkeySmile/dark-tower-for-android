@@ -40,6 +40,10 @@
 
 package com.ridgelineapps.darktower;
 
+import android.content.Context;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+
 
 public class Audio
 {
@@ -53,7 +57,7 @@ public class Audio
 	public static final int DRAGON = 7;
 	public static final int DRAGONKILL = 8;
 	public static final int ENDTURN = 9;
-	public static final int ENIMYHIT = 10;
+	public static final int ENEMYHIT = 10;
 	public static final int FRONTIER = 11;
 	public static final int INTRO = 12;
 	public static final int LOST = 13;
@@ -67,29 +71,104 @@ public class Audio
 	public static final int WRONG = 21;
 	public static final int STARVING = 22;
 
-	public static final String[] AUDIO =
-		{ "battle", "bazaar", "bazaar-closed", "beep", "clear", 
-		  "darktower", "dragon", "dragon-kill", "end-turn", "enemy-hit",
-		  "frontier", "intro", "lost", "pegasus", "plague",
-		  "player-hit", "sanctuary", "tomb", "tomb-battle",
-		  "tomb-nothing", "wrong", "starving" };
+	//TODO is there a better way, is creating a media player each time too expensive?
+	public static MediaPlayer getAudioClip(Context context, int audioNo)
+	{
+		MediaPlayer player = null;
 		
-	//TODO
-//	public static AudioClip getAudioClip(int audioNo)
-//	{
-//		AudioClip audio = null;
-//		
-//		if ( audioNo > NA )
-//			audio = Applet.newAudioClip(
-//				Util.class.getResource("audio/" + AUDIO[audioNo - 1] + ".wav"));
-//		
-//		return audio;
-//	}
-//
-//	public static void play(int audioNo)
-//	{
-//		AudioClip audio = getAudioClip(audioNo);
-//		if ( audio != null )
-//			audio.play();	
-//	}
+		int id;
+		
+		switch(audioNo) {
+         case BATTLE:
+            id = R.raw.battle;
+            break;
+         case BAZAAR:
+            id = R.raw.bazaar;
+            break;
+         case BAZAARCLOSED:
+            id = R.raw.bazaar_closed;
+            break;
+         case BEEP:
+            id = R.raw.beep;
+            break;
+         case CLEAR:
+            id = R.raw.clear;
+            break;
+         case DARKTOWER:
+            id = R.raw.darktower;
+            break;
+         case DRAGON:
+            id = R.raw.dragon;
+            break;
+         case DRAGONKILL:
+            id = R.raw.dragon_kill;
+            break;
+         case ENDTURN:
+            id = R.raw.end_turn;
+            break;
+         case ENEMYHIT:
+            id = R.raw.enemy_hit;
+            break;
+         case FRONTIER:
+            id = R.raw.frontier;
+            break;
+         case INTRO:
+            id = R.raw.intro;
+            break;
+         case LOST:
+            id = R.raw.lost;
+            break;
+         case PEGASUS:
+            id = R.raw.pegasus;
+            break;
+         case PLAGUE:
+            id = R.raw.plague;
+            break;
+         case PLAYERHIT:
+            id = R.raw.player_hit;
+            break;
+         case SANCTUARY:
+            id = R.raw.sanctuary;
+            break;
+         case TOMB:
+            id = R.raw.tomb;
+            break;
+         case TOMBBATTLE:
+            id = R.raw.tomb_battle;
+            break;
+         case TOMBNOTHING:
+            id = R.raw.tomb_nothing;
+            break;
+         case WRONG:
+            id = R.raw.wrong;
+            break;
+         case STARVING:
+            id = R.raw.starving;
+            break;
+         case NA:
+         default:
+            id = -1;
+            break;
+		}
+		
+	   if(id != -1) {
+	      player = MediaPlayer.create(context, id);
+	   }
+		
+		return player;
+	}
+
+	public static void play(Context context, int audioNo)
+	{
+		final MediaPlayer player = getAudioClip(context, audioNo);
+      if ( player != null ) {
+   		player.setOnCompletionListener(new OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+               player.release();
+            }
+   		});
+		   player.start();
+		}
+	}
 }

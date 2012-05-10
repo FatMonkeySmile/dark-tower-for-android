@@ -22,9 +22,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-//TODO
-//
-// Classic vs. 8 bit look (switchable in prefs)
 
 public class DarkTowerActivity extends Activity {
    public DarkTower darkTower;
