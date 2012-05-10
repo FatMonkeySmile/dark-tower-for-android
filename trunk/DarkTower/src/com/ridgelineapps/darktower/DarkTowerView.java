@@ -43,6 +43,7 @@ package com.ridgelineapps.darktower;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -58,16 +59,18 @@ public class DarkTowerView extends View {
    Paint textP;
    Paint imageP;
 
-   DarkTowerActivity context;
+   DarkTowerActivity activity;
 
    public DarkTowerView(Context context, AttributeSet attributes) {
-      this((DarkTowerActivity) context);
+      super(context, attributes);
+      activity = (DarkTowerActivity) context;
+
       textP = new Paint();
-      textP.setTextSize(20);
+      textP.setTextSize(32);
       textP.setFakeBoldText(true);
       textP.setAntiAlias(true);
-      // TODO Don't use pure red, use more pleasing colors...
-      textP.setARGB(255, 255, 0, 0);
+      // TODO Don't use pure red, use more pleasing colors (change in Territory too)
+      textP.setColor(Color.RED);
 
       imageP = new Paint();
       imageP.setAntiAlias(true);
@@ -78,30 +81,26 @@ public class DarkTowerView extends View {
 
       backgroundP = new Paint();
       backgroundP.setARGB(255, 0, 0, 0);
-   }
-
-   public DarkTowerView(DarkTowerActivity context) {
-      super(context);
-      this.context = context;
 
       label = "1";
       // TODO (?)
       // image = Image.getImageIcon(Image.BLACK);
+
+      //TODO Only run thread when flashing
+      startThread();
       
-      flashThread = new FlashThread();
+      // TODO stop thread when app is paused
    }
-   
+
    @Override
    protected void onVisibilityChanged(View changedView, int visibility) {
       super.onVisibilityChanged(changedView, visibility);
-      if(visibility == View.VISIBLE) {
-         if(flashThread == null) {
-            flashThread = new FlashThread();
+      if (visibility == View.VISIBLE) {
+         if (flashThread == null) {
+            startThread();
          }
-      }
-      else if(flashThread != null) {
-         flashThread.kill = true;
-         flashThread = null;
+      } else {
+         stopThread();
       }
    }
 
@@ -111,12 +110,12 @@ public class DarkTowerView extends View {
 
    public void setLabel(String label) {
       this.label = label;
-      invalidate();
+      postInvalidate();
    }
 
    public void setBitmap(Bitmap bitmap) {
       this.bitmap = bitmap;
-      invalidate();
+      postInvalidate();
    }
 
    public void setFlash(boolean flash) {
@@ -131,9 +130,6 @@ public class DarkTowerView extends View {
    protected void onDraw(Canvas canvas) {
       int width = canvas.getWidth();
       int height = canvas.getHeight();
-      float dx = width / 2;
-      float dy = height / 2;
-      canvas.translate(dx, dy);
 
       if (flash)
          flashInterval++;
@@ -144,8 +140,8 @@ public class DarkTowerView extends View {
       if (flashInterval % 2 == 0) {
          // g.setFont(font);
          float textWidth = textP.measureText(label);
-         int labelx = (width - (int) textWidth) / 2;
-         int labely = 20;
+         int labelx = 120; //(width - (int) textWidth) / 2;
+         int labely = 215;
          canvas.drawText(label, labelx, labely, textP);
       }
       if (enabled && bitmap != null) {
@@ -157,26 +153,36 @@ public class DarkTowerView extends View {
 
    @Override
    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-      setMeasuredDimension(255, 255);
+      setMeasuredDimension(260, 260);
    }
-   
+
+   public void startThread() {
+      stopThread();
+      flashThread = new FlashThread();
+      flashThread.start();
+   }
+
+   public void stopThread() {
+      if (flashThread != null) {
+         synchronized (flashThread) {
+            flashThread.kill = true;
+            flashThread = null;
+         }
+      }
+   }
+
    class FlashThread extends Thread {
       boolean kill = false;
- 
-      public void run()
-      {
-         try
-         {
-            while (!kill)
-            {
-               invalidate();
+
+      public void run() {
+         try {
+            while (!kill) {
+               postInvalidate();
                sleep(300);
             }
-         }
-         catch (Exception e)
-         {
+         } catch (Exception e) {
             e.printStackTrace();
          }
-      }      
+      }
    }
 }

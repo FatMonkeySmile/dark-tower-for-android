@@ -49,8 +49,7 @@ import com.ridgelineapps.darktower.DarkTowerView.FlashThread;
 public class DarkTower 
 //	implements ActionListener, MouseListener, MouseMotionListener
 {
-	private DarkTowerThread thread = null;
-	private FlashThread flashThread = null;
+	public DarkTowerThread thread = null;
 //	private JFrame frame = null;
 //	private JDesktopPane desktop = null;
 	private ArrayList playerList = null;
@@ -763,7 +762,7 @@ public class DarkTower
 ////			aboutDialog.getHeight() + 8);
 
 		// init dark tower thread
-		thread = new DarkTowerThread(this);
+		thread = new DarkTowerThread(activity, this);
 		thread.start();
 
 //		// make visible
@@ -773,8 +772,8 @@ public class DarkTower
 	}
 
 	//TODO
-//	public void setInventory()
-//	{
+	public void setInventory()
+	{
 //		for (int i = 0; i < 4; i++)
 //		{
 //			Player player = (Player) playerList.get(i);
@@ -796,7 +795,7 @@ public class DarkTower
 //		Dragon dragon = thread.getDragon();
 //		inventoryLabel[4][0].setText(Integer.toString(dragon.getWarriors()));
 //		inventoryLabel[4][1].setText(Integer.toString(dragon.getGold()));
-//	}
+	}
 
 //	public void setCheckBoxEnabled(boolean enabled)
 //	{
@@ -987,7 +986,7 @@ public class DarkTower
 	public int getSpeed()
 	{
 		//TODO
-		return 0;
+		return 100;
 	}
 
 	public boolean placeBuildingsRandomly()

@@ -53,15 +53,20 @@ import android.graphics.Paint;
 import android.graphics.Region;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 
 import com.ridgelineapps.darktower.java.Point;
 import com.ridgelineapps.darktower.java.Polygon;
 
-public class BoardView extends View
+public class BoardView extends View implements OnTouchListener
 {
    Resources res;
    Paint paint;
+   Paint highlightP1;
+   Paint highlightP2;
+   Paint borderP;
 
    int width;
    int height;
@@ -80,28 +85,37 @@ public class BoardView extends View
 	private Bitmap frontierBitmap = null;
 	private Bitmap darkTowerBitmap = null;
 	
-	DarkTowerActivity context;
+	DarkTowerActivity activity;
 
    public BoardView(Context context, AttributeSet attributes)
    {
-      this((DarkTowerActivity) context);
-   }
-   
-	public BoardView(DarkTowerActivity context)
-	{
-	   super(context);
-	   this.context = context;
+      super(context, attributes);
+	   activity = (DarkTowerActivity) context;
 	   
 	   res = context.getResources();
 	   paint = new Paint();
 	   paint.setStyle(Paint.Style.FILL);
 	   
+      highlightP1 = new Paint();
+//      highlightP1.setStyle(Paint.Style.FILL);
+      //TODO temp, until translucent bitmap (and gray image) can be finished
+      highlightP1.setStyle(Paint.Style.STROKE);
+      highlightP1.setStrokeWidth(4);
+      
+      highlightP2 = new Paint();
+      highlightP2.setAlpha(128);
+      highlightP2.setStyle(Paint.Style.FILL);
+      
+      borderP = new Paint();
+      borderP = new Paint();
+      borderP.setStyle(Paint.Style.STROKE);
+      
 		classmImageIcon = MultiImage.getBitmap(res, MultiImage.CLASSM);
 		dragonImageIcon = MultiImage.getBitmap(res, MultiImage.DRAGON);
 		isoImageIcon = MultiImage.getBitmap(res, MultiImage.ISO);
 
       DisplayMetrics dm = new DisplayMetrics();
-      context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+      activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
       width = dm.widthPixels;
       height = dm.heightPixels;
       
@@ -114,8 +128,29 @@ public class BoardView extends View
 		createNeigbors();
 		createTerritoryPlaces(true);
       createBoard();
+      
+      setOnTouchListener(this);
 	}
-	
+   
+   @Override
+   public boolean onTouch(View v, MotionEvent event) {
+      if(activity.darkTower.thread != null) {
+         if(event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.EXITED, (int) event.getX(), (int) event.getY())); 
+            return true;
+         }
+         else if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.MOVED, (int) event.getX(), (int) event.getY()));
+            return true;
+         }
+         else if(event.getAction() == MotionEvent.ACTION_UP) {
+            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, (int) event.getX(), (int) event.getY()));
+            return true;
+         }
+      }
+      return false;
+   }
+
    @Override
    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
       setMeasuredDimension(width, height);
@@ -137,24 +172,27 @@ public class BoardView extends View
 
       canvas.drawBitmap(boardBitmap, 0, 0, paint);
 
-//    // draw highlighted territory
-//    if ( highlightedTerritoryNo > 0 )
-//    {
-//       territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
-//       g.setColor(Territory.COLORLIST[playerNo]);
-//       g.fillPolygon(territory.getPolygon());
+    // draw highlighted territory
+      try {
+    if ( highlightedTerritoryNo > 0 )
+    {
+       territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
+       highlightP1.setColor(Territory.COLORLIST[playerNo]);
+       canvas.drawPath(territory.getPath(), highlightP1);
+//       highlightP2.setColor(Territory.COLORLIST[playerNo]);
+//       canvas.drawPath(territory.getPath(), highlightP1);
 //
-//       AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
-//       g.setClip(territory.getPolygon());
-//       g2D.setComposite(ac);
-//       g.drawImage(grayBoardImage, 0, 0, this);
-//       g.setClip(0, 0, width, height);
-//       g2D.setComposite(AlphaComposite.SrcOver);
+//       canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
+//       canvas.drawBitmap(grayBoardBitmap, 0, 0, highlightP2);
+//       canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
 //
-//       g.setColor(new Color(0, 0, 0));
-//       g.drawPolygon(territory.getPolygon());
-//    }
-//
+//       canvas.drawPath(territory.getPath(), borderP);
+    }
+      }
+    catch(Throwable e) {
+       e.printStackTrace();
+    }
+
     // draw buildings
     for (int i = 0; i < territoryList.size(); i++)
     {

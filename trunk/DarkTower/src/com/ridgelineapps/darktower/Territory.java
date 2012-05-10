@@ -42,6 +42,8 @@ package com.ridgelineapps.darktower;
 
 import java.util.List;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.ridgelineapps.darktower.java.Point;
@@ -68,10 +70,7 @@ public class Territory
 	public static int[] RUINLIST = { 21, 51, 81, 111 };
 	public static int[] BAZAARLIST = { 14, 44, 74, 104 };
 
-	//TODO
-//	public static final Color[] COLORLIST = 
-//		{ new Color(255, 0, 0), new Color(0, 255, 0),
-//		  new Color(0, 0, 255), new Color(255, 255, 0) };
+   public static final int[] COLORLIST = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN };
 
 	private int territoryNo = 0;
 	private int kingdomNo = 0;

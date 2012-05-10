@@ -33,11 +33,9 @@ public class DarkTowerActivity extends Activity {
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
-      // BoardView view = new BoardView(this);
-      // setContentView(view);
       darkTower = new DarkTower(this);
    }
-   
+
    public BoardView getBoardView() {
       return (BoardView) findViewById(R.id.boardview);
    }
@@ -47,10 +45,50 @@ public class DarkTowerActivity extends Activity {
    }
    
    public void yesBuyButton(View target) {
-      System.out.println("yes/buy");
+      darkTower.thread.addAction(Button.YES);
    }
    
    public void repeatButton(View target) {
-      System.out.println("repeat");
+      darkTower.thread.addAction(Button.REPEAT);
+   }
+
+   public void noEndButton(View target) {
+      darkTower.thread.addAction(Button.NO);
+   }
+   
+   public void haggleButton(View target) {
+      darkTower.thread.addAction(Button.HAGGLE);
+   }
+   
+   public void bazaarButton(View target) {
+      darkTower.thread.addAction(Button.BAZAAR);
+   }
+   
+   public void clearButton(View target) {
+      darkTower.thread.addAction(Button.CLEAR);
+   }
+   
+   public void ruinButton(View target) {
+      darkTower.thread.addAction(Button.RUIN);
+   }
+
+   public void moveButton(View target) {
+      darkTower.thread.addAction(Button.MOVE);
+   }
+
+   public void sanctuaryButton(View target) {
+      darkTower.thread.addAction(Button.SANCTUARY);
+   }
+
+   public void darktowerButton(View target) {
+      darkTower.thread.addAction(Button.DARKTOWER);
+   }
+   
+   public void frontierButton(View target) {
+      darkTower.thread.addAction(Button.FRONTIER);
+   }
+
+   public void inventoryButton(View target) {
+      darkTower.thread.addAction(Button.INVENTORY);
    }
 }
