@@ -71,9 +71,9 @@ public class DarkTower
 //	private JDialog aboutDialog = null;
 	private int offset = 0;
 	private int level = 0;
-	DarkTowerActivity activity;
+	ActivityGame activity;
 	
-	public DarkTower(DarkTowerActivity activity)
+	public DarkTower(ActivityGame activity)
 	{
 	   this.activity = activity;
 
