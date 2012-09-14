@@ -85,12 +85,12 @@ public class BoardView extends View implements OnTouchListener
 	private Bitmap frontierBitmap = null;
 	private Bitmap darkTowerBitmap = null;
 	
-	DarkTowerActivity activity;
+	ActivityGame activity;
 
    public BoardView(Context context, AttributeSet attributes)
    {
       super(context, attributes);
-	   activity = (DarkTowerActivity) context;
+	   activity = (ActivityGame) context;
 	   
 	   res = context.getResources();
 	   paint = new Paint();

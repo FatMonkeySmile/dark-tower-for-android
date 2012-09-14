@@ -59,11 +59,11 @@ public class DarkTowerView extends View {
    Paint textP;
    Paint imageP;
 
-   DarkTowerActivity activity;
+   ActivityGame activity;
 
    public DarkTowerView(Context context, AttributeSet attributes) {
       super(context, attributes);
-      activity = (DarkTowerActivity) context;
+      activity = (ActivityGame) context;
 
       textP = new Paint();
       textP.setTextSize(32);

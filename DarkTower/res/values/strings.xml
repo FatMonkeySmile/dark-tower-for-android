@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dark Tower</string>
-	<string name="yesBuyButton">Yes/Buy</string>    
+	<string name="yesBuyButton">Yes/Buy</string>  
+	<string name="start_startGame">Play</string>  
+	<string name="start_howToPlay">How to play</string>  
+	<string name="start_title">Dark Tower for Android</string>
+	<string name="menu_start">Start game</string>  
+	<string name="menu_exit">Exit</string>  
+	<string name="player_human">Human</string>  
+	<string name="player_computer">Computer</string>  
+	<string name="player_none">Not playing</string>  
+	<string name="player1">Player 1</string>  
+	<string name="player2">Player 2</string>  
+	<string name="player3">Player 3</string>  
+	<string name="player4">Player 4</string> 
+	<string name="sound_on_off">Sound</string> 
 </resources>

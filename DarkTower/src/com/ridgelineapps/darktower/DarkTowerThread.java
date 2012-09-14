@@ -76,9 +76,9 @@ public class DarkTowerThread extends Thread
 	private Dragon lastDragon = null;
 	private boolean reset = false;
 	
-	DarkTowerActivity activity;
+	ActivityGame activity;
 
-	public DarkTowerThread(DarkTowerActivity activity, DarkTower darkTower)
+	public DarkTowerThread(ActivityGame activity, DarkTower darkTower)
 	{
 	   this.activity = activity;
 		this.darkTower = darkTower;
