@@ -137,8 +137,10 @@ public class Battle extends ActionEvent
 					thread.sleep(1500);
 					thread.paintDarkTower(brigands, Image.BRIGANDS, Audio.BEEP);
 					thread.sleep(1500);
-					thread.paintDarkTower("", Image.BLACK, audioNo);
-					thread.sleepIfSound();
+                    if(thread.shouldDisplayNormal()) {
+                        thread.paintDarkTower("", Image.BLACK, audioNo);
+	                    thread.sleepIfSound();
+			        }
 				}
 			}
 			while ( (!win) && (!loose) && (action == Button.NA) );
