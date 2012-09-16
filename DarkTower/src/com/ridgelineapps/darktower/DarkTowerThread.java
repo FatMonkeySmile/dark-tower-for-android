@@ -1363,7 +1363,7 @@ public class DarkTowerThread extends Thread
 
 	public void play(int audioNo, boolean forcePlay)
 	{
-	    if(darkTower.getMute()) {
+	    if(darkTower.getMuteSound()) {
 	        return;
 	    }
 	    
@@ -1371,7 +1371,7 @@ public class DarkTowerThread extends Thread
 
 		boolean enabled = false;
 		if ( ( player.getPlayerType() == Player.NONEPC ) ||
-			  darkTower.getDisplayComputersTurn() || forcePlay )
+			  darkTower.getDisplayComputersTurnNormal() || forcePlay )
 			enabled = true;
 
 //		if ( ( audioNo != Audio.NA ) )
@@ -1827,7 +1827,7 @@ public class DarkTowerThread extends Thread
 	public void sleepIfSound() 
 	       throws InterruptedException, ResetException, DisableException
 	       {
-        if(darkTower.getMute()) {
+        if(darkTower.getMuteSound()) {
             return;
         }
         sleep();
@@ -1836,7 +1836,7 @@ public class DarkTowerThread extends Thread
     public void sleepIfSound(int millies) 
         throws InterruptedException, ResetException, DisableException
         {
-     if(darkTower.getMute()) {
+     if(darkTower.getMuteSound()) {
          return;
      }
      sleep(millies);
@@ -1855,7 +1855,7 @@ public class DarkTowerThread extends Thread
 
 		if ( player.getPlayerType() == Player.PC )
 		{
-			if ( darkTower.getDisplayComputersTurn() )
+			if ( darkTower.getDisplayComputersTurnNormal() )
 				millis = millis * darkTower.getSpeed() / 100;
 			else
 				millis = 550;

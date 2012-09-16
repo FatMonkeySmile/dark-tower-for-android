@@ -185,17 +185,17 @@
      </LinearLayout>
 
     <CheckBox
-        android:id="@+id/sound_on_off"
+        android:id="@+id/mute_sound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sound_on_off" />
+        android:text="@string/mute_sound" />
 
     <CheckBox
-        android:id="@+id/show_computers_turn"
+        android:id="@+id/fast_display_computer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:text="@string/show_computers_turn" />
+        android:text="@string/fast_display_computer" />
 
     <Button android:id="@+id/menu_start" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_start" android:layout_gravity="center_horizontal"></Button>
     <Button android:id="@+id/menu_exit" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_exit" android:layout_gravity="center_horizontal"></Button>

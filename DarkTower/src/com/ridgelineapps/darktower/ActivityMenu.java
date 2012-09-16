@@ -47,8 +47,8 @@ public class ActivityMenu extends Activity {
                 i.putExtra("player2", getPlayer2());
                 i.putExtra("player3", getPlayer3());
                 i.putExtra("player4", getPlayer4());
-                i.putExtra("show_computers_turn", getShowComputersTurn());
-                i.putExtra("sound", !getSound());
+                i.putExtra("fast_display_computer", getFastDisplayComputer());
+                i.putExtra("mute_sound", getMuteSound());
                 startActivity(i);
             }
         });
@@ -109,13 +109,13 @@ public class ActivityMenu extends Activity {
         return "none";
     }
     
-    public boolean getShowComputersTurn() {
-        CheckBox cb = (CheckBox) findViewById(R.id.show_computers_turn);
-        return !cb.isChecked();
+    public boolean getFastDisplayComputer() {
+        CheckBox cb = (CheckBox) findViewById(R.id.fast_display_computer);
+        return cb.isChecked();
     }
     
-    public boolean getSound() {
-        CheckBox cb = (CheckBox) findViewById(R.id.sound_on_off);
+    public boolean getMuteSound() {
+        CheckBox cb = (CheckBox) findViewById(R.id.mute_sound);
         return cb.isChecked();        
     }
 }
