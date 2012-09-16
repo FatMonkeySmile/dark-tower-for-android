@@ -73,7 +73,7 @@ public class Bazaar extends ActionEvent
 		int requiredFood = 0;
 		int timeToWait = 1500;
 		int count = 0;
-
+		
 		requiredFood = player.requiredFood() * 5;
 		if ( ( player.hasGoldKey() ) && ( player.getRelKingdomNo() == 0 ) )
 			requiredFood = player.requiredFood() * 10;
@@ -105,8 +105,10 @@ public class Bazaar extends ActionEvent
 				thread.setItemNoToBuy(Image.WARRIOR);
 		}
 
-		thread.paintDarkTower("", Image.BLACK, Audio.BAZAAR);
-		thread.sleep(3000);
+        if(thread.shouldDisplayNormal()) {
+    		thread.paintDarkTower("", Image.BLACK, Audio.BAZAAR);
+    		thread.sleepIfSound(3000);
+        }
 		do
 		{
 			// warriors
@@ -115,9 +117,11 @@ public class Bazaar extends ActionEvent
 			{
 				thread.setPrice(warriorsPrice);
 				thread.setItemNo(Image.WARRIOR);
-				thread.paintDarkTower(warriorsPrice, Image.WARRIOR, Audio.BEEP);
-				thread.sleep(timeToWait);
-				thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                if(thread.shouldDisplayNormal()) {
+    				thread.paintDarkTower(warriorsPrice, Image.WARRIOR, Audio.BEEP);
+    				thread.sleep(timeToWait);
+    				thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                }
 				action = thread.waitAction(allowedHaggleActions, true, false);
 				if ( action == Button.HAGGLE )
 				{
@@ -179,9 +183,11 @@ public class Bazaar extends ActionEvent
 				{
 					thread.setPrice(foodPrice);
 					thread.setItemNo(Image.FOOD);
-					thread.paintDarkTower(foodPrice, Image.FOOD, Audio.BEEP);
-					thread.sleep(timeToWait);
-					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    if(thread.shouldDisplayNormal()) {
+    					thread.paintDarkTower(foodPrice, Image.FOOD, Audio.BEEP);
+    					thread.sleep(timeToWait);
+    					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    }
 					action = thread.waitAction(allowedHaggleActions, true, false);
 					if ( action == Button.HAGGLE )
 						closed = true;
@@ -235,9 +241,11 @@ public class Bazaar extends ActionEvent
 				{
 					thread.setPrice(beastPrice);
 					thread.setItemNo(Image.BEAST);
-					thread.paintDarkTower(beastPrice, Image.BEAST, Audio.BEEP);
-					thread.sleep(timeToWait);
-					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    if(thread.shouldDisplayNormal()) {
+    					thread.paintDarkTower(beastPrice, Image.BEAST, Audio.BEEP);
+    					thread.sleep(timeToWait);
+    					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    }
 					action = thread.waitAction(allowedHaggleActions, true, false);
 					if ( action == Button.HAGGLE )
 					{
@@ -278,9 +286,11 @@ public class Bazaar extends ActionEvent
 				{
 					thread.setPrice(scoutPrice);
 					thread.setItemNo(Image.SCOUT);
-					thread.paintDarkTower(scoutPrice, Image.SCOUT, Audio.BEEP);
-					thread.sleep(timeToWait);
-					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    if(thread.shouldDisplayNormal()) {
+    					thread.paintDarkTower(scoutPrice, Image.SCOUT, Audio.BEEP);
+    					thread.sleep(timeToWait);
+    					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    }
 					action = thread.waitAction(allowedHaggleActions, true, false);
 					if ( action == Button.HAGGLE )
 					{
@@ -321,9 +331,11 @@ public class Bazaar extends ActionEvent
 				{
 					thread.setPrice(healerPrice);
 					thread.setItemNo(Image.HEALER);
-					thread.paintDarkTower(healerPrice, Image.HEALER, Audio.BEEP);
-					thread.sleep(timeToWait);
-					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    if(thread.shouldDisplayNormal()) {
+    					thread.paintDarkTower(healerPrice, Image.HEALER, Audio.BEEP);
+    					thread.sleep(timeToWait);
+    					thread.paintDarkTower("--", Image.BLACK, Audio.NA);
+                    }
 					action = thread.waitAction(allowedHaggleActions, true, false);
 					if ( action == Button.HAGGLE )
 					{
@@ -367,10 +379,12 @@ public class Bazaar extends ActionEvent
 		}
 		else if ( ( buyed ) && ( action != Button.CLEAR ) )
 		{
-			player.getDisplayList().add(Image.GOLD);
-			// display items
-			ActionEvent actionEvent = new Display(thread);
-			actionEvent.run();
+            if(thread.shouldDisplayNormal()) {
+    			player.getDisplayList().add(Image.GOLD);
+    			// display items
+    			ActionEvent actionEvent = new Display(thread);
+    			actionEvent.run();
+            }
 		}
 
 		// end turn

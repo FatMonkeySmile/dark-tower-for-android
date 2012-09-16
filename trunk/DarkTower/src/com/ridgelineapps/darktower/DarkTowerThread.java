@@ -88,6 +88,14 @@ public class DarkTowerThread extends Thread
 		initQueues();
 		initPlayerList();
 	}
+	
+	public boolean shouldDisplayNormal() {
+        Player player = (Player) playerList.get(playerNo);
+        if(player.getPlayerType() == Player.NONEPC) {
+            return true;
+        }
+	    return darkTower.getDisplayComputersTurnNormal();
+	}
 
 	public void initQueues()
 	{
@@ -476,8 +484,10 @@ public class DarkTowerThread extends Thread
 
 			if ( action == Button.NO )
 			{
-				paintDarkTower("", Image.BLACK, Audio.ENDTURN, true, true);
-				sleep(1000);
+			    if(player.getPlayerType() == Player.NONEPC || darkTower.getDisplayComputersTurnNormal()) {
+    				paintDarkTower("", Image.BLACK, Audio.ENDTURN, true, true);
+    				sleep(1000);
+			    }
 			}
 
 			getBoardView().setPlayerNo(playerNo + 1);
@@ -1858,7 +1868,7 @@ public class DarkTowerThread extends Thread
 			if ( darkTower.getDisplayComputersTurnNormal() )
 				millis = millis * darkTower.getSpeed() / 100;
 			else
-				millis = 550;
+				millis = 800;
 		}
 
 		if ( player.isPerformAction() )

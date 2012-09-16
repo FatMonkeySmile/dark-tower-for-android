@@ -70,7 +70,7 @@ public class Territory
 	public static int[] RUINLIST = { 21, 51, 81, 111 };
 	public static int[] BAZAARLIST = { 14, 44, 74, 104 };
 
-   public static final int[] COLORLIST = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN };
+   public static final int[] COLORLIST = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW };
 
 	private int territoryNo = 0;
 	private int kingdomNo = 0;
