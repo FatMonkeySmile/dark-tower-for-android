@@ -136,6 +136,14 @@ public class DarkTowerThread extends Thread
 	{
 		try
 		{
+	        play(Audio.INTRO);
+	        try {
+	            sleepIfSound(5000);
+	        }
+	        catch(Exception e) {
+	            // Ignore...
+	        }
+		    
 			while ( !interrupted() )
 			{
 				Player player = (Player) playerList.get(playerNo);

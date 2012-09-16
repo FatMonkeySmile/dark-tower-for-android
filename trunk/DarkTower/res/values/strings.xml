@@ -14,6 +14,6 @@
 	<string name="player2">Player 2</string>  
 	<string name="player3">Player 3</string>  
 	<string name="player4">Player 4</string> 
-	<string name="sound_on_off">Sound</string>
+	<string name="sound_on_off">Mute sound</string>
 	<string name="show_computers_turn">Show computer\&apos;s turn quickly</string> 
 </resources>

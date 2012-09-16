@@ -41,14 +41,14 @@ public class ActivityMenu extends Activity {
         ((Button)findViewById(R.id.menu_start)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent i = new Intent(ActivityMenu.this, ActivityGame.class);
                 i.putExtra("player1", getPlayer1());
                 i.putExtra("player2", getPlayer2());
                 i.putExtra("player3", getPlayer3());
                 i.putExtra("player4", getPlayer4());
                 i.putExtra("show_computers_turn", getShowComputersTurn());
-                i.putExtra("sound", getSound());
-                finish();
+                i.putExtra("sound", !getSound());
                 startActivity(i);
             }
         });
