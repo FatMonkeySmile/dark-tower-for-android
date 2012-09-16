@@ -59,13 +59,13 @@ public class Ruin extends ActionEvent
 		{
 			// nothing
 			thread.paintDarkTower("", Image.BLACK, Audio.TOMBNOTHING);
-			thread.sleep(9000);
+			thread.sleepIfSound(9000);
 		}
 		if ( (random >= 0.2) && (random < 0.3) )
 		{
 			// treasure
 			thread.paintDarkTower("", Image.BLACK, Audio.TOMB);
-			thread.sleep(4200);
+			thread.sleepIfSound(4200);
 			ActionEvent actionEvent = new Treasure(thread);
 			actionEvent.run();
 		}
@@ -74,7 +74,7 @@ public class Ruin extends ActionEvent
 			// battle
 			int brigands = thread.getBrigands(player.getWarriors());
 			thread.paintDarkTower("", Image.BLACK, Audio.TOMBBATTLE);
-			thread.sleep(6000);
+			thread.sleepIfSound(6000);
 			ActionEvent actionEvent = new Battle(thread, brigands);
 			actionEvent.run();
 		}

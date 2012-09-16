@@ -25,13 +25,39 @@ import android.view.View.OnClickListener;
 
 public class ActivityGame extends Activity {
    public DarkTower darkTower;
+   String player1;
+   String player2;
+   String player3;
+   String player4;
    
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.game);
+      player1 = getIntent().getExtras().getString("player1");
+      player2 = getIntent().getExtras().getString("player2");
+      player3 = getIntent().getExtras().getString("player3");
+      player4 = getIntent().getExtras().getString("player4");
       darkTower = new DarkTower(this);
    }
+   
+   @Override
+   protected void onDestroy() {
+       super.onDestroy();
+       try {
+           // Not great, but simplest way to stop AI threads
+           android.os.Process.killProcess(android.os.Process.myPid());
+       }
+       catch(Exception e) {
+           e.printStackTrace();
+       }
+   }
+   
+   @Override
+   public void onBackPressed() {
+       finish();
+       return;
+   }   
 
    public BoardView getBoardView() {
       return (BoardView) findViewById(R.id.boardview);
