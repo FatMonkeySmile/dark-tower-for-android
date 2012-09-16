@@ -71,16 +71,16 @@ public class DarkTower
 //	private JDialog aboutDialog = null;
 	private int offset = 0;
 	private int level = 0;
-	private boolean displayComputersTurn;
-	private boolean mute;
+	private boolean displayComputersTurnNormal;
+	private boolean muteSound;
 	ActivityGame activity;
 	
     public DarkTower(ActivityGame activity)
 	{
 	   this.activity = activity;
 	   
-	   displayComputersTurn = activity.getIntent().getExtras().getBoolean("show_computers_turn");
-       mute = !activity.getIntent().getExtras().getBoolean("sound");
+	   displayComputersTurnNormal = !activity.getIntent().getExtras().getBoolean("fast_display_computer");
+       muteSound = activity.getIntent().getExtras().getBoolean("mute_sound");
 
 //		// main frame
 //		frame = new JFrame("Dark Tower");
@@ -983,14 +983,14 @@ public class DarkTower
 		return 0;
 	}
 
-	public boolean getDisplayComputersTurn()
+	public boolean getDisplayComputersTurnNormal()
 	{
-	    return displayComputersTurn;
+	    return displayComputersTurnNormal;
 	}
 
-    public boolean getMute()
+    public boolean getMuteSound()
     {
-        return mute;
+        return muteSound;
     }
     
 	public int getSpeed()
