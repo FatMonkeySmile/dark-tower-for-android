@@ -184,11 +184,6 @@
         
      </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <CheckBox
         android:id="@+id/sound_on_off"
         android:layout_width="wrap_content"
