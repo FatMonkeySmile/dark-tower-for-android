@@ -58,7 +58,7 @@ public class Sanctuary extends ActionEvent
 		int food = (int) (Math.random() * 6 + 10);
 		
 		thread.paintDarkTower("", Image.BLACK, Audio.SANCTUARY);
-		thread.sleep(2500);
+		thread.sleepIfSound(2500);
 
 		if ( ( !thread.isBoardVisible() ) &&
 			 ( player.hasBrassKey() ) && 

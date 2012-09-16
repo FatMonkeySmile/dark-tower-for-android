@@ -1239,7 +1239,7 @@ public class DarkTowerThread extends Thread
 
 		boolean enabled = false;
 		if ( ( player.getPlayerType() == Player.NONEPC ) ||
-			 ( darkTower.getDisplay() == 0 ) || ( forcePaint ) )
+			 true/*darkTower.getDisplayComputersTurn() */ || forcePaint )
 			enabled = true;
 
 		if ( player.isPerformAction() )
@@ -1355,11 +1355,15 @@ public class DarkTowerThread extends Thread
 
 	public void play(int audioNo, boolean forcePlay)
 	{
+	    if(darkTower.getMute()) {
+	        return;
+	    }
+	    
 		Player player = getPlayerListItem(playerNo);
 
 		boolean enabled = false;
 		if ( ( player.getPlayerType() == Player.NONEPC ) ||
-			 ( darkTower.getDisplay() == 0 ) || ( forcePlay ) )
+			  darkTower.getDisplayComputersTurn() || forcePlay )
 			enabled = true;
 
 //		if ( ( audioNo != Audio.NA ) )
@@ -1812,6 +1816,24 @@ public class DarkTowerThread extends Thread
 		reset = true;
 	}
 
+	public void sleepIfSound() 
+	       throws InterruptedException, ResetException, DisableException
+	       {
+        if(darkTower.getMute()) {
+            return;
+        }
+        sleep();
+	}
+	
+    public void sleepIfSound(int millies) 
+        throws InterruptedException, ResetException, DisableException
+        {
+     if(darkTower.getMute()) {
+         return;
+     }
+     sleep(millies);
+ }
+    
 	public void sleep()
 		throws InterruptedException, ResetException, DisableException
 	{
@@ -1825,10 +1847,10 @@ public class DarkTowerThread extends Thread
 
 		if ( player.getPlayerType() == Player.PC )
 		{
-			if ( darkTower.getDisplay() == 0 )
+			if ( darkTower.getDisplayComputersTurn() )
 				millis = millis * darkTower.getSpeed() / 100;
 			else
-				millis = 0;
+				millis = 550;
 		}
 
 		if ( player.isPerformAction() )

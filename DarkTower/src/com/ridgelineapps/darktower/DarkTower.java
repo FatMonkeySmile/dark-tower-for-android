@@ -71,11 +71,16 @@ public class DarkTower
 //	private JDialog aboutDialog = null;
 	private int offset = 0;
 	private int level = 0;
+	private boolean displayComputersTurn;
+	private boolean mute;
 	ActivityGame activity;
 	
-	public DarkTower(ActivityGame activity)
+    public DarkTower(ActivityGame activity)
 	{
 	   this.activity = activity;
+	   
+	   displayComputersTurn = activity.getIntent().getExtras().getBoolean("show_computers_turn");
+       mute = !activity.getIntent().getExtras().getBoolean("sound");
 
 //		// main frame
 //		frame = new JFrame("Dark Tower");
@@ -224,11 +229,12 @@ public class DarkTower
 		// init player list
 		List territoryList = getBoardView().getTerritoryList();
 		playerList = new ArrayList();
-		playerList.add(new Player(0, playerList, territoryList, true, false, Player.NONEPC));
-		playerList.add(new Player(1, playerList, territoryList, true, false, Player.PC));
-		playerList.add(new Player(2, playerList, territoryList, false, false, Player.PC));
-		playerList.add(new Player(3, playerList, territoryList, false, false, Player.PC));
+		playerList.add(new Player(0, playerList, territoryList, isPlayer1Enabled(), false, getPlayer1Type()));
+		playerList.add(new Player(1, playerList, territoryList, isPlayer2Enabled(), false, getPlayer2Type()));
+		playerList.add(new Player(2, playerList, territoryList, isPlayer3Enabled(), false, getPlayer3Type()));
+		playerList.add(new Player(3, playerList, territoryList, isPlayer4Enabled(), false, getPlayer4Type()));
 
+		//TODO: ...
 		lastPlayerList = new ArrayList();
 		lastPlayerList.add(new Player(0, playerList, territoryList, true, false, Player.NONEPC));
 		lastPlayerList.add(new Player(1, playerList, territoryList, true, false, Player.PC));
@@ -718,7 +724,7 @@ public class DarkTower
 //		gridbag.setConstraints(label, c);
 //		aboutPanel.add(label);
 //
-//		label = new JLabel("© 2002 Michael Bommer - m_bommer@yahoo.de");
+//		label = new JLabel("ï¿½ 2002 Michael Bommer - m_bommer@yahoo.de");
 //		label.setFont(font);
 //		c.ipady = 0;
 //		c.gridx = 0;
@@ -977,12 +983,16 @@ public class DarkTower
 		return 0;
 	}
 
-	public int getDisplay()
+	public boolean getDisplayComputersTurn()
 	{
-		//TODO
-		return 0;
+	    return displayComputersTurn;
 	}
 
+    public boolean getMute()
+    {
+        return mute;
+    }
+    
 	public int getSpeed()
 	{
 		//TODO
@@ -1001,5 +1011,53 @@ public class DarkTower
 
    public DarkTowerView getDarkTowerView() {
       return activity.getDarkTowerView();
+   }
+
+   public boolean isPlayer1Enabled() {
+       return !activity.player1.equals("none");
+   }
+   
+   public int getPlayer1Type() {
+       if(activity.player1.equals("computer")) {
+           return Player.PC;
+       }
+       
+       return Player.NONEPC;
+   }
+   
+   public boolean isPlayer2Enabled() {
+       return !activity.player2.equals("none");
+   }
+   
+   public int getPlayer2Type() {
+       if(activity.player2.equals("computer")) {
+           return Player.PC;
+       }
+       
+       return Player.NONEPC;
+   }
+
+   public boolean isPlayer3Enabled() {
+       return !activity.player3.equals("none");
+   }
+   
+   public int getPlayer3Type() {
+       if(activity.player3.equals("computer")) {
+           return Player.PC;
+       }
+       
+       return Player.NONEPC;
+   }
+
+   public boolean isPlayer4Enabled() {
+       return !activity.player4.equals("none");
+   }
+   
+   public int getPlayer4Type() {
+       if(activity.player4.equals("computer")) {
+           return Player.PC;
+       }
+       
+       return Player.NONEPC;
    }
 }

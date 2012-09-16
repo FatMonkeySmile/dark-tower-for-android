@@ -33,7 +33,6 @@
 		    android:gravity="top">
 		    
 	        <TextView
-	            android:id="@+id/textView2"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="28dp"
@@ -74,13 +73,12 @@
 		    android:gravity="top">
 		    
 	        <TextView
-	            android:id="@+id/textView2"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="28dp"
 	            android:text="@string/player2" />
 		    <RadioGroup
-		        android:id="@+id/player1RadioGroup"
+		        android:id="@+id/player2RadioGroup"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content" >
 		
@@ -114,7 +112,6 @@
 		    android:gravity="top">
 		    
 	        <TextView
-	            android:id="@+id/textView2"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="28dp"
@@ -154,7 +151,6 @@
 		    android:gravity="top">
 		    
 	        <TextView
-	            android:id="@+id/textView2"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="28dp"
@@ -198,6 +194,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sound_on_off" />
+
+    <CheckBox
+        android:id="@+id/show_computers_turn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/show_computers_turn" />
 
     <Button android:id="@+id/menu_start" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_start" android:layout_gravity="center_horizontal"></Button>
     <Button android:id="@+id/menu_exit" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_exit" android:layout_gravity="center_horizontal"></Button>

@@ -21,10 +21,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class ActivityMenu extends Activity {
     @Override
@@ -39,8 +42,12 @@ public class ActivityMenu extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ActivityMenu.this, ActivityGame.class);
-                //TODO...
-                i.putExtra("players", 1);
+                i.putExtra("player1", getPlayer1());
+                i.putExtra("player2", getPlayer2());
+                i.putExtra("player3", getPlayer3());
+                i.putExtra("player4", getPlayer4());
+                i.putExtra("show_computers_turn", getShowComputersTurn());
+                i.putExtra("sound", getSound());
                 finish();
                 startActivity(i);
             }
@@ -52,5 +59,63 @@ public class ActivityMenu extends Activity {
                 finish();
             }
         });
+    }
+    
+    public String getPlayer1() {
+        RadioGroup rGroup = (RadioGroup)findViewById(R.id.player1RadioGroup);
+        RadioButton checkedRadioButton = (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
+        if(checkedRadioButton.getId() == R.id.player1_computer) {
+            return "computer";
+        }
+        else if(checkedRadioButton.getId() == R.id.player1_human) {
+            return "human";
+        }
+        return "none";
+    }
+    
+    public String getPlayer2() {
+        RadioGroup rGroup = (RadioGroup)findViewById(R.id.player2RadioGroup);
+        RadioButton checkedRadioButton = (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
+        if(checkedRadioButton.getId() == R.id.player2_computer) {
+            return "computer";
+        }
+        else if(checkedRadioButton.getId() == R.id.player2_human) {
+            return "human";
+        }
+        return "none";
+    }
+    
+    public String getPlayer3() {
+        RadioGroup rGroup = (RadioGroup)findViewById(R.id.player3RadioGroup);
+        RadioButton checkedRadioButton = (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
+        if(checkedRadioButton.getId() == R.id.player3_computer) {
+            return "computer";
+        }
+        else if(checkedRadioButton.getId() == R.id.player3_human) {
+            return "human";
+        }
+        return "none";
+    }
+    
+    public String getPlayer4() {
+        RadioGroup rGroup = (RadioGroup)findViewById(R.id.player4RadioGroup);
+        RadioButton checkedRadioButton = (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
+        if(checkedRadioButton.getId() == R.id.player4_computer) {
+            return "computer";
+        }
+        else if(checkedRadioButton.getId() == R.id.player4_human) {
+            return "human";
+        }
+        return "none";
+    }
+    
+    public boolean getShowComputersTurn() {
+        CheckBox cb = (CheckBox) findViewById(R.id.show_computers_turn);
+        return !cb.isChecked();
+    }
+    
+    public boolean getSound() {
+        CheckBox cb = (CheckBox) findViewById(R.id.sound_on_off);
+        return cb.isChecked();        
     }
 }
