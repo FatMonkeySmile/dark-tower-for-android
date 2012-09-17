@@ -41,10 +41,12 @@
 package com.ridgelineapps.darktower;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.ridgelineapps.darktower.java.Polygon;
@@ -1350,7 +1352,7 @@ public class DarkTowerThread extends Thread
    				   getDarkTowerView().setBitmap(null);
    				}
    				else {
-                  Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), id);
+                  Bitmap bitmap = DarkTowerView.getImage(activity, id);
       				if(bitmap != null) {
       				   getDarkTowerView().setBitmap(bitmap);
       				}

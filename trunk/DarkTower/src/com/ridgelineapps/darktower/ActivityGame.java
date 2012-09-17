@@ -20,10 +20,11 @@ package com.ridgelineapps.darktower;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 
 public class ActivityGame extends Activity {
+   long lastBackClick;
    public DarkTower darkTower;
    String player1;
    String player2;
@@ -55,10 +56,16 @@ public class ActivityGame extends Activity {
    
    @Override
    public void onBackPressed() {
-       finish();
-       return;
-   }   
-
+      long now = System.currentTimeMillis();
+      if (now - lastBackClick < 3000) // 3 seconds
+         finish();
+      else {
+         lastBackClick = now;
+         Toast.makeText(this, "Hit back again to quit.", Toast.LENGTH_SHORT).show();
+      }
+      return;
+   }
+   
    public BoardView getBoardView() {
       return (BoardView) findViewById(R.id.boardview);
    }
