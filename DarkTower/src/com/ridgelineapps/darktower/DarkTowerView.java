@@ -40,15 +40,21 @@
 
 package com.ridgelineapps.darktower;
 
+import java.util.HashMap;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class DarkTowerView extends View {
+   public static HashMap<Integer, Bitmap> imageCache = new HashMap<Integer, Bitmap>();
    private String label = null;
    private Bitmap bitmap = null;
    private boolean flash = false;
@@ -58,6 +64,8 @@ public class DarkTowerView extends View {
    Paint backgroundP;
    Paint textP;
    Paint imageP;
+   Paint darkenP;
+   Paint inventoryTextP;
 
    ActivityGame activity;
 
@@ -82,6 +90,17 @@ public class DarkTowerView extends View {
       backgroundP = new Paint();
       backgroundP.setARGB(255, 0, 0, 0);
 
+      darkenP = new Paint();
+      darkenP.setAntiAlias(true);
+      darkenP.setFilterBitmap(true);
+      darkenP.setDither(true);
+      darkenP.setARGB(125, 0, 0, 0);
+      
+      inventoryTextP = new Paint();
+      inventoryTextP.setTextSize(12);
+      inventoryTextP.setFakeBoldText(true);
+      inventoryTextP.setAntiAlias(true);
+      
       label = "1";
       // TODO (?)
       // image = Image.getImageIcon(Image.BLACK);
@@ -147,8 +166,119 @@ public class DarkTowerView extends View {
       if (enabled && bitmap != null) {
          int imagex = (getWidth() - bitmap.getWidth()) / 2;
          int imagey = 26;
-         canvas.drawBitmap(bitmap, imagex, imagey, imageP);
+         Rect src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+         Rect dest = new Rect(imagex, imagey, imagex + (int) (bitmap.getWidth() * 1.13), imagey + (int) (bitmap.getHeight() * 1.13));
+         canvas.drawBitmap(bitmap, src, dest, imageP);
       }
+      
+      int x = 250;
+      int y = 20;
+      for(int i=0; i < 4; i++) {
+         Player player = (Player) activity.darkTower.getPlayerList().get(i);
+         //TODO color the same as player...
+         int color = Color.WHITE;
+         drawInventory(canvas, x, y, player, color);
+         y += 100;
+      }
+   }
+   
+   protected void drawInventory(Canvas canvas, int x, int y, Player player, int color) {
+      inventoryTextP.setColor(color);
+      canvas.drawText("Player " + player.getPlayerNo(), x, y, inventoryTextP);
+      x += 2;
+      y += 12;
+      canvas.drawText("Gold: " + player.getGold(), x, y, inventoryTextP);
+      y += 12;
+      canvas.drawText("Warriors: " + player.getWarriors(), x, y, inventoryTextP);
+      y += 12;
+      canvas.drawText("Food: " + player.getFood(), x, y, inventoryTextP);
+      y += 12;
+      Bitmap bitmap;
+      Rect src;
+      Rect dest;
+      int sizex = 25;
+      int sizey = 18;
+      
+      //TODO: Create a single, sized image for this and just do the darken...
+      bitmap = getImage(activity, R.drawable.beast);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasBeast()) {
+         canvas.drawRect(dest, darkenP);
+      }
+      
+      x += sizex;
+      bitmap = getImage(activity, R.drawable.scout);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasScout()) {
+         canvas.drawRect(dest, darkenP);
+      }
+      
+      x += sizex;
+      bitmap = getImage(activity, R.drawable.healer);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasHealer()) {
+         canvas.drawRect(dest, darkenP);
+      }
+
+      x += sizex;
+      bitmap = getImage(activity, R.drawable.sword);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasDragonSword()) {
+         canvas.drawRect(dest, darkenP);
+      }
+      
+      y += sizey;
+      x -= sizex * 3;
+      bitmap = getImage(activity, R.drawable.brasskey);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasBrassKey()) {
+         canvas.drawRect(dest, darkenP);
+      }
+
+      x += sizex;
+      bitmap = getImage(activity, R.drawable.silverkey);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasSilverKey()) {
+         canvas.drawRect(dest, darkenP);
+      }
+
+      x += sizex;
+      bitmap = getImage(activity, R.drawable.goldkey);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasGoldKey()) {
+         canvas.drawRect(dest, darkenP);
+      }
+
+      x += sizex;
+      bitmap = getImage(activity, R.drawable.pegasus);
+      src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      dest = new Rect(x, y, x + sizex, y + sizey);
+      canvas.drawBitmap(bitmap, src, dest, imageP);
+      //TODO: can we just use darkenP for the image?
+      if(!player.hasPegasus()) {
+         canvas.drawRect(dest, darkenP);
+      }      
    }
 
    @Override
@@ -183,6 +313,19 @@ public class DarkTowerView extends View {
          } catch (Exception e) {
             e.printStackTrace();
          }
+      }
+   }
+   
+   public static Bitmap getImage(Activity activity, int id) {
+      synchronized(activity) {
+         Bitmap bitmap = imageCache.get(id);
+         if(bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(activity.getResources(), id);
+            if(bitmap != null) {
+               imageCache.put(id, bitmap);
+            }
+         }
+         return bitmap;
       }
    }
 }
