@@ -240,6 +240,11 @@ public class DarkTower
 		lastPlayerList.add(new Player(1, playerList, territoryList, true, false, Player.PC));
 		lastPlayerList.add(new Player(2, playerList, territoryList, false, false, Player.PC));
 		lastPlayerList.add(new Player(3, playerList, territoryList, false, false, Player.PC));
+		
+		for(Object obj: playerList) {
+		    Player player = (Player) obj;
+		    player.setInventoryView(activity.getInventoryView());
+		}
 
 		
 //		// options internal frame
