@@ -112,15 +112,17 @@ public class DarkTowerThread extends Thread
 
 	public void initTerritoryPlaces()
 	{
-		Player player = null;
-
 		boardPanel.createTerritoryPlaces(darkTower.placeBuildingsRandomly());
 		for (int i = 0; i < 4; i++)
 		{
-			player = (Player) playerList.get(i);
+			Player player = (Player) playerList.get(i);
 			playerList.set(i, new Player(i, playerList, territoryList,
 				player.isEnable(), (getLevel() == 3), player.getPlayerType()));
 		}
+        for(Object obj: playerList) {
+            Player player = (Player) obj;
+            player.setInventoryView(activity.getInventoryView());
+        }		
 	}
 
 	public void initPlayerList()
@@ -410,6 +412,7 @@ public class DarkTowerThread extends Thread
 		throws InterruptedException, ResetException, DisableException
 	{
 		Player player = getPlayerListItem(playerNo);
+		activity.getInventoryView().postInvalidate();
 
 		if ( player.isPerformAction() )
 		{
@@ -425,7 +428,7 @@ public class DarkTowerThread extends Thread
 				while ( player.getStartTerritoryNo() != player.getEndTerritoryNo() );
 			}
 
-			// loose?
+			// lose?
 			if ( player.getWarriors() < 1 )
 			{
 				getDarkTowerView().setFlash(true);

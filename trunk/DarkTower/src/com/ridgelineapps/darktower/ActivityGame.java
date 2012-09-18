@@ -74,6 +74,10 @@ public class ActivityGame extends Activity {
       return (DarkTowerView) findViewById(R.id.darktowerview);
    }
    
+   public InventoryView getInventoryView() {
+       return (InventoryView) findViewById(R.id.inventoryview);
+   }
+   
    public void yesBuyButton(View target) {
       darkTower.thread.addAction(Button.YES);
    }

@@ -78,6 +78,8 @@ public class Player extends Figure
 	private Territory territory = null;
 	private boolean moveToPrevTerritory = false;
 	private boolean performAction = true;
+	
+	private InventoryView inventoryView;
 
 	public Player(int playerNo, List playerList, List territoryList, boolean enable, 
 		boolean isTeachingLevel, int playerType)
@@ -96,6 +98,10 @@ public class Player extends Figure
 		initRiddleKeyList(isTeachingLevel);
 
 		displayList = new IntegerList();
+	}
+	
+	public void setInventoryView(InventoryView view) {
+	    this.inventoryView = view;
 	}
 
 	public void initObjectList(boolean isTeachingLevel)
@@ -271,6 +277,7 @@ public class Player extends Figure
 				warriors = 1;
 		}
 		setGold(gold);
+		updateInventory();
 	}
 
 	public int getWarriors()
@@ -291,6 +298,7 @@ public class Player extends Figure
 			gold = count;
 		if ( gold < 0 )
 			gold = 0;
+        updateInventory();
 	}
 
 	public int getGold()
@@ -305,6 +313,7 @@ public class Player extends Figure
 			food = 99;
 		if ( food < 0 )
 			food = 0;
+        updateInventory();
 	}
 
 	public int getFood()
@@ -315,6 +324,7 @@ public class Player extends Figure
 	public void setBeast(boolean has)
 	{
 		beast = has;
+        updateInventory();
 	}
 
 	public boolean hasBeast()
@@ -325,6 +335,7 @@ public class Player extends Figure
 	public void setScout(boolean has)
 	{
 		scout = has;
+        updateInventory();
 	}
 
 	public boolean hasScout()
@@ -335,6 +346,7 @@ public class Player extends Figure
 	public void setHealer(boolean has)
 	{
 		healer = has;
+        updateInventory();
 	}
 	
 	public boolean hasHealer()
@@ -345,6 +357,7 @@ public class Player extends Figure
 	public void setDragonSword(boolean has)
 	{
 		dragonSword = has;
+        updateInventory();
 	}
 
 	public boolean hasDragonSword()
@@ -356,6 +369,7 @@ public class Player extends Figure
 	{
 		pegasus = has;
 		usePegasus = false;
+        updateInventory();
 	}
 
 	public boolean hasPegasus()
@@ -366,6 +380,7 @@ public class Player extends Figure
 	public void setBrassKey(boolean has)
 	{
 		brassKey = has;
+        updateInventory();
 	}
 
 	public boolean hasBrassKey()
@@ -376,6 +391,7 @@ public class Player extends Figure
 	public void setSilverKey(boolean has)
 	{
 		silverKey = has;
+        updateInventory();
 	}
 
 	public boolean hasSilverKey()
@@ -386,6 +402,7 @@ public class Player extends Figure
 	public void setGoldKey(boolean has)
 	{
 		goldKey = has;
+        updateInventory();
 	}
 
 	public boolean hasGoldKey()
@@ -634,5 +651,11 @@ public class Player extends Figure
 		{
 			throw new InternalError();
 		}
+	}
+	
+	public void updateInventory() {
+	    if(inventoryView != null) {
+//	        inventoryView.postInvalidate();
+	    }
 	}
 }
