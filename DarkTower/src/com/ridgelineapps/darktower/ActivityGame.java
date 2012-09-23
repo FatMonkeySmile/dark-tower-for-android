@@ -18,6 +18,7 @@
 package com.ridgelineapps.darktower;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -57,11 +58,14 @@ public class ActivityGame extends Activity {
    @Override
    public void onBackPressed() {
       long now = System.currentTimeMillis();
-      if (now - lastBackClick < 3000) // 3 seconds
-         finish();
+      if (now - lastBackClick < 6000) { 
+          finish();
+          Intent i = new Intent(ActivityGame.this, ActivityMenu.class);
+          startActivity(i);
+      }
       else {
          lastBackClick = now;
-         Toast.makeText(this, "Hit back again to quit.", Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "Hit back again to quit game and return to start menu.", Toast.LENGTH_SHORT).show();
       }
       return;
    }
