@@ -5,6 +5,46 @@
     android:layout_height="fill_parent"
     android:gravity="center_vertical">
     
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_marginBottom="40dp">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/brasskey"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleX=".8"
+            android:scaleY=".8"
+             />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/silverkey"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" 
+            android:scaleX=".8"
+            android:scaleY=".8"
+            />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/goldkey"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" 
+            android:scaleX=".8"
+            android:scaleY=".8"
+            />
+        
+	</LinearLayout>
+    <!-- 
     <TextView 
         android:layout_width="match_parent" 
         android:layout_height="wrap_content" 
@@ -14,6 +54,8 @@
         android:gravity="center_horizontal"
         android:textSize="48dp" 
         android:text="@string/app_name"></TextView>
+        
+ -->        
     
     <!-- 
     <ImageView android:src="@drawable/twixt" android:layout_alignParentTop="true" android:layout_marginBottom="25dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:id="@+id/imageView1"></ImageView>
@@ -184,19 +226,72 @@
         
      </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/mute_sound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/mute_sound" />
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_marginBottom="18dp">
+	    <CheckBox
+	        android:id="@+id/mute_sound"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/mute_sound" 
+	        android:layout_marginRight="15dp"/>
+	
+	    <CheckBox
+	        android:id="@+id/fast_display_computer"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:checked="true"
+	        android:text="@string/fast_display_computer" 
+	        android:layout_marginLeft="15dp"/>
+    </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/fast_display_computer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/fast_display_computer" />
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_marginBottom="18dp">
+	    <Button android:layout_marginRight="25dp" android:id="@+id/menu_exit" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_exit" android:layout_gravity="center_horizontal"></Button>
+	    <Button android:layout_marginLeft="25dp" android:id="@+id/menu_start" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_start" android:layout_gravity="center_horizontal"></Button>
+	</LinearLayout>
+	
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_marginTop="25dp">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleX=".9"
+            android:scaleY=".9"
+            android:src="@drawable/sword" />
 
-    <Button android:id="@+id/menu_start" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_start" android:layout_gravity="center_horizontal"></Button>
-    <Button android:id="@+id/menu_exit" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_exit" android:layout_gravity="center_horizontal"></Button>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/victory"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/wizard"
+            android:scaleX=".9"
+            android:scaleY=".9"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
+        
+	</LinearLayout>
+    
 </LinearLayout>
