@@ -475,6 +475,12 @@ public class BoardView extends View implements OnTouchListener
       outlineP.setStyle(Paint.Style.STROKE);
       outlineP.setARGB(255, 0, 0, 0);
       
+      Paint shadeP = new Paint();
+      shadeP.setDither(true);
+      shadeP.setAntiAlias(true);
+      shadeP.setStyle(Paint.Style.FILL);
+      shadeP.setARGB(135, 120, 120, 120);
+      
 //      Paint debugP = new Paint();
 //      debugP.setStyle(Paint.Style.STROKE);
 //      debugP.setARGB(255, 0, 255, 0);
@@ -502,11 +508,15 @@ public class BoardView extends View implements OnTouchListener
 				case Territory.FRONTIER:
                canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
                canvas.drawBitmap(frontierBitmap, 0, 0, p);
+               canvas.drawPath(territory.getPath(), shadeP);
                canvas.drawPath(territory.getPath(), outlineP);
 					break;
 				default:
                canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
                canvas.drawBitmap(kingdomBitmap[territory.getKingdomNo()], 0, 0, p);
+
+               canvas.drawPath(territory.getPath(), shadeP);
+               
                canvas.drawPath(territory.getPath(), outlineP);
 					break;
 			}
