@@ -16,4 +16,5 @@
 	<string name="player4">Player 4</string> 
 	<string name="mute_sound">Mute sound</string>
 	<string name="fast_display_computer">Show computer\&apos;s turn quickly</string> 
+	<string name="start_desc">Unofficial Android tablet version of the board game Dark Tower by Milton Bradley. This game is a port of the computer version by Michael Bommer, downloaded from well-of-souls.com</string>
 </resources>

@@ -1222,6 +1222,16 @@ public class DarkTowerThread extends Thread
 	public void paintDarkTower(int count, int imageNo, int audioNo)
 		throws ResetException, DisableException
 	{
+	   while(!isBoardVisible()) {
+	      try {
+	         //TODO: run this on separate thread and re-call on UI thread if necessary?
+	         Thread.sleep(750);
+	      }
+	      catch(InterruptedException e) {
+	         e.printStackTrace();
+	      }
+	   }
+	   
 		paintDarkTower(count, imageNo, audioNo, false, false);
 	}
 

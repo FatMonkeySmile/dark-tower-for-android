@@ -19,11 +19,13 @@ package com.ridgelineapps.darktower;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.Button;
 
 public class ActivityStart extends Activity {
@@ -47,9 +49,9 @@ public class ActivityStart extends Activity {
         ((Button)findViewById(R.id.start_howToPlay)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(ActivityStart.this, xxx.class);
-//                finish();
-//                startActivity(i);
+               Uri uriUrl = Uri.parse("http://well-of-souls.com/tower/index.html");
+               Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+               startActivity(launchBrowser);
             }
         });
     }
