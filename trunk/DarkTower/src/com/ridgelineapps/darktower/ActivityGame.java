@@ -58,10 +58,12 @@ public class ActivityGame extends Activity {
    @Override
    public void onBackPressed() {
       long now = System.currentTimeMillis();
-      if (now - lastBackClick < 6000) { 
-          Intent i = new Intent(ActivityGame.this, ActivityMenu.class);
-          startActivity(i);
-          finish();
+      if (now - lastBackClick < 6000) {
+         finish();
+         super.onBackPressed();
+//          Intent i = new Intent(ActivityGame.this, ActivityMenu.class);
+//          startActivity(i);
+//          finish();
       }
       else {
          lastBackClick = now;

@@ -41,7 +41,6 @@ public class ActivityMenu extends Activity {
         ((Button)findViewById(R.id.menu_start)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent i = new Intent(ActivityMenu.this, ActivityGame.class);
                 i.putExtra("player1", getPlayer1());
                 i.putExtra("player2", getPlayer2());

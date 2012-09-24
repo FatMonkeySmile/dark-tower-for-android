@@ -78,7 +78,7 @@ public class Battle extends ActionEvent
 		int minWarriors = 0;
 		int score = 0;
 		boolean win = false;
-		boolean loose = false;
+		boolean lose = false;
 
 		thread.paintDarkTower(brigands,	Image.BRIGANDS, Audio.BEEP);
 		thread.sleep(1500);
@@ -130,7 +130,7 @@ public class Battle extends ActionEvent
 						}
 						if ( warriors < 1 + minWarriors * 2)
 						{
-							loose = true;
+							lose = true;
 						}
 					}
 					thread.paintDarkTower(warriors,	Image.WARRIORS, Audio.BEEP);
@@ -143,11 +143,11 @@ public class Battle extends ActionEvent
 			        }
 				}
 			}
-			while ( (!win) && (!loose) && (action == Button.NA) );
+			while ( (!win) && (!lose) && (action == Button.NA) );
 		}
 
 		// retreat
-		if ( ( loose ) || ( action == Button.NO ) )
+		if ( ( lose ) || ( action == Button.NO ) )
 		{
 			warriors = warriors - 1;
 			player.setWarriors(warriors);
