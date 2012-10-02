@@ -147,7 +147,6 @@ public class BoardView extends View implements OnTouchListener
       	isoImageIcon = MultiImage.getBitmap(res, MultiImage.ISO);
       }
       else {
-         //xxx
          dragonBitmaps = new Bitmap[3];
          dragonBitmaps[0] = null;
          dragonBitmaps[1] = null;
@@ -298,14 +297,21 @@ public class BoardView extends View implements OnTouchListener
          }
       }
 
+      boolean movingDragon = false;
+      
       // draw player
       if (playerList != null) {
          for (int i = 0; i < playerList.size(); i++) {
             player = (Player) playerList.get(i);
             point = nextCoord(player);
             DrawType drawType = DrawType.NORMAL;
-            //xxx
+            if(player.isPerformAction()) {
+               drawType = DrawType.SELECTED;
+            }
             drawPlayer(canvas, point, i, drawType);
+            if(player.isPlaceDragon()) {
+               movingDragon = true;
+            }
          }
       }
 
@@ -318,7 +324,9 @@ public class BoardView extends View implements OnTouchListener
             territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
             point = territory.getCentre();
             DrawType drawType = DrawType.NORMAL;
-            //xxx
+            if(movingDragon) {
+               drawType = DrawType.SELECTED;
+            }
             drawDragon(canvas, point, drawType);
             dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
          }
