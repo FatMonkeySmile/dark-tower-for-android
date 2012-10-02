@@ -47,6 +47,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -456,85 +457,97 @@ public class BoardView extends View implements OnTouchListener
 
 	public void createBoard()
 	{
-	   //TODO: anti-alias and dither?
-      Paint p = new Paint();
-      p.setDither(true);
-      p.setAntiAlias(true);
-      p.setStyle(Paint.Style.FILL);
-      p.setARGB(255, 0, 0, 0);
-      
-//      Paint textP = new Paint();
-//      textP.setDither(true);
-//      textP.setAntiAlias(true);
-//      textP.setStyle(Paint.Style.FILL);
-//      textP.setARGB(255, 255, 255, 255);
-      
-      Paint outlineP = new Paint();
-      outlineP.setDither(true);
-      outlineP.setAntiAlias(true);
-      outlineP.setStyle(Paint.Style.STROKE);
-      outlineP.setARGB(255, 0, 0, 0);
-      
-      Paint shadeP = new Paint();
-      shadeP.setDither(true);
-      shadeP.setAntiAlias(true);
-      shadeP.setStyle(Paint.Style.FILL);
-      shadeP.setARGB(135, 120, 120, 120);
-      
-//      Paint debugP = new Paint();
-//      debugP.setStyle(Paint.Style.STROKE);
-//      debugP.setARGB(255, 0, 255, 0);
-//      
-//      Paint debugFillP = new Paint();
-//      debugP.setStyle(Paint.Style.FILL);
-//      debugP.setARGB(255, 0, 0, 255);
-      
-		boardBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		
-		Territory territory = null;
-		Canvas canvas = new Canvas(boardBitmap);
-//      canvas.drawRect(0, 0, width, height, p);
-		
-		// draw territories
-		for (int i = 0; i < territoryList.size(); i++)
-		{
-			territory = (Territory) territoryList.get(i);
-			switch ( territory.getType() )
-			{
-				case Territory.DARKTOWER:
-					canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-					canvas.drawBitmap(darkTowerBitmap, 0, 0, p);
-					break;
-				case Territory.FRONTIER:
-               canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-               canvas.drawBitmap(frontierBitmap, 0, 0, p);
-               canvas.drawPath(territory.getPath(), shadeP);
-               canvas.drawPath(territory.getPath(), outlineP);
-					break;
-				default:
-               canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-               canvas.drawBitmap(kingdomBitmap[territory.getKingdomNo()], 0, 0, p);
-
-               canvas.drawPath(territory.getPath(), shadeP);
-               
-               canvas.drawPath(territory.getPath(), outlineP);
-					break;
-			}
-			
-//       canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
-//			Point point = territory.getCentre();
-//			canvas.drawText(Integer.toString(territory.getTerritoryNo()), point.x - 4, point.y + 4, textP);
-//			canvas.drawText(Integer.toString(territory.getTerritoryNo()), point.x - 3, point.y + 3, p);
-		}
-
-		//TODO
-		grayBoardBitmap = boardBitmap;
-		
-//		RenderingHints renderingHints = g.getRenderingHints();
-//		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-//		ColorConvertOp colorConvertOp = new ColorConvertOp(colorSpace, renderingHints);
-//		grayBoardImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-//		colorConvertOp.filter(boardImage, grayBoardImage);
+	    if(false) { // !activity.originalBoard) {
+    	    
+    	   //TODO: anti-alias and dither?
+          Paint p = new Paint();
+          p.setDither(true);
+          p.setAntiAlias(true);
+          p.setStyle(Paint.Style.FILL);
+          p.setARGB(255, 0, 0, 0);
+          
+    //      Paint textP = new Paint();
+    //      textP.setDither(true);
+    //      textP.setAntiAlias(true);
+    //      textP.setStyle(Paint.Style.FILL);
+    //      textP.setARGB(255, 255, 255, 255);
+          
+          Paint outlineP = new Paint();
+          outlineP.setDither(true);
+          outlineP.setAntiAlias(true);
+          outlineP.setStyle(Paint.Style.STROKE);
+          outlineP.setARGB(255, 0, 0, 0);
+          
+          Paint shadeP = new Paint();
+          shadeP.setDither(true);
+          shadeP.setAntiAlias(true);
+          shadeP.setStyle(Paint.Style.FILL);
+          shadeP.setARGB(135, 120, 120, 120);
+          
+    //      Paint debugP = new Paint();
+    //      debugP.setStyle(Paint.Style.STROKE);
+    //      debugP.setARGB(255, 0, 255, 0);
+    //      
+    //      Paint debugFillP = new Paint();
+    //      debugP.setStyle(Paint.Style.FILL);
+    //      debugP.setARGB(255, 0, 0, 255);
+          
+    		boardBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+    		
+    		Territory territory = null;
+    		Canvas canvas = new Canvas(boardBitmap);
+    //      canvas.drawRect(0, 0, width, height, p);
+    		
+    		// draw territories
+    		for (int i = 0; i < territoryList.size(); i++)
+    		{
+    			territory = (Territory) territoryList.get(i);
+    			switch ( territory.getType() )
+    			{
+    				case Territory.DARKTOWER:
+    					canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
+    					canvas.drawBitmap(darkTowerBitmap, 0, 0, p);
+    					break;
+    				case Territory.FRONTIER:
+                   canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
+                   canvas.drawBitmap(frontierBitmap, 0, 0, p);
+                   canvas.drawPath(territory.getPath(), shadeP);
+                   canvas.drawPath(territory.getPath(), outlineP);
+    					break;
+    				default:
+                   canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
+                   canvas.drawBitmap(kingdomBitmap[territory.getKingdomNo()], 0, 0, p);
+    
+                   canvas.drawPath(territory.getPath(), shadeP);
+                   
+                   canvas.drawPath(territory.getPath(), outlineP);
+    					break;
+    			}
+    			
+    //       canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
+    //			Point point = territory.getCentre();
+    //			canvas.drawText(Integer.toString(territory.getTerritoryNo()), point.x - 4, point.y + 4, textP);
+    //			canvas.drawText(Integer.toString(territory.getTerritoryNo()), point.x - 3, point.y + 3, p);
+    		}
+    
+    		//TODO
+    		grayBoardBitmap = boardBitmap;
+    		
+    //		RenderingHints renderingHints = g.getRenderingHints();
+    //		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+    //		ColorConvertOp colorConvertOp = new ColorConvertOp(colorSpace, renderingHints);
+    //		grayBoardImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    //		colorConvertOp.filter(boardImage, grayBoardImage);
+	    }
+	    else {
+	        
+	        boardBitmap = BitmapFactory.decodeResource(res, R.drawable.original_board);
+	        Bitmap scaledBitmap = Bitmap.createScaledBitmap(boardBitmap, width, height, false);
+	        boardBitmap.recycle();
+	        boardBitmap = scaledBitmap;
+	        
+	        grayBoardBitmap = boardBitmap;
+	    }
 	}
 
 	public Point getCartCoord(int radius, double angDeg)
