@@ -31,6 +31,7 @@ public class ActivityGame extends Activity {
    String player2;
    String player3;
    String player4;
+   boolean activityVisible = false;
    
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,18 @@ public class ActivityGame extends Activity {
            e.printStackTrace();
        }
    }
+   
+   @Override
+   protected void onResume() {
+     super.onResume();
+     activityVisible = true;
+   }
+
+   @Override
+   protected void onPause() {
+     super.onPause();
+     activityVisible = false;
+   }   
    
    @Override
    public void onBackPressed() {
