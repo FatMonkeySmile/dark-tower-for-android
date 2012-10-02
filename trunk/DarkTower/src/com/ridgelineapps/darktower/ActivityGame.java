@@ -32,7 +32,6 @@ public class ActivityGame extends Activity {
    String player3;
    String player4;
    boolean activityVisible = false;
-   boolean originalBoard = true;
    
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,11 @@ public class ActivityGame extends Activity {
       player2 = getIntent().getExtras().getString("player2");
       player3 = getIntent().getExtras().getString("player3");
       player4 = getIntent().getExtras().getString("player4");
-      originalBoard = getIntent().getExtras().getBoolean("original_board");
+      boolean originalBoard = getIntent().getExtras().getBoolean("original_board");
+      
+      ((BoardView) getWindow().getDecorView().findViewById(R.layout.game)).init(originalBoard);
+//      ((BoardView) findViewById(R.layout.game)).init(originalBoard);
+      
       darkTower = new DarkTower(this);
    }
    
