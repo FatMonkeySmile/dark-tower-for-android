@@ -48,6 +48,7 @@ public class ActivityMenu extends Activity {
                 i.putExtra("player4", getPlayer4());
                 i.putExtra("fast_display_computer", getFastDisplayComputer());
                 i.putExtra("mute_sound", getMuteSound());
+                i.putExtra("original_board", getOriginalBoard());
                 startActivity(i);
             }
         });
@@ -111,6 +112,11 @@ public class ActivityMenu extends Activity {
     public boolean getFastDisplayComputer() {
         CheckBox cb = (CheckBox) findViewById(R.id.fast_display_computer);
         return cb.isChecked();
+    }
+    
+    public boolean getOriginalBoard() {
+        CheckBox cb = (CheckBox) findViewById(R.id.original_board);
+        return cb.isChecked();        
     }
     
     public boolean getMuteSound() {

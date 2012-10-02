@@ -1402,7 +1402,17 @@ public class DarkTowerThread extends Thread
 //		if ( ( audioNo != Audio.NA ) )
 //			audio.stop();
 		if ( enabled ) {
-		   Audio.play(activity, audioNo);
+//	       while(!isBoardVisible()) {
+//	           try {
+//	              //TODO: run this on separate thread and re-call on UI thread if necessary?
+//	              Thread.sleep(750);
+//	           }
+//	           catch(InterruptedException e) {
+//	              e.printStackTrace();
+//	           }
+//	       }
+
+		    Audio.play(activity, audioNo);
 		}
 	}
 
@@ -1836,7 +1846,8 @@ public class DarkTowerThread extends Thread
 
 	public boolean isBoardVisible()
 	{
-	   return darkTower.getBoardView().getVisibility() == View.VISIBLE;
+	    return darkTower.activity.activityVisible;
+//	   return darkTower.activity.getBoardView().getVisibility() == View.VISIBLE;
 	}
 	
 	public boolean isBoardIcon()
