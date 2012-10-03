@@ -101,36 +101,38 @@ public class ButtonPanelView extends View {
 
    @Override
    public boolean onTouchEvent(MotionEvent event) {
-      int startX = 0;
-      int startY = 0;
-      int endX = bitmap.getWidth();
-      int endY = bitmap.getHeight();
-      int incX = endX - startX / 3;
-      int incY = endY - startY / 4;
-
-      int buttonX = 0;
-      int buttonY = 0;
-      boolean found = false;
-      int touchX = (int) event.getX();
-      int touchY = (int) event.getY();
-      
-      for(int y=startY; y <= endY; y += incY) {
-         for(int x=startX; x <= endX; x += incX) {
-            if(touchX >= x && touchX < x + incX && touchY >= y && touchY < y + incY) {
-               found = true;
+      if((event.getAction() & MotionEvent.ACTION_UP) != 0) {
+         int startX = 0;
+         int startY = 0;
+         int endX = bitmap.getWidth();
+         int endY = bitmap.getHeight();
+         int incX = endX - startX / 3;
+         int incY = endY - startY / 4;
+   
+         int buttonX = 0;
+         int buttonY = 0;
+         boolean found = false;
+         int touchX = (int) event.getX();
+         int touchY = (int) event.getY();
+         
+         for(int y=startY; y <= endY; y += incY) {
+            for(int x=startX; x <= endX; x += incX) {
+               if(touchX >= x && touchX < x + incX && touchY >= y && touchY < y + incY) {
+                  found = true;
+                  break;
+               }
+               buttonY++;
+            }         
+            if(found) {
                break;
             }
-            buttonY++;
-         }         
-         if(found) {
-            break;
+            buttonX++;
          }
-         buttonX++;
-      }
-      
-      if(found) {
-         buttonPressed(buttonX, buttonY);
-         return true;
+         
+         if(found) {
+            buttonPressed(buttonX, buttonY);
+            return true;
+         }
       }
       
       return super.onTouchEvent(event);
