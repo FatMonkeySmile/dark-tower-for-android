@@ -84,8 +84,8 @@ public class ButtonPanelView extends View {
       int startY = 0;
       int endX = bitmap.getWidth();
       int endY = bitmap.getHeight();
-      int incX = endX - startX / 4;
-      int incY = endY - startY / 5;
+      int incX = endX - startX / 3;
+      int incY = endY - startY / 4;
       
       for(int x=startX; x <= endX; x += incX) {
          canvas.drawLine(x, 0, x, bitmap.getHeight(), p);
@@ -105,8 +105,8 @@ public class ButtonPanelView extends View {
       int startY = 0;
       int endX = bitmap.getWidth();
       int endY = bitmap.getHeight();
-      int incX = endX - startX / 4;
-      int incY = endY - startY / 5;
+      int incX = endX - startX / 3;
+      int incY = endY - startY / 4;
 
       int buttonX = 0;
       int buttonY = 0;
@@ -114,8 +114,8 @@ public class ButtonPanelView extends View {
       int touchX = (int) event.getX();
       int touchY = (int) event.getY();
       
-      for(int x=startX; x <= endX; x += incX) {
-         for(int y=startY; y <= endY; y += incY) {
+      for(int y=startY; y <= endY; y += incY) {
+         for(int x=startX; x <= endX; x += incX) {
             if(touchX >= x && touchX < x + incX && touchY >= y && touchY < y + incY) {
                found = true;
                break;
@@ -130,6 +130,7 @@ public class ButtonPanelView extends View {
       
       if(found) {
          buttonPressed(buttonX, buttonY);
+         return true;
       }
       
       return super.onTouchEvent(event);
