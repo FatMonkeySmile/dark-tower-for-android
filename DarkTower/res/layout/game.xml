@@ -22,7 +22,7 @@
 	    	/>
 		<com.ridgelineapps.darktower.ButtonPanelView  
 		    android:id="@+id/darktowerview"
-	    	android:layout_width="wrap_content_parent" 
+	    	android:layout_width="wrap_content" 
 	    	android:layout_height="wrap_content"
 	    	/>
 		<!--  GridLayout  
