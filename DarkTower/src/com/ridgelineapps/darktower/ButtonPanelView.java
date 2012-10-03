@@ -40,17 +40,13 @@
 
 package com.ridgelineapps.darktower;
 
-import java.util.HashMap;
-
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class ButtonPanelView extends View {
@@ -72,117 +68,114 @@ public class ButtonPanelView extends View {
 
       darkenP = new Paint();
       darkenP.setARGB(128, 0, 0, 0);
-   }
-
-   @Override
-   protected void onVisibilityChanged(View changedView, int visibility) {
-      super.onVisibilityChanged(changedView, visibility);
-      if (visibility == View.VISIBLE) {
-         if (flashThread == null) {
-            startThread();
-         }
-      } else {
-         stopThread();
-      }
-   }
-
-   public void setColor(int color) {
-      textP.setColor(color);
-   }
-
-   public void setLabel(String label) {
-      this.label = label;
-      postInvalidate();
-   }
-
-   public void setBitmap(Bitmap bitmap) {
-      this.bitmap = bitmap;
-      postInvalidate();
-   }
-
-   public void setFlash(boolean flash) {
-      this.flash = flash;
-   }
-
-   public void setEnabled(boolean enabled) {
-      this.enabled = enabled;
+      
+      bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.panel);
    }
 
    @Override
    protected void onDraw(Canvas canvas) {
-      int width = canvas.getWidth();
-      int height = canvas.getHeight();
+      canvas.drawBitmap(bitmap,  0, 0, imageP);
+      
+      //***
 
-      if (flash)
-         flashInterval++;
-      else
-         flashInterval = 0;
+      Paint p = new Paint();
+      p.setARGB(255, 0, 255, 0);
+      int startX = 0;
+      int startY = 0;
+      int endX = bitmap.getWidth();
+      int endY = bitmap.getHeight();
+      int incX = endX - startX / 4;
+      int incY = endY - startY / 5;
+      
+      for(int x=startX; x <= endX; x += incX) {
+         canvas.drawLine(x, 0, x, bitmap.getHeight(), p);
+      }
+      
+      for(int y=startY; y <= endY; y += incY) {
+         canvas.drawLine(0, y, bitmap.getWidth(), y, p);
+      }         
 
-      canvas.drawRect(0, 0, width, height, backgroundP);
-      if (flashInterval % 2 == 0) {
-         // g.setFont(font);
-         float textWidth = textP.measureText(label);
-         int labelx = 120; //(width - (int) textWidth) / 2;
-         int labely = 215;
-         canvas.drawText(label, labelx, labely, textP);
-      }
-      if (enabled && bitmap != null) {
-         int imagex = border;
-         int imagey = border;
-         int destWidth = canvas.getWidth() - border * 2;
-         Rect src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-         int newBitmapY = (int) (((float) destWidth / bitmap.getWidth()) * bitmap.getHeight());
-//         Rect dest = new Rect(imagex, imagey, imagex + (int) (bitmap.getWidth() * 1.13), imagey + (int) (bitmap.getHeight() * 1.13));
-         Rect dest = new Rect(imagex, imagey, imagex + destWidth, imagey + newBitmapY);
-         canvas.drawBitmap(bitmap, src, dest, imageP);
-      }
+      
+      //***
    }
-   
+
    @Override
-   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-      setMeasuredDimension(260, 240);
-   }
+   public boolean onTouchEvent(MotionEvent event) {
+      int startX = 0;
+      int startY = 0;
+      int endX = bitmap.getWidth();
+      int endY = bitmap.getHeight();
+      int incX = endX - startX / 4;
+      int incY = endY - startY / 5;
 
-   public void startThread() {
-      stopThread();
-      flashThread = new FlashThread();
-      flashThread.start();
-   }
-
-   public void stopThread() {
-      if (flashThread != null) {
-         synchronized (flashThread) {
-            flashThread.kill = true;
-            flashThread = null;
-         }
-      }
-   }
-
-   class FlashThread extends Thread {
-      boolean kill = false;
-
-      public void run() {
-         try {
-            while (!kill) {
-               postInvalidate();
-               sleep(300);
+      int buttonX = 0;
+      int buttonY = 0;
+      boolean found = false;
+      int touchX = (int) event.getX();
+      int touchY = (int) event.getY();
+      
+      for(int x=startX; x <= endX; x += incX) {
+         for(int y=startY; y <= endY; y += incY) {
+            if(touchX >= x && touchX < x + incX && touchY >= y && touchY < y + incY) {
+               found = true;
+               break;
             }
-         } catch (Exception e) {
-            e.printStackTrace();
+            buttonY++;
+         }         
+         if(found) {
+            break;
          }
+         buttonX++;
       }
+      
+      if(found) {
+         buttonPressed(buttonX, buttonY);
+      }
+      
+      return super.onTouchEvent(event);
    }
    
-   public static Bitmap getImage(Activity activity, int id) {
-      synchronized(activity) {
-         Bitmap bitmap = imageCache.get(id);
-         if(bitmap == null) {
-            bitmap = BitmapFactory.decodeResource(activity.getResources(), id);
-            if(bitmap != null) {
-               imageCache.put(id, bitmap);
-            }
-         }
-         return bitmap;
+   void buttonPressed(int x, int y) {
+      if(x == 0 && y == 0) {
+         activity.yesBuyButton(null);
       }
+      else if(x == 1 && y == 0) {
+         activity.repeatButton(null);
+      }
+      else if(x == 2 && y == 0) {
+         activity.noEndButton(null);
+      }
+      else if(x == 0 && y == 1) {
+         activity.haggleButton(null);
+      }
+      else if(x == 1 && y == 1) {
+         activity.bazaarButton(null);
+      }
+      else if(x == 2 && y == 1) {
+         activity.clearButton(null);
+      }
+      else if(x == 0 && y == 2) {
+         activity.ruinButton(null);
+      }
+      else if(x == 1 && y == 2) {
+         activity.moveButton(null);
+      }
+      else if(x == 2 && y == 2) {
+         activity.sanctuaryButton(null);
+      }
+      else if(x == 0 && y == 3) {
+         activity.darktowerButton(null);
+      }
+      else if(x == 1 && y == 3) {
+         activity.frontierButton(null);
+      }
+      else if(x == 2 && y == 3) {
+         activity.inventoryButton(null);
+      }      
    }
+   
+//   @Override
+//   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//      setMeasuredDimension(260, 240);
+//   }
 }
