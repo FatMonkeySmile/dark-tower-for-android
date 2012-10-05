@@ -58,10 +58,10 @@ public class Dimension extends Dimension2D implements java.io.Serializable {
      */
      private static final long serialVersionUID = 4723952579491349524L;
 
-    /**
-     * Initialize JNI field and method IDs
-     */
-    private static native void initIDs();
+//    /**
+//     * Initialize JNI field and method IDs
+//     */
+//    private static native void initIDs();
 
 //    static {
 //        /* ensure that the necessary native libraries are loaded */
