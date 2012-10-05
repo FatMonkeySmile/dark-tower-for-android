@@ -144,10 +144,10 @@ public class Rectangle extends Rectangle2D
      */
      private static final long serialVersionUID = -4345857070255674764L;
        
-    /**
-     * Initialize JNI field and method IDs
-     */
-    private static native void initIDs();
+//    /**
+//     * Initialize JNI field and method IDs
+//     */
+//    private static native void initIDs();
     
 //    static {
 //        /* ensure that the necessary native libraries are loaded */
