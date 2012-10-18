@@ -532,20 +532,13 @@ public class BoardView extends View implements OnTouchListener
                 Territory.TOMBLIST = new int[] { 17, 42, 72, 109 };
                 Territory.RUINLIST = new int[] { 123, 55, 84, 102 };
                 Territory.BAZAARLIST = new int[] { 34, 45, 77, 98 };
-    
-                for (int i = 0; i < 4; i++)
-                {
-                    territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
-                    territory.setType(Territory.CITADEL);
-                    territory = (Territory) territoryList.get(Territory.SANCTUARYLIST[i] - 1);
-                    territory.setType(Territory.SANCTUARY);
-                    territory = (Territory) territoryList.get(Territory.TOMBLIST[i] - 1);
-                    territory.setType(Territory.TOMB);
-                    territory = (Territory) territoryList.get(Territory.RUINLIST[i] - 1);
-                    territory.setType(Territory.RUIN);
-                    territory = (Territory) territoryList.get(Territory.BAZAARLIST[i] - 1);
-                    territory.setType(Territory.BAZAAR);
-                }		        
+                
+                Territory.COLORLIST = new int[] { 
+                    Color.rgb(200, 113, 1), 
+                    Color.rgb(167, 160, 128), 
+                    Color.rgb(115, 125, 117), 
+                    Color.rgb(79, 46, 34), 
+                };
 		    }
 		    else {
                 Territory.CITADELLIST = new int[] { 34, 64, 94, 118 };
@@ -553,21 +546,28 @@ public class BoardView extends View implements OnTouchListener
     			Territory.TOMBLIST = new int[] { 25, 55, 85, 115 };
     			Territory.RUINLIST = new int[] { 21, 51, 81, 111 };
     			Territory.BAZAARLIST = new int[] { 14, 44, 74, 104 };
-    
-    			for (int i = 0; i < 4; i++)
-    			{
-    				territory =	(Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
-    				territory.setType(Territory.CITADEL);
-    				territory =	(Territory) territoryList.get(Territory.SANCTUARYLIST[i] - 1);
-    				territory.setType(Territory.SANCTUARY);
-    				territory =	(Territory) territoryList.get(Territory.TOMBLIST[i] - 1);
-    				territory.setType(Territory.TOMB);
-    				territory =	(Territory) territoryList.get(Territory.RUINLIST[i] - 1);
-    				territory.setType(Territory.RUIN);
-    				territory =	(Territory) territoryList.get(Territory.BAZAARLIST[i] - 1);
-    				territory.setType(Territory.BAZAAR);
-    			}
+    			
+                Territory.COLORLIST = new int[] { 
+    		       Color.rgb(238, 20, 10), 
+    		       Color.rgb(51, 180, 20), 
+    		       Color.rgb(20, 102, 225), 
+    		       Color.rgb(255, 193, 0), 
+		        };
 		    }
+		    
+            for (int i = 0; i < 4; i++)
+            {
+                territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
+                territory.setType(Territory.CITADEL);
+                territory = (Territory) territoryList.get(Territory.SANCTUARYLIST[i] - 1);
+                territory.setType(Territory.SANCTUARY);
+                territory = (Territory) territoryList.get(Territory.TOMBLIST[i] - 1);
+                territory.setType(Territory.TOMB);
+                territory = (Territory) territoryList.get(Territory.RUINLIST[i] - 1);
+                territory.setType(Territory.RUIN);
+                territory = (Territory) territoryList.get(Territory.BAZAARLIST[i] - 1);
+                territory.setType(Territory.BAZAAR);
+            }               
 		}
 		return true;
 	}
