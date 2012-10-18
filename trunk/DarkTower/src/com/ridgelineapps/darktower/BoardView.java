@@ -94,7 +94,7 @@ public class BoardView extends View implements OnTouchListener
 	
 	// Orig bitmaps
 	private Bitmap[][] playerBitmaps = null;
-	private Bitmap[] dragonBitmaps = null;
+	private Bitmap dragonBitmap = null;
 	
 	private boolean inited = false;
 	private boolean originalBoard = true;
@@ -155,10 +155,7 @@ public class BoardView extends View implements OnTouchListener
       	isoImageIcon = MultiImage.getBitmap(res, MultiImage.ISO);
       }
       else {
-         dragonBitmaps = new Bitmap[3];
-         dragonBitmaps[0] = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
-         dragonBitmaps[1] = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
-         dragonBitmaps[2] = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
+         dragonBitmap = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
          
          playerBitmaps = new Bitmap[4][3];
          playerBitmaps[0][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
@@ -324,7 +321,7 @@ public class BoardView extends View implements OnTouchListener
 //          }         
       }
 
-      boolean movingDragon = false;
+//      boolean movingDragon = false;
       
       // draw player
       if (playerList != null) {
@@ -336,9 +333,9 @@ public class BoardView extends View implements OnTouchListener
                drawType = DrawType.SELECTED;
             }
             drawPlayer(canvas, point, i, drawType);
-            if(player.isPlaceDragon()) {
-               movingDragon = true;
-            }
+//            if(player.isPlaceDragon()) {
+//               movingDragon = true;
+//            }
          }
       }
 
@@ -346,15 +343,11 @@ public class BoardView extends View implements OnTouchListener
       if (dragon != null) {
          if (dragon.getStartTerritoryNo() != 0) {
             point = nextCoord(dragon);
-            drawDragon(canvas, point, DrawType.NORMAL);
+            drawDragon(canvas, point);
          } else if (dragon.getEndTerritoryNo() != 0) {
             territory = (Territory) territoryList.get(dragon.getEndTerritoryNo() - 1);
             point = territory.getCentre();
-            DrawType drawType = DrawType.NORMAL;
-            if(movingDragon) {
-               drawType = DrawType.SELECTED;
-            }
-            drawDragon(canvas, point, drawType);
+            drawDragon(canvas, point);
             dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
          }
       }
@@ -1107,15 +1100,14 @@ public class BoardView extends View implements OnTouchListener
 		return (int) Math.sqrt(dx * dx + dy * dy);
 	}
 	
-	public void drawDragon(Canvas canvas, Point point, DrawType drawType) {
+	public void drawDragon(Canvas canvas, Point point) {
 	   if(!originalBoard) {
 	      MultiImage.drawSubImage(canvas, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
 	   }
 	   else {
-         Bitmap bitmap = dragonBitmaps[drawType.index];
-         int offsetX = -bitmap.getWidth() / 2;
-         int offsetY = -bitmap.getHeight() / 2;
-         canvas.drawBitmap(bitmap, point.x + offsetX, point.y + offsetY, bitmapP);
+         int offsetX = -dragonBitmap.getWidth() / 2;
+         int offsetY = -dragonBitmap.getHeight() / 2;
+         canvas.drawBitmap(dragonBitmap, point.x + offsetX, point.y + offsetY, bitmapP);
 	   }
 	}
 
