@@ -69,6 +69,7 @@ public class BoardView extends View implements OnTouchListener
    Paint highlightP2;
    Paint borderP;
    Paint bitmapP;
+   Paint debugP;
 
    int width;
    int height;
@@ -114,7 +115,8 @@ public class BoardView extends View implements OnTouchListener
    public BoardView(Context context, AttributeSet attributes)
    {
       super(context, attributes);
-	   activity = (ActivityGame) context;
+	  activity = (ActivityGame) context;
+	  init(true);
    }
    
    public void init(boolean originalBoard) {
@@ -137,10 +139,16 @@ public class BoardView extends View implements OnTouchListener
       borderP.setStyle(Paint.Style.STROKE);
       
       bitmapP = new Paint();
-      bitmapP.setDither(true);
-      bitmapP.setFilterBitmap(true);
-      bitmapP.setAntiAlias(true);
+      //TODO: turning all three on causes painting to be very slow...
+//      bitmapP.setDither(true);
+//      bitmapP.setFilterBitmap(true);
+//      bitmapP.setAntiAlias(true);
       
+      debugP = new Paint();
+      debugP.setStyle(Paint.Style.STROKE);
+      debugP.setStrokeWidth(1);
+      debugP.setColor(Color.rgb(255, 0, 0));
+    
       if(!originalBoard) {
       	classmImageIcon = MultiImage.getBitmap(res, MultiImage.CLASSM);
       	dragonImageIcon = MultiImage.getBitmap(res, MultiImage.DRAGON);
@@ -148,26 +156,26 @@ public class BoardView extends View implements OnTouchListener
       }
       else {
          dragonBitmaps = new Bitmap[3];
-         dragonBitmaps[0] = null;
-         dragonBitmaps[1] = null;
-         dragonBitmaps[2] = null;
+         dragonBitmaps[0] = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
+         dragonBitmaps[1] = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
+         dragonBitmaps[2] = BitmapFactory.decodeResource(res, R.drawable.orig_dragon);
          
          playerBitmaps = new Bitmap[4][3];
-         playerBitmaps[0][0] = null;
-         playerBitmaps[0][1] = null;
-         playerBitmaps[0][2] = null;
+         playerBitmaps[0][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
+         playerBitmaps[0][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
+         playerBitmaps[0][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
 
-         playerBitmaps[1][0] = null;
-         playerBitmaps[1][1] = null;
-         playerBitmaps[1][2] = null;
+         playerBitmaps[1][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
+         playerBitmaps[1][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
+         playerBitmaps[1][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
 
-         playerBitmaps[2][0] = null;
-         playerBitmaps[2][1] = null;
-         playerBitmaps[2][2] = null;
+         playerBitmaps[2][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
+         playerBitmaps[2][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
+         playerBitmaps[2][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
          
-         playerBitmaps[3][0] = null;
-         playerBitmaps[3][1] = null;
-         playerBitmaps[3][2] = null;
+         playerBitmaps[3][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
+         playerBitmaps[3][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
+         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
       }
 
       DisplayMetrics dm = new DisplayMetrics();
@@ -181,7 +189,7 @@ public class BoardView extends View implements OnTouchListener
 		territoryList = newTerritoryList();
 		createTexture();
 		createTerritories();
-		createNeigbors();
+		createNeighbors();
 		createTerritoryPlaces(true);
       createBoard();
       
@@ -217,7 +225,9 @@ public class BoardView extends View implements OnTouchListener
    protected void onDraw(Canvas canvas) {
 
       if (!inited) {
-         return;
+          //TODO: figure out how to call from activity
+//          init(activity.originalBoard);
+//         return;
       }
 
       // int width = canvas.getWidth();
@@ -285,16 +295,33 @@ public class BoardView extends View implements OnTouchListener
       }
       
       if(originalBoard) {
-         if (highlightedTerritoryNo > 0) {
-            territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
-            point = territory.getCentre();
-            if(highlightedPlayerOrDragon == HIGHLIGHTED_DRAGON) {
-               drawDragon(canvas, point, DrawType.HIGHLIGHT);
-            }
-            else {
-               drawPlayer(canvas, point, highlightedPlayerOrDragon, DrawType.HIGHLIGHT);
-            }
-         }
+          try {
+              if (highlightedTerritoryNo > 0) {
+                 territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
+                 point = territory.getCentre();
+                 drawPlayer(canvas, point, playerNo, DrawType.HIGHLIGHT);
+              }
+           } catch (Throwable e) {
+              e.printStackTrace();
+           }
+
+//          
+//          if (highlightedTerritoryNo > 0) {
+//            territory = (Territory) territoryList.get(highlightedTerritoryNo - 1);
+//            point = territory.getCentre();
+//            if(highlightedPlayerOrDragon == HIGHLIGHTED_DRAGON) {
+//               drawDragon(canvas, point, DrawType.HIGHLIGHT);
+//            }
+//            else {
+//               drawPlayer(canvas, point, highlightedPlayerOrDragon, DrawType.HIGHLIGHT);
+//            }
+//         }
+         
+//         for(int i=0; i < territoryList.size(); i++) {
+//             territory = (Territory) territoryList.get(i);
+//             point = territory.getCentre();
+//             canvas.drawText("" + territory.getTerritoryNo(), point.x, point.y, debugP);
+//          }         
       }
 
       boolean movingDragon = false;
@@ -388,7 +415,7 @@ public class BoardView extends View implements OnTouchListener
 	      Territory territory;
 	      for(int i=0; i < OrigTerritories.terr.length; i++) {
 	         Polygon polygon = new Polygon();
-	         for(int j=0; j < OrigTerritories.terr[i].length; i++) {
+	         for(int j=0; j < OrigTerritories.terr[i].length; j++) {
 	            polygon.addPoint(OrigTerritories.terr[i][j][0], OrigTerritories.terr[i][j][1]);
 	         }
             territory = (Territory) territoryList.get(i);
@@ -397,33 +424,44 @@ public class BoardView extends View implements OnTouchListener
 	   }
 	}
 
-	public void createNeigbors()
+	public void createNeighbors()
 	{
 		Territory srcTerritory = null;
-		ArrayList srcNeigborList = null;
+		ArrayList srcNeighborList = null;
 		Territory destTerritory = null;
 		Integer destNumber = null;
 
 		for (int i = 0; i < territoryList.size(); i++)
 		{
 			srcTerritory = (Territory) territoryList.get(i);
-			srcNeigborList = new ArrayList();
+			srcNeighborList = new ArrayList();
 			for (int j = 0; j < territoryList.size(); j++)
 			{
 				if ( i != j )
 				{
 					destTerritory = (Territory) territoryList.get(j);
 					destNumber = new Integer( destTerritory.getTerritoryNo() );
-					if ( srcTerritory.intersects(destTerritory) )
+					boolean add = false;
+                    if(!originalBoard) {
+    					if ( srcTerritory.intersects(destTerritory) )
+    					{
+    					    add = true;
+    					}
+                    }
+                    else {
+                        if ( srcTerritory.overlaps(destTerritory) )
+                        {
+                            add = true;
+                        }
+                    }
+                    
+                    if(add && !srcNeighborList.contains(destNumber) )
 					{
-						if ( !srcNeigborList.contains(destNumber) )
-						{
-							srcNeigborList.add(destNumber);
-						}
+						srcNeighborList.add(destNumber);
 					}
 				}
 			}
-			srcTerritory.setNeigborList(srcNeigborList);
+			srcTerritory.setNeighborList(srcNeighborList);
 		}
 	}
 
@@ -448,7 +486,7 @@ public class BoardView extends View implements OnTouchListener
 		int territoryNo = 0;
 		int count = 0;
 
-		if ( placeBuildingsRandomly )
+		if ( placeBuildingsRandomly && !originalBoard)
 		{
 			for (int i = 0; i < 4; i++)
 			{
@@ -495,25 +533,48 @@ public class BoardView extends View implements OnTouchListener
 		}
 		else
 		{
-			Territory.CITADELLIST = new int[] { 34, 64, 94, 124 };
-			Territory.SANCTUARYLIST = new int[] { 29, 59, 89, 119 };
-			Territory.TOMBLIST = new int[] { 25, 55, 85, 115 };
-			Territory.RUINLIST = new int[] { 21, 51, 81, 111 };
-			Territory.BAZAARLIST = new int[] { 14, 44, 74, 104 };
-
-			for (int i = 0; i < 4; i++)
-			{
-				territory =	(Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
-				territory.setType(Territory.CITADEL);
-				territory =	(Territory) territoryList.get(Territory.SANCTUARYLIST[i] - 1);
-				territory.setType(Territory.SANCTUARY);
-				territory =	(Territory) territoryList.get(Territory.TOMBLIST[i] - 1);
-				territory.setType(Territory.TOMB);
-				territory =	(Territory) territoryList.get(Territory.RUINLIST[i] - 1);
-				territory.setType(Territory.RUIN);
-				territory =	(Territory) territoryList.get(Territory.BAZAARLIST[i] - 1);
-				territory.setType(Territory.BAZAAR);
-			}
+		    if(originalBoard) {
+                Territory.CITADELLIST = new int[] { 12, 58, 79, 116 };
+                Territory.SANCTUARYLIST = new int[] { 22, 62, 87, 119 };
+                Territory.TOMBLIST = new int[] { 17, 42, 72, 109 };
+                Territory.RUINLIST = new int[] { 123, 55, 84, 102 };
+                Territory.BAZAARLIST = new int[] { 34, 45, 77, 98 };
+    
+                for (int i = 0; i < 4; i++)
+                {
+                    territory = (Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
+                    territory.setType(Territory.CITADEL);
+                    territory = (Territory) territoryList.get(Territory.SANCTUARYLIST[i] - 1);
+                    territory.setType(Territory.SANCTUARY);
+                    territory = (Territory) territoryList.get(Territory.TOMBLIST[i] - 1);
+                    territory.setType(Territory.TOMB);
+                    territory = (Territory) territoryList.get(Territory.RUINLIST[i] - 1);
+                    territory.setType(Territory.RUIN);
+                    territory = (Territory) territoryList.get(Territory.BAZAARLIST[i] - 1);
+                    territory.setType(Territory.BAZAAR);
+                }		        
+		    }
+		    else {
+                Territory.CITADELLIST = new int[] { 34, 64, 94, 118 };
+    			Territory.SANCTUARYLIST = new int[] { 29, 59, 89, 119 };
+    			Territory.TOMBLIST = new int[] { 25, 55, 85, 115 };
+    			Territory.RUINLIST = new int[] { 21, 51, 81, 111 };
+    			Territory.BAZAARLIST = new int[] { 14, 44, 74, 104 };
+    
+    			for (int i = 0; i < 4; i++)
+    			{
+    				territory =	(Territory) territoryList.get(Territory.CITADELLIST[i] - 1);
+    				territory.setType(Territory.CITADEL);
+    				territory =	(Territory) territoryList.get(Territory.SANCTUARYLIST[i] - 1);
+    				territory.setType(Territory.SANCTUARY);
+    				territory =	(Territory) territoryList.get(Territory.TOMBLIST[i] - 1);
+    				territory.setType(Territory.TOMB);
+    				territory =	(Territory) territoryList.get(Territory.RUINLIST[i] - 1);
+    				territory.setType(Territory.RUIN);
+    				territory =	(Territory) territoryList.get(Territory.BAZAARLIST[i] - 1);
+    				territory.setType(Territory.BAZAAR);
+    			}
+		    }
 		}
 		return true;
 	}
@@ -521,7 +582,7 @@ public class BoardView extends View implements OnTouchListener
 	public boolean isOccupied(int territoryNo)
 	{
 		Territory territory = (Territory) territoryList.get(territoryNo - 1);
-		List neigborList = territory.getNeigborList();
+		List neigborList = territory.getNeighborList();
 		Territory neigborTerritory = null;
 		int neigborTerritoryNo = 0;
 
@@ -704,30 +765,54 @@ public class BoardView extends View implements OnTouchListener
 			territoryList.add(territory);
 		}
 
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 5; j++)
-			{
-				for (int k = 0; k < 4 + j; k++)
-				{
-					type = Territory.STANDARD;
-					color = Color.rgb(0, (int) (100 + Math.random() * 30), 0);
-					// if ( Util.contains(Territory.SANCTUARYLIST, number) )
-					// 	type = Territory.SANCTUARY;
-					// else if ( Util.contains(Territory.TOMBLIST, number) )
-					// 	type = Territory.TOMB;
-					// else if ( Util.contains(Territory.RUINLIST, number) )
-					// 	type = Territory.RUIN;
-					// else if ( Util.contains(Territory.BAZAARLIST, number) )
-					// 	type = Territory.BAZAAR;
-					// else if ( Util.contains(Territory.CITADELLIST, number) )
-					// 	type = Territory.CITADEL;
-
-					territory = new Territory(number, i, type, color);
-					territoryList.add(territory);
-					number += 1;
-				}
-			}
+		if(originalBoard) {
+		    int player = 0;
+		    for(int i=8; i < OrigTerritories.terr.length; i++) {
+		        if(i == 30 || i == 60 || i == 90) {
+		            player++;
+		        }
+                type = Territory.STANDARD;
+                color = Color.rgb(0, (int) (100 + Math.random() * 30), 0);
+//                 if ( Util.contains(Territory.SANCTUARYLIST, number) )
+//                  type = Territory.SANCTUARY;
+//                 else if ( Util.contains(Territory.TOMBLIST, number) )
+//                  type = Territory.TOMB;
+//                 else if ( Util.contains(Territory.RUINLIST, number) )
+//                  type = Territory.RUIN;
+//                 else if ( Util.contains(Territory.BAZAARLIST, number) )
+//                  type = Territory.BAZAAR;
+//                 else if ( Util.contains(Territory.CITADELLIST, number) )
+//                  type = Territory.CITADEL;
+                territory = new Territory(i + 1, player, type, color);
+                territoryList.add(territory);
+		    }
+		}
+		else {
+    		for (int i = 0; i < 4; i++)
+    		{
+    			for (int j = 0; j < 5; j++)
+    			{
+    				for (int k = 0; k < 4 + j; k++)
+    				{
+    					type = Territory.STANDARD;
+    					color = Color.rgb(0, (int) (100 + Math.random() * 30), 0);
+    					// if ( Util.contains(Territory.SANCTUARYLIST, number) )
+    					// 	type = Territory.SANCTUARY;
+    					// else if ( Util.contains(Territory.TOMBLIST, number) )
+    					// 	type = Territory.TOMB;
+    					// else if ( Util.contains(Territory.RUINLIST, number) )
+    					// 	type = Territory.RUIN;
+    					// else if ( Util.contains(Territory.BAZAARLIST, number) )
+    					// 	type = Territory.BAZAAR;
+    					// else if ( Util.contains(Territory.CITADELLIST, number) )
+    					// 	type = Territory.CITADEL;
+    
+    					territory = new Territory(number, i, type, color);
+    					territoryList.add(territory);
+    					number += 1;
+    				}
+    			}
+    		}
 		}
 		return territoryList;
 	}
@@ -931,7 +1016,7 @@ public class BoardView extends View implements OnTouchListener
 		Territory fromTerritory = (Territory) territoryList.get(fromTerritoryNo - 1);
 		Territory toTerritory = (Territory) territoryList.get(toTerritoryNo - 1);
 		Territory neigborTerritory = null;
-		List neigborList = fromTerritory.getNeigborList();
+		List neigborList = fromTerritory.getNeighborList();
 		int neigborTerritoryNo = 0;
 		int dragonTerritoryNo = 0;
 
@@ -978,7 +1063,7 @@ public class BoardView extends View implements OnTouchListener
 		Territory fromTerritory = (Territory) territoryList.get(fromTerritoryNo - 1);
 		Territory toTerritory = (Territory) territoryList.get(toTerritoryNo - 1);
 		Territory neigborTerritory = null;
-		List neigborList = fromTerritory.getNeigborList();
+		List neigborList = fromTerritory.getNeighborList();
 		int neigborTerritoryNo = 0;
 		int dragonTerritoryNo = 0;
 
@@ -1029,7 +1114,7 @@ public class BoardView extends View implements OnTouchListener
 	   else {
          Bitmap bitmap = dragonBitmaps[drawType.index];
          int offsetX = -bitmap.getWidth() / 2;
-         int offsetY = -bitmap.getWidth() / 2;
+         int offsetY = -bitmap.getHeight() / 2;
          canvas.drawBitmap(bitmap, point.x + offsetX, point.y + offsetY, bitmapP);
 	   }
 	}
@@ -1041,7 +1126,7 @@ public class BoardView extends View implements OnTouchListener
       else {
          Bitmap bitmap = playerBitmaps[player][drawType.index]; 
          int offsetX = -bitmap.getWidth() / 2;
-         int offsetY = -bitmap.getWidth() / 2;
+         int offsetY = -bitmap.getHeight();
          canvas.drawBitmap(bitmap, point.x + offsetX, point.y + offsetY, bitmapP);
       }
    }

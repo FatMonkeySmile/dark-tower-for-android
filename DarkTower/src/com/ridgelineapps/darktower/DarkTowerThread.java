@@ -690,7 +690,7 @@ public class DarkTowerThread extends Thread
 					break;
 				case MouseAction.MOVED:
 					territoryNo = findTerritoryNo(action.getX(), action.getY());
-					if ( isNeigbor(territoryNo) )
+					if ( isNeighbor(territoryNo) )
 						paintBoard(territoryNo);
 					else
 						paintBoard(0);
@@ -701,7 +701,7 @@ public class DarkTowerThread extends Thread
 					   break;
 					}
 					territory = (Territory) territoryList.get(territoryNo - 1);
-					if ( isNeigbor(territoryNo) )
+					if ( isNeighbor(territoryNo) )
 					{
 						if ( player.isUsePegasus() )
 							player.setPegasus(false);
@@ -1484,7 +1484,7 @@ public class DarkTowerThread extends Thread
 		return 0;
 	}
 
-	public boolean isNeigbor(int territoryNo)
+	public boolean isNeighbor(int territoryNo)
 	{
 		if ( territoryNo > 0 )
 		{
@@ -1504,7 +1504,7 @@ public class DarkTowerThread extends Thread
 					if ( !( ( territory.getType() == Territory.CITADEL ) &&
 							( player.getRelKingdomNo() != 0 ) ) )
 					{
-						if ( territory.getNeigborList().contains(new Integer(player.getStartTerritoryNo())) )
+						if ( territory.getNeighborList().contains(new Integer(player.getStartTerritoryNo())) )
 							return true;
 						if ( player.getStartTerritoryNo() == territoryNo )
 							return true;
@@ -1536,7 +1536,7 @@ public class DarkTowerThread extends Thread
 				if ( !( ( territory.getType() == Territory.CITADEL ) &&
 						( player.getRelKingdomNo() != 0 ) ) )
 				{	   
-					if ( territory.getNeigborList().contains(new Integer(player.getStartTerritoryNo())) )
+					if ( territory.getNeighborList().contains(new Integer(player.getStartTerritoryNo())) )
 						return false;
 					if ( player.getStartTerritoryNo() == territoryNo )
 						return false;
@@ -1577,7 +1577,7 @@ public class DarkTowerThread extends Thread
 		if ( territoryNo > 0 )
 		{
 			territory = (Territory) territoryList.get(territoryNo - 1);
-			List neigborList = territory.getNeigborList();
+			List neigborList = territory.getNeighborList();
 			do
 			{
 				count++;

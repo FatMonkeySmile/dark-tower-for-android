@@ -64,11 +64,11 @@ public class Territory
 	public static final int[] KINGDOMLIST = { 9, 39, 69, 99 };
 	public static final int[] FRONTIERLIST = { 5, 6, 7, 8 };
 	public static final int[] DARKTOWERLIST = { 1, 2, 3, 4 };
-	public static int[] CITADELLIST = { 34, 64, 94, 124 };
-	public static int[] SANCTUARYLIST = { 29, 59, 89, 119 };
-	public static int[] TOMBLIST = { 25, 55, 85, 115 };
-	public static int[] RUINLIST = { 21, 51, 81, 111 };
-	public static int[] BAZAARLIST = { 14, 44, 74, 104 };
+	public static int[] CITADELLIST = new int[4]; //{ 34, 64, 94, 124 };
+	public static int[] SANCTUARYLIST = new int[4]; //{ 29, 59, 89, 119 };
+	public static int[] TOMBLIST = new int[4]; //{ 25, 55, 85, 115 };
+	public static int[] RUINLIST = new int[4]; //{ 21, 51, 81, 111 };
+	public static int[] BAZAARLIST = new int[4]; //{ 14, 44, 74, 104 };
 
    public static final int[] COLORLIST = { 
        Color.rgb(238, 20, 10), 
@@ -84,7 +84,7 @@ public class Territory
 	private Polygon polygon = null;
 	private Path path = null;
 	private Point centre = null;
-	private List neigborList = null;
+	private List neighborList = null;
 
 	public Territory()
 	{
@@ -172,7 +172,7 @@ public class Territory
 	public boolean intersects(Territory territory)
 	{
 		Polygon poly = territory.getPolygon();
-
+		
 		for (int i = 0; i < polygon.npoints; i++)
 		{
 			for (int j = 0; j < poly.npoints; j++)
@@ -186,6 +186,20 @@ public class Territory
 		}
 
 		return false;
+	}
+	
+	public boolean overlaps(Territory territory) {
+	    for(int i=0; i < territory.polygon.npoints; i++) {
+	        if(polygon.contains(territory.polygon.xpoints[i], territory.polygon.ypoints[i])) {
+	            return true;
+	        }
+	    }
+        for(int i=0; i < polygon.npoints; i++) {
+            if(territory.polygon.contains(polygon.xpoints[i], polygon.ypoints[i])) {
+                return true;
+            }
+        }
+        return false;
 	}
 
 	public void calcCentre()
@@ -207,13 +221,13 @@ public class Territory
 		return centre;
 	}
 
-	public void setNeigborList(List neigborList)
+	public void setNeighborList(List neighborList)
 	{
-		this.neigborList = neigborList;
+		this.neighborList = neighborList;
 	}
 
-	public List getNeigborList()
+	public List getNeighborList()
 	{
-		return neigborList;
+		return neighborList;
 	}
 }

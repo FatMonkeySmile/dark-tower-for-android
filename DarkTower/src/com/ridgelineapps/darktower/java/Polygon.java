@@ -8,6 +8,8 @@ package com.ridgelineapps.darktower.java;
 
 import java.util.Arrays;
 
+import android.graphics.Rect;
+
 /**
  * The <code>Polygon</code> class encapsulates a description of a 
  * closed, two-dimensional region within a coordinate space. This 
@@ -35,6 +37,10 @@ import java.util.Arrays;
  */
 public class Polygon implements Shape, java.io.Serializable {
 
+    /////////////////////////////////////*
+    Rect rect;
+    /////////////////////////////////////*
+    
     /**
      * The total number of points.  The value of <code>npoints</code>
      * represents the number of valid points in this <code>Polygon</code>
@@ -377,6 +383,38 @@ public class Polygon implements Shape, java.io.Serializable {
 	    return false;
 	}
 	int hits = 0;
+	
+    /////////////////////////////////////*
+	if(rect == null) {
+	    int x1;
+	    int y1;
+	    int x2;
+	    int y2;
+	    
+	    x1 = x2 = xpoints[0];
+	    y1 = y2 = ypoints[0];
+	    for(int i=1;i < npoints; i++) {
+	        if(xpoints[i] < x1) {
+	            x1 = xpoints[i];
+	        }
+	        if(xpoints[i] > x2) {
+	            x2 = xpoints[i];
+	        }
+            if(ypoints[i] < y1) {
+                y1 = ypoints[i];
+            }
+            if(ypoints[i] > y2) {
+                y2 = ypoints[i];
+            }
+	    }
+	    
+	    rect = new Rect(x1, y1, x2, y2);
+	}
+	
+	if(!rect.contains((int)x, (int)y)) {
+	    return false;
+	}
+	/////////////////////////////////////*
 
 	int lastx = xpoints[npoints - 1];
 	int lasty = ypoints[npoints - 1];
