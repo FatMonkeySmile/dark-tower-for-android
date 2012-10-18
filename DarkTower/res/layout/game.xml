@@ -20,12 +20,12 @@
 	    	android:layout_height="wrap_content"
 	    	android:layout_marginTop="100dp"
 	    	/>
-		<com.ridgelineapps.darktower.ButtonPanelView  
+		<!--  com.ridgelineapps.darktower.ButtonPanelView  
 		    android:id="@+id/darktowerview"
 	    	android:layout_width="wrap_content" 
 	    	android:layout_height="wrap_content"
-	    	/>
-		<!--  GridLayout  
+	    	/ -->
+		<GridLayout  
 	    	android:layout_width="match_parent" 
 	    	android:layout_height="wrap_content"
 	        android:alignmentMode="alignBounds"
@@ -126,7 +126,7 @@
 	    	    android:layout_column="2"
 	    	    android:layout_gravity="fill_horizontal"
 	    	    />
-		</GridLayout -->
+		</GridLayout>
 	</LinearLayout>
 	<com.ridgelineapps.darktower.InventoryView  
 	    android:id="@+id/inventoryview"
