@@ -412,6 +412,7 @@ public class DarkTowerThread extends Thread
 		throws InterruptedException, ResetException, DisableException
 	{
 		Player player = getPlayerListItem(playerNo);
+      resetMouseActionQueue();		
 		activity.getInventoryView().postInvalidate();
 
 		if ( player.isPerformAction() )
