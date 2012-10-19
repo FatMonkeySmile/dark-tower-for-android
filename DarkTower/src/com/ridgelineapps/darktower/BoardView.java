@@ -159,20 +159,20 @@ public class BoardView extends View implements OnTouchListener
          
          playerBitmaps = new Bitmap[4][3];
          playerBitmaps[0][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
-         playerBitmaps[0][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
-         playerBitmaps[0][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p1);
+         playerBitmaps[0][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p1);
+         playerBitmaps[0][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p1);
 
-         playerBitmaps[1][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
-         playerBitmaps[1][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
-         playerBitmaps[1][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
+         playerBitmaps[1][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
+         playerBitmaps[1][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p4);
+         playerBitmaps[1][2] = playerBitmaps[1][0];
 
          playerBitmaps[2][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
-         playerBitmaps[2][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
-         playerBitmaps[2][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
+         playerBitmaps[2][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p3);
+         playerBitmaps[2][2] = playerBitmaps[2][0];
          
-         playerBitmaps[3][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
-         playerBitmaps[3][1] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
-         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
+         playerBitmaps[3][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
+         playerBitmaps[3][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p2);
+         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p2);
       }
 
       DisplayMetrics dm = new DisplayMetrics();
