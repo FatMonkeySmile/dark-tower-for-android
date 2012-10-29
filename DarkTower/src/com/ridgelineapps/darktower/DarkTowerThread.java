@@ -46,6 +46,7 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -623,52 +624,106 @@ public class DarkTowerThread extends Thread
 			return;
 		}
 
-		verifyPlayerPosition(action);
-
-		switch ( action )
-		{
-			case Button.BAZAAR:
-				actionEvent = new Bazaar(this);
-				actionEvent.run();
-				player.setLastBuildingNo(Territory.BAZAAR);
-				break;
-			case Button.RUIN:
-				actionEvent = new Ruin(this);
-				actionEvent.run();
-				player.setLastBuildingNo(Territory.RUIN);
-				break;
-			case Button.MOVE:
-				actionEvent = new Move(this);
-				actionEvent.run();
-				break;
-			case Button.SANCTUARY:
-				actionEvent = new Sanctuary(this);
-				actionEvent.run();
-				player.setLastBuildingNo(Territory.SANCTUARY);
-				break;
-			case Button.CITADEL:
-				actionEvent = new Citadel(this);
-				actionEvent.run();
-				player.setLastBuildingNo(Territory.SANCTUARY);
-				break;
-			case Button.DARKTOWER:
-				actionEvent = new Tower(this);
-				actionEvent.run();
-				player.setLastBuildingNo(Territory.DARKTOWER);
-				break;
-			case Button.FRONTIER:
-				actionEvent = new Frontier(this);
-				actionEvent.run();
-				player.setLastBuildingNo(Territory.FRONTIER);
-				break;
-			case Button.INVENTORY:
-				actionEvent = new Inventory(this);
-				actionEvent.run();
-				break;
-			default:
-				play(Audio.WRONG);
-				sleep(100);
-				break;
+		if(getBoardView().highlightedTerritoryNo > 0) {
+		   Territory terr = (Territory) territoryList.get(getBoardView().highlightedTerritoryNo - 1);
+		   
+		   boolean valid = false;
+         switch ( action )
+         {
+            case Button.BAZAAR:
+               if(terr.getType() == Territory.BAZAAR) {
+                  valid = true;
+               }
+               break;
+            case Button.RUIN:
+               if(terr.getType() == Territory.RUIN || terr.getType() == Territory.TOMB) {
+                  valid = true;
+               }
+               break;
+            case Button.MOVE:
+               if(terr.getType() == Territory.STANDARD) {
+                  valid = true;
+               }
+               break;
+            case Button.SANCTUARY:
+               if(terr.getType() == Territory.SANCTUARY) {
+                  valid = true;
+               }
+               break;
+            case Button.CITADEL:
+               if(terr.getType() == Territory.CITADEL) {
+                  valid = true;
+               }
+               break;
+            case Button.DARKTOWER:
+               if(terr.getType() == Territory.DARKTOWER) {
+                  valid = true;
+               }
+               break;
+            case Button.FRONTIER:
+               if(terr.getType() == Territory.FRONTIER) {
+                  valid = true;
+               }
+               break;
+            default:
+               play(Audio.WRONG);
+               sleep(100);
+               break;
+         }
+         
+         if(valid) {
+   		   com.ridgelineapps.darktower.java.Point centre = terr.getCentre();
+   		   activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, centre.x, centre.y));
+         }
+		}
+		else {
+   		verifyPlayerPosition(action);
+   
+   		switch ( action )
+   		{
+   			case Button.BAZAAR:
+   				actionEvent = new Bazaar(this);
+   				actionEvent.run();
+   				player.setLastBuildingNo(Territory.BAZAAR);
+   				break;
+   			case Button.RUIN:
+   				actionEvent = new Ruin(this);
+   				actionEvent.run();
+   				player.setLastBuildingNo(Territory.RUIN);
+   				break;
+   			case Button.MOVE:
+   				actionEvent = new Move(this);
+   				actionEvent.run();
+   				break;
+   			case Button.SANCTUARY:
+   				actionEvent = new Sanctuary(this);
+   				actionEvent.run();
+   				player.setLastBuildingNo(Territory.SANCTUARY);
+   				break;
+   			case Button.CITADEL:
+   				actionEvent = new Citadel(this);
+   				actionEvent.run();
+   				player.setLastBuildingNo(Territory.SANCTUARY);
+   				break;
+   			case Button.DARKTOWER:
+   				actionEvent = new Tower(this);
+   				actionEvent.run();
+   				player.setLastBuildingNo(Territory.DARKTOWER);
+   				break;
+   			case Button.FRONTIER:
+   				actionEvent = new Frontier(this);
+   				actionEvent.run();
+   				player.setLastBuildingNo(Territory.FRONTIER);
+   				break;
+   			case Button.INVENTORY:
+   				actionEvent = new Inventory(this);
+   				actionEvent.run();
+   				break;
+   			default:
+   				play(Audio.WRONG);
+   				sleep(100);
+   				break;
+   		}
 		}
 	}
 
