@@ -162,17 +162,17 @@ public class BoardView extends View implements OnTouchListener
          playerBitmaps[0][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p1);
          playerBitmaps[0][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p1);
 
-         playerBitmaps[1][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
-         playerBitmaps[1][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p4);
-         playerBitmaps[1][2] = playerBitmaps[1][0];
+         playerBitmaps[1][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
+         playerBitmaps[1][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p2);
+         playerBitmaps[1][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p2);
 
          playerBitmaps[2][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p3);
          playerBitmaps[2][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p3);
-         playerBitmaps[2][2] = playerBitmaps[2][0];
+         playerBitmaps[2][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p3);
          
-         playerBitmaps[3][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p2);
-         playerBitmaps[3][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p2);
-         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p2);
+         playerBitmaps[3][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
+         playerBitmaps[3][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p4);
+         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p4);
       }
 
       DisplayMetrics dm = new DisplayMetrics();
@@ -206,7 +206,8 @@ public class BoardView extends View implements OnTouchListener
             return true;
          }
          else if(event.getAction() == MotionEvent.ACTION_UP) {
-            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, (int) event.getX(), (int) event.getY()));
+//            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, (int) event.getX(), (int) event.getY()));
+            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.MOVED, (int) event.getX(), (int) event.getY()));
             return true;
          }
       }
@@ -321,24 +322,6 @@ public class BoardView extends View implements OnTouchListener
           }         
       }
 
-//      boolean movingDragon = false;
-      
-      // draw player
-      if (playerList != null) {
-         for (int i = 0; i < playerList.size(); i++) {
-            player = (Player) playerList.get(i);
-            point = nextCoord(player);
-            DrawType drawType = DrawType.NORMAL;
-            if(player.isPerformAction()) {
-               drawType = DrawType.SELECTED;
-            }
-            drawPlayer(canvas, point, i, drawType);
-//            if(player.isPlaceDragon()) {
-//               movingDragon = true;
-//            }
-         }
-      }
-
       // draw dragon
       if (dragon != null) {
          if (dragon.getStartTerritoryNo() != 0) {
@@ -349,6 +332,21 @@ public class BoardView extends View implements OnTouchListener
             point = territory.getCentre();
             drawDragon(canvas, point);
             dragon.setStartTerritoryNo(dragon.getEndTerritoryNo());
+         }
+      }
+      
+      // draw player
+      if (playerList != null) {
+         for (int i = 0; i < playerList.size(); i++) {
+            player = (Player) playerList.get(i);
+            point = nextCoord(player);
+            DrawType drawType = DrawType.NORMAL;
+            if(player.isPerformAction()) {
+               drawType = DrawType.SELECTED;
+            }
+            if(!originalBoard || highlightedTerritoryNo < 1 || !((Territory) territoryList.get(highlightedTerritoryNo - 1)).getCentre().equals(point)) {
+               drawPlayer(canvas, point, i, drawType);
+            }
          }
       }
    }
