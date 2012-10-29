@@ -112,7 +112,7 @@ public class InventoryView extends View {
       }
       y += lineY;
       if(draw) {
-          canvas.drawText("Warriors-" + player.getWarriors() + "  Food-" + player.getFood() + "  Gold-" + player.getGold(), x, y, inventoryTextP);
+          canvas.drawText("Warriors-" + player.getWarriors() + "  Gold-" + player.getGold() + "  Food-" + player.getFood(), x, y, inventoryTextP);
       }
 //    canvas.drawText("Gold: " + player.getGold(), x, y, inventoryTextP);
 //    y += lineY;
