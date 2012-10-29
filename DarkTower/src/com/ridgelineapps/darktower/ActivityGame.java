@@ -47,6 +47,10 @@ public class ActivityGame extends Activity {
 //      ((BoardView) getWindow().getDecorView().findViewById(R.layout.game)).init(originalBoard);
 //      ((BoardView) findViewById(R.layout.game)).init(originalBoard);
       
+      if(darkTower != null && darkTower.thread != null) {
+          darkTower.thread.stop();
+      }
+      
       darkTower = new DarkTower(this);
    }
    
@@ -54,7 +58,10 @@ public class ActivityGame extends Activity {
    protected void onDestroy() {
        super.onDestroy();
        try {
-           // Not great, but simplest way to stop AI threads
+//           if(darkTower != null && darkTower.thread != null) {
+//               darkTower.thread.stop();
+//           }
+           // Not great, but simplest way to stop all threads
            android.os.Process.killProcess(android.os.Process.myPid());
        }
        catch(Exception e) {

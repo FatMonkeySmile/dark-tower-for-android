@@ -43,7 +43,6 @@ package com.ridgelineapps.darktower;
 import java.util.List;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.ridgelineapps.darktower.java.Point;
@@ -51,6 +50,8 @@ import com.ridgelineapps.darktower.java.Polygon;
 
 public class Territory
 {
+    boolean centreValid = false;
+    
 	public static final int NA = 0;
 	public static final int STANDARD = 1;
 	public static final int CITADEL = 2;
@@ -70,13 +71,12 @@ public class Territory
 	public static int[] RUINLIST = new int[4]; //{ 21, 51, 81, 111 };
 	public static int[] BAZAARLIST = new int[4]; //{ 14, 44, 74, 104 };
 
-   public static int[] COLORLIST = new int[4]; /*{ 
+   public static int[] COLORLIST = new int[] { 
        Color.rgb(238, 20, 10), 
        Color.rgb(51, 180, 20), 
        Color.rgb(20, 102, 225), 
        Color.rgb(255, 193, 0), 
         }; 
-        */
 
 	private int territoryNo = 0;
 	private int kingdomNo = 0;
@@ -137,6 +137,11 @@ public class Territory
 	public int getColor()
 	{
 		return color;
+	}
+	
+	public void setCenter(int x, int y) {
+	    centre = new Point(x, y);
+        centreValid = true;
 	}
 
 	public void setPolygon(Polygon polygon)
@@ -205,16 +210,19 @@ public class Territory
 
 	public void calcCentre()
 	{
-		int x = 0;
-		int y = 0;
-
-		for (int i = 0; i < polygon.npoints; i++)
-		{
-			x += polygon.xpoints[i];
-			y += polygon.ypoints[i];
-		}
+	    if(!centreValid) {
+    		int x = 0;
+    		int y = 0;
+    
+    		for (int i = 0; i < polygon.npoints; i++)
+    		{
+    			x += polygon.xpoints[i];
+    			y += polygon.ypoints[i];
+    		}
 		
-		centre = new Point(x / polygon.npoints, y / polygon.npoints);
+    		centre = new Point(x / polygon.npoints, y / polygon.npoints);
+    		centreValid = true;
+	    }
 	}
 
 	public Point getCentre()

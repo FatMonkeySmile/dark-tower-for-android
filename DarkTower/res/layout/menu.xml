@@ -268,9 +268,9 @@
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
 	    android:layout_marginBottom="18dp">
-	    <Button android:layout_marginRight="25dp" android:id="@+id/menu_exit" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_exit" android:layout_gravity="center_horizontal"></Button>
 	    <Button android:layout_marginLeft="25dp" android:id="@+id/menu_start" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_start" android:layout_gravity="center_horizontal"></Button>
-	</LinearLayout>
+	    <Button android:layout_marginRight="25dp" android:id="@+id/menu_exit" android:layout_height="wrap_content" android:layout_width="230dp" android:text="@string/menu_exit" android:layout_gravity="center_horizontal"></Button>
+	    	</LinearLayout>
 	
     <LinearLayout
 	    android:orientation="horizontal"
