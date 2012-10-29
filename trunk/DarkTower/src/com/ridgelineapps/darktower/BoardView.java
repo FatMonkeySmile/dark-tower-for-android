@@ -80,7 +80,7 @@ public class BoardView extends View implements OnTouchListener
 	private Bitmap grayBoardBitmap = null;
 	private List playerList = null;
 	private int playerNo = 0;
-	private int highlightedTerritoryNo = 0;
+	public int highlightedTerritoryNo = 0;
    private int highlightedPlayerOrDragon = -1;
 	private Dragon dragon = null;
 	
@@ -346,6 +346,11 @@ public class BoardView extends View implements OnTouchListener
             }
             if(!originalBoard || highlightedTerritoryNo < 1 || !((Territory) territoryList.get(highlightedTerritoryNo - 1)).getCentre().equals(point)) {
                drawPlayer(canvas, point, i, drawType);
+               
+               if ( player.getStartTerritoryNo() != player.getEndTerritoryNo() ) {
+                  Territory endTerritory = (Territory) territoryList.get(player.getEndTerritoryNo() - 1);
+                  drawPlayer(canvas, endTerritory.getCentre(), i, DrawType.HIGHLIGHT);
+               }
             }
          }
       }
