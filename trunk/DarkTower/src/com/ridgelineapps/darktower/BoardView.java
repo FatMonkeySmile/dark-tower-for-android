@@ -314,11 +314,11 @@ public class BoardView extends View implements OnTouchListener
 //            }
 //         }
          
-//         for(int i=0; i < territoryList.size(); i++) {
-//             territory = (Territory) territoryList.get(i);
-//             point = territory.getCentre();
-//             canvas.drawText("" + territory.getTerritoryNo(), point.x, point.y, debugP);
-//          }         
+         for(int i=0; i < territoryList.size(); i++) {
+             territory = (Territory) territoryList.get(i);
+             point = territory.getCentre();
+             canvas.drawText("" + territory.getTerritoryNo(), point.x, point.y, debugP);
+          }         
       }
 
 //      boolean movingDragon = false;
@@ -413,6 +413,7 @@ public class BoardView extends View implements OnTouchListener
 	         }
             territory = (Territory) territoryList.get(i);
             territory.setPolygon(polygon);
+            territory.setCenter(OrigTerritories.centers[i][0], OrigTerritories.centers[i][1]);
 	      }
 	   }
 	}
@@ -428,31 +429,39 @@ public class BoardView extends View implements OnTouchListener
 		{
 			srcTerritory = (Territory) territoryList.get(i);
 			srcNeighborList = new ArrayList();
-			for (int j = 0; j < territoryList.size(); j++)
-			{
-				if ( i != j )
-				{
-					destTerritory = (Territory) territoryList.get(j);
-					destNumber = new Integer( destTerritory.getTerritoryNo() );
-					boolean add = false;
-                    if(!originalBoard) {
-    					if ( srcTerritory.intersects(destTerritory) )
-    					{
-    					    add = true;
-    					}
-                    }
-                    else {
-                        if ( srcTerritory.overlaps(destTerritory) )
-                        {
-                            add = true;
+			
+			if(OrigTerritories.neighbors.length > i) {
+			    for(int j=0; j < OrigTerritories.neighbors[i].length; j++) {
+			        srcNeighborList.add(OrigTerritories.neighbors[i][j]);
+			    }
+			}
+			else {
+    			for (int j = 0; j < territoryList.size(); j++)
+    			{
+    				if ( i != j )
+    				{
+    					destTerritory = (Territory) territoryList.get(j);
+    					destNumber = new Integer( destTerritory.getTerritoryNo() );
+    					boolean add = false;
+                        if(!originalBoard) {
+        					if ( srcTerritory.intersects(destTerritory) )
+        					{
+        					    add = true;
+        					}
                         }
-                    }
-                    
-                    if(add && !srcNeighborList.contains(destNumber) )
-					{
-						srcNeighborList.add(destNumber);
-					}
-				}
+                        else {
+                            if ( srcTerritory.overlaps(destTerritory) )
+                            {
+                                add = true;
+                            }
+                        }
+                        
+                        if(add && !srcNeighborList.contains(destNumber) )
+    					{
+    						srcNeighborList.add(destNumber);
+    					}
+    				}
+    			}
 			}
 			srcTerritory.setNeighborList(srcNeighborList);
 		}
@@ -761,9 +770,15 @@ public class BoardView extends View implements OnTouchListener
 		if(originalBoard) {
 		    int player = 0;
 		    for(int i=8; i < OrigTerritories.terr.length; i++) {
-		        if(i == 30 || i == 60 || i == 90) {
+		        if(i == 34 || i == 64 || i == 91) {
 		            player++;
 		        }
+		        
+		        // whoops
+		        if(i == 122) {
+		            player = 0;
+		        }
+		        
                 type = Territory.STANDARD;
                 color = Color.rgb(0, (int) (100 + Math.random() * 30), 0);
 //                 if ( Util.contains(Territory.SANCTUARYLIST, number) )
@@ -1118,7 +1133,7 @@ public class BoardView extends View implements OnTouchListener
       else {
          Bitmap bitmap = playerBitmaps[player][drawType.index]; 
          int offsetX = -bitmap.getWidth() / 2;
-         int offsetY = -bitmap.getHeight();
+         int offsetY = -bitmap.getHeight() * 5/6;
          canvas.drawBitmap(bitmap, point.x + offsetX, point.y + offsetY, bitmapP);
       }
    }

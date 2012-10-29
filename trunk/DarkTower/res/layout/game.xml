@@ -30,7 +30,6 @@
 		<GridLayout  
 	    	android:layout_width="match_parent" 
 	    	android:layout_height="wrap_content"
-	        android:alignmentMode="alignBounds"
 	    	>
 	    	<Button
 	    	    android:text="@string/yesBuyButton"
@@ -38,9 +37,8 @@
 	    	    android:onClick="yesBuyButton"
 	    	    android:layout_row="0"
 	    	    android:layout_column="0"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Repeat"
@@ -48,9 +46,8 @@
 	    	    android:onClick="repeatButton"
 	    	    android:layout_row="0"
 	    	    android:layout_column="1"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="No/End"
@@ -58,9 +55,8 @@
 	    	    android:onClick="noEndButton"
 	    	    android:layout_row="0"
 	    	    android:layout_column="2"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Haggle"
@@ -68,9 +64,8 @@
 	    	    android:onClick="haggleButton"
 	    	    android:layout_row="1"
 	    	    android:layout_column="0"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Bazaar"
@@ -78,9 +73,8 @@
 	    	    android:onClick="bazaarButton"
 	    	    android:layout_row="1"
 	    	    android:layout_column="1"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Clear"
@@ -88,9 +82,8 @@
 	    	    android:onClick="clearButton"
 	    	    android:layout_row="1"
 	    	    android:layout_column="2"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Ruin"
@@ -98,9 +91,8 @@
 	    	    android:onClick="ruinButton"
 	    	    android:layout_row="2"
 	    	    android:layout_column="0"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Move"
@@ -108,9 +100,8 @@
 	    	    android:onClick="moveButton"
 	    	    android:layout_row="2"
 	    	    android:layout_column="1"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Sanctuary"
@@ -118,19 +109,17 @@
 	    	    android:onClick="sanctuaryButton"
 	    	    android:layout_row="2"
 	    	    android:layout_column="2"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
-	    	    android:text="Dark Tower"
+	    	    android:text="Tower"
 	    	    android:id="@+id/darktower"
 	    	    android:onClick="darktowerButton"
 	    	    android:layout_row="3"
 	    	    android:layout_column="0"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Frontier"
@@ -138,9 +127,8 @@
 	    	    android:onClick="frontierButton"
 	    	    android:layout_row="3"
 	    	    android:layout_column="1"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 	    	<Button
 	    	    android:text="Inventory"
@@ -148,9 +136,8 @@
 	    	    android:onClick="inventoryButton"
 	    	    android:layout_row="3"
 	    	    android:layout_column="2"
-	    	    android:layout_gravity="fill_horizontal"
-		        android:height="50px"
-		        android:width="50px"
+		        android:height="89px"
+		        android:width="89px"
 	    	    />
 		</GridLayout>
 	</LinearLayout>
