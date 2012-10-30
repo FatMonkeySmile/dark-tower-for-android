@@ -115,8 +115,9 @@ public class ActivityMenu extends Activity {
     }
     
     public boolean getOriginalBoard() {
-        CheckBox cb = (CheckBox) findViewById(R.id.original_board);
-        return cb.isChecked();        
+       return true;
+//        CheckBox cb = (CheckBox) findViewById(R.id.original_board);
+//        return cb.isChecked();        
     }
     
     public boolean getMuteSound() {
