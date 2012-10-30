@@ -141,7 +141,6 @@ public class BoardView extends View implements OnTouchListener
       borderP.setStyle(Paint.Style.STROKE);
       
       bitmapP = new Paint();
-      //TODO: turning all three on causes painting to be very slow...
 //      bitmapP.setDither(true);
 //      bitmapP.setFilterBitmap(true);
 //      bitmapP.setAntiAlias(true);

@@ -77,15 +77,14 @@ public class DarkTowerView extends View {
       textP = new Paint();
       textP.setTextSize(32);
       textP.setFakeBoldText(true);
-      textP.setAntiAlias(true);
+//      textP.setAntiAlias(true);
       // TODO Don't use pure red, use more pleasing colors (change in Territory too)
       textP.setColor(Color.RED);
 
       imageP = new Paint();
-      imageP.setAntiAlias(true);
-      // TODO set this for all images
-      imageP.setFilterBitmap(true);
-      imageP.setDither(true);
+//      imageP.setAntiAlias(true);
+//      imageP.setFilterBitmap(true);
+//      imageP.setDither(true);
       imageP.setARGB(255, 0, 0, 0);
 
       backgroundP = new Paint();

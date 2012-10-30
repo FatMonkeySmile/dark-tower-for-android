@@ -64,9 +64,9 @@ public class ButtonPanelView extends View {
       activity = (ActivityGame) context;
 
       imageP = new Paint();
-      imageP.setAntiAlias(true);
-      imageP.setFilterBitmap(true);
-      imageP.setDither(true);
+//      imageP.setAntiAlias(true);
+//      imageP.setFilterBitmap(true);
+//      imageP.setDither(true);
       imageP.setARGB(255, 0, 0, 0);
 
       darkenP = new Paint();

@@ -68,8 +68,10 @@ public class InventoryView extends View {
 
       imageP = new Paint();
 //      imageP.setAntiAlias(true);
-      imageP.setFilterBitmap(true);
-      imageP.setDither(true);
+      
+//      imageP.setFilterBitmap(true);
+//      imageP.setDither(true);
+      
       imageP.setARGB(255, 0, 0, 0);
 
       backgroundP = new Paint();
