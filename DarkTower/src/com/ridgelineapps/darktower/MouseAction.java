@@ -46,6 +46,7 @@ public class MouseAction
 	public static final int CLICKED = 1;
 	public static final int MOVED = 2;
 	public static final int EXITED = 3;
+	public static final int PLACE_DRAGON = 4;
 	
 	private int type = NA;
 	private int x = 0;

@@ -211,6 +211,8 @@ public class BoardView extends View implements OnTouchListener
          else if(event.getAction() == MotionEvent.ACTION_UP) {
 //            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, (int) event.getX(), (int) event.getY()));
             activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.MOVED, (int) event.getX(), (int) event.getY()));
+            // Hack for making dragon placement work
+            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.PLACE_DRAGON, (int) event.getX(), (int) event.getY()));
             return true;
          }
       }
