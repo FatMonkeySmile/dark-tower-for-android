@@ -17,5 +17,5 @@
 	<string name="mute_sound">Mute sound</string>
 	<string name="fast_display_computer">Show computer\&apos;s turn quickly</string> 
 	<string name="original_board">Use original board and pieces</string> 
-	<string name="start_desc">Android tablet version of the board game Dark Tower by Milton Bradley. This game is based on code from the PC version by Michael Bommer.</string>
+	<string name="start_desc">Android tablet version of the board game Dark Tower by Milton Bradley. This game is based on code from the PC version by Michael Bommer.\nThis project is open source, visit http://code.google.com/p/dark-tower-for-android/ to let us know of bugs, enhancement ideas or to help code.</string>
 </resources>
