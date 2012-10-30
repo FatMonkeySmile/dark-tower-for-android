@@ -565,69 +565,10 @@ public class DarkTowerThread extends Thread
 		throws InterruptedException, ResetException, DisableException
 	{
 		Player player = getPlayerListItem(playerNo);
-		player.getDisplayList().clear();
-		getDarkTowerView().setFlash(false);
-
-		int food = player.getFood();
-		player.setMoves(player.getMoves() + 1);
-		player.consumeFood();
-		// player has enough food?
-		if ( player.getFood() < (player.requiredFood() * 4) )
-		{
-			switch ( action )
-			{
-				case Button.BAZAAR:
-				case Button.RUIN:
-				case Button.MOVE:
-				case Button.SANCTUARY:
-				case Button.CITADEL:
-				case Button.DARKTOWER:
-				case Button.FRONTIER:
-				case Button.INVENTORY:
-					if ( food < player.requiredFood() )
-					{
-						paintDarkTower("", Image.BLACK, Audio.PLAGUE);
-						sleep(3500);
-					}
-					else
-					{
-						paintDarkTower("", Image.BLACK, Audio.STARVING);
-						sleep();
-					}
-				default:
-					break;
-			}
-		}
-		
-		// player cursed?
-		if ( player.isCursed() )
-		{
-			player.setCursed(false);
-			paintDarkTower("", Image.CURSED, Audio.PLAGUE);
-			sleep(3000);
-			
-			player.getDisplayList().add(Image.WARRIOR);
-			player.getDisplayList().add(Image.GOLD);
-			// display items
-			ActionEvent actionEvent = new Display(this);
-			actionEvent.run();
-			
-			player.setMoveToPrevTerritory(true);
-			endTurn();
-			return;
-		}
-
-		// loose?
-		if ( player.getWarriors() < 1 )
-		{
-			endTurn();
-			return;
-		}
-
-		if(getBoardView().highlightedTerritoryNo > 0) {
-		   Territory terr = (Territory) territoryList.get(getBoardView().highlightedTerritoryNo - 1);
-		   
-		   boolean valid = false;
+      if(getBoardView().highlightedTerritoryNo > 0) {
+         Territory terr = (Territory) territoryList.get(getBoardView().highlightedTerritoryNo - 1);
+         
+         boolean valid = false;
          switch ( action )
          {
             case Button.BAZAAR:
@@ -673,11 +614,70 @@ public class DarkTowerThread extends Thread
          }
          
          if(valid) {
-   		   com.ridgelineapps.darktower.java.Point centre = terr.getCentre();
-   		   activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, centre.x, centre.y));
+            com.ridgelineapps.darktower.java.Point centre = terr.getCentre();
+            activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, centre.x, centre.y));
          }
-		}
-		else {
+      }
+      else {
+   		player.getDisplayList().clear();
+   		getDarkTowerView().setFlash(false);
+   
+   		int food = player.getFood();
+   		player.setMoves(player.getMoves() + 1);
+   		player.consumeFood();
+   		// player has enough food?
+   		if ( player.getFood() < (player.requiredFood() * 4) )
+   		{
+   			switch ( action )
+   			{
+   				case Button.BAZAAR:
+   				case Button.RUIN:
+   				case Button.MOVE:
+   				case Button.SANCTUARY:
+   				case Button.CITADEL:
+   				case Button.DARKTOWER:
+   				case Button.FRONTIER:
+   				case Button.INVENTORY:
+   					if ( food < player.requiredFood() )
+   					{
+   						paintDarkTower("", Image.BLACK, Audio.PLAGUE);
+   						sleep(3500);
+   					}
+   					else
+   					{
+   						paintDarkTower("", Image.BLACK, Audio.STARVING);
+   						sleep();
+   					}
+   				default:
+   					break;
+   			}
+   		}
+   		
+   		// player cursed?
+   		if ( player.isCursed() )
+   		{
+   			player.setCursed(false);
+   			paintDarkTower("", Image.CURSED, Audio.PLAGUE);
+   			sleep(3000);
+   			
+   			player.getDisplayList().add(Image.WARRIOR);
+   			player.getDisplayList().add(Image.GOLD);
+   			// display items
+   			ActionEvent actionEvent = new Display(this);
+   			actionEvent.run();
+   			
+   			player.setMoveToPrevTerritory(true);
+   			endTurn();
+   			return;
+   		}
+   
+   		// loose?
+   		if ( player.getWarriors() < 1 )
+   		{
+   			endTurn();
+   			return;
+   		}
+
    		verifyPlayerPosition(action);
    
    		switch ( action )
@@ -886,7 +886,7 @@ public class DarkTowerThread extends Thread
 									paintBoard(0);
 							}
 						}
-						else if ( action.getType() == MouseAction.CLICKED )
+						else if ( action.getType() == MouseAction.PLACE_DRAGON )
 						{
 							paintDarkTower("-" + Integer.toString(playerNo + 1), 
 								Image.BLACK, Audio.BEEP);
