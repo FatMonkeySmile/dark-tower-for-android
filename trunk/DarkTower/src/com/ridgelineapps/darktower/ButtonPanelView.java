@@ -48,8 +48,9 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 
-public class ButtonPanelView extends View {
+public class ButtonPanelView extends View implements OnTouchListener {
    private Bitmap bitmap = null;
    Paint imageP;
    Paint darkenP;
@@ -58,6 +59,12 @@ public class ButtonPanelView extends View {
    
    int highlightX = -1;
    int highlightY = -1;
+   
+   int offsetX;
+   int offsetY;
+   
+   int startFudge = 5;
+   int endFudge = 8;
 
    public ButtonPanelView(Context context, AttributeSet attributes) {
       super(context, attributes);
@@ -73,62 +80,73 @@ public class ButtonPanelView extends View {
       darkenP.setARGB(128, 0, 0, 0);
       
       bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.panel);
+      setOnTouchListener(this);
    }
 
    @Override
    protected void onDraw(Canvas canvas) {
-      canvas.drawBitmap(bitmap,  0, 0, imageP);
+       if(offsetX == 0) {
+           offsetX = (getWidth() - bitmap.getWidth()) / 2;
+           offsetY = 5; //(getWidth() - bitmap.getWidth()) / 2;
+       }
+       
+      canvas.drawBitmap(bitmap, offsetX, offsetY, imageP);
 
       if(highlightX != -1 && highlightY != -1) {
-         int startX = 0;
-         int startY = 0;
-         int endX = bitmap.getWidth();
-         int endY = bitmap.getHeight();
-         int incX = endX - startX / 3;
-         int incY = endY - startY / 4;
+         int startX = offsetX + startFudge;
+         int startY = offsetY + startFudge;
+         int endX = startX + bitmap.getWidth() - endFudge;
+         int endY = startY + bitmap.getHeight() - endFudge;
+         int incX = (endX - startX) / 3;
+         int incY = (endY - startY) / 4;
          
          int left = highlightX * incX + startX;
          int top = highlightY * incY + startY;
          int right = left + incX;
          int bottom = top + incY;
+         
+         // 1-off hacks
+         if(highlightY == 3) {
+             top--;
+         }
+         else if(highlightY == 2) {
+             bottom--;
+         }
 
          canvas.drawRect(left, top, right, bottom, darkenP);
       }
       
       //***
 
-      Paint p = new Paint();
-      p.setARGB(255, 0, 255, 0);
-      int startX = 0;
-      int startY = 0;
-      int endX = bitmap.getWidth();
-      int endY = bitmap.getHeight();
-      int incX = endX - startX / 3;
-      int incY = endY - startY / 4;
-      
-      for(int x=startX; x <= endX; x += incX) {
-         canvas.drawLine(x, 0, x, bitmap.getHeight(), p);
-      }
-      
-      for(int y=startY; y <= endY; y += incY) {
-         canvas.drawLine(0, y, bitmap.getWidth(), y, p);
-      }    
-      
-      canvas.drawLine(10, 10, 20, 40, p);
-
+//      Paint p = new Paint();
+//      p.setARGB(255, 0, 255, 0);
+//      int startX = offsetX + startFudge;
+//      int startY = offsetY + startFudge;
+//      int endX = startX + bitmap.getWidth() - endFudge;
+//      int endY = startY + bitmap.getHeight() - endFudge;
+//      int incX = (endX - startX) / 3;
+//      int incY = (endY - startY) / 4;
+//      
+//      for(int x=startX; x <= endX; x += incX) {
+//         canvas.drawLine(x, startY, x, endY, p);
+//      }
+//      
+//      for(int y=startY; y <= endY; y += incY) {
+//         canvas.drawLine(startX, y, endX, y, p);
+//      }    
       
       //***
    }
 
    @Override
-   public boolean onTouchEvent(MotionEvent event) {
-      if((event.getAction() & MotionEvent.ACTION_UP) != 0 || (event.getAction() & MotionEvent.ACTION_DOWN) != 0 || (event.getAction() & MotionEvent.ACTION_MOVE) != 0) {
-         int startX = 0;
-         int startY = 0;
-         int endX = bitmap.getWidth();
-         int endY = bitmap.getHeight();
-         int incX = endX - startX / 3;
-         int incY = endY - startY / 4;
+   public boolean onTouch(View v, MotionEvent event) {
+      if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+         int startX = offsetX + startFudge;
+         int startY = offsetY + startFudge;
+         int endX = startX + bitmap.getWidth() - endFudge;
+         int endY = startY + bitmap.getHeight() - endFudge;
+         int incX = (endX - startX) / 3;
+         int incY = (endY - startY) / 4;
    
          int buttonX = 0;
          int buttonY = 0;
@@ -137,28 +155,29 @@ public class ButtonPanelView extends View {
          int touchY = (int) event.getY();
          
          for(int y=startY; y <= endY; y += incY) {
+             buttonX = 0;
             for(int x=startX; x <= endX; x += incX) {
                if(touchX >= x && touchX < x + incX && touchY >= y && touchY < y + incY) {
                   found = true;
                   break;
                }
-               buttonY++;
+               buttonX++;
             }         
             if(found) {
                break;
             }
-            buttonX++;
+            buttonY++;
          }
          
          if(found) {
-            if((event.getAction() & MotionEvent.ACTION_UP) != 0) {
+            if(event.getAction() == MotionEvent.ACTION_UP) {
                highlightX = -1;
                highlightY = -1;
                buttonPressed(buttonX, buttonY);
                postInvalidate();
                return true;
             }
-            if((event.getAction() & MotionEvent.ACTION_DOWN) != 0 || (event.getAction() & MotionEvent.ACTION_MOVE) != 0) {
+            if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                highlightX = buttonX;
                highlightY = buttonY;
                postInvalidate();
@@ -167,7 +186,7 @@ public class ButtonPanelView extends View {
          }
       }
       
-      if((event.getAction() & MotionEvent.ACTION_UP) != 0 || (event.getAction() & MotionEvent.ACTION_CANCEL) != 0 || (event.getAction() & MotionEvent.ACTION_OUTSIDE) != 0) {
+      if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_OUTSIDE) {
          highlightX = -1;
          highlightY = -1;
          postInvalidate();
@@ -215,9 +234,9 @@ public class ButtonPanelView extends View {
          activity.inventoryButton(null);
       }      
    }
-   
-//   @Override
-//   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//      setMeasuredDimension(260, 240);
-//   }
+
+   @Override
+   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      setMeasuredDimension(260, 240);
+   }
 }
