@@ -55,6 +55,9 @@ public class ButtonPanelView extends View {
    Paint darkenP;
 
    ActivityGame activity;
+   
+   int highlightX = -1;
+   int highlightY = -1;
 
    public ButtonPanelView(Context context, AttributeSet attributes) {
       super(context, attributes);
@@ -75,6 +78,22 @@ public class ButtonPanelView extends View {
    @Override
    protected void onDraw(Canvas canvas) {
       canvas.drawBitmap(bitmap,  0, 0, imageP);
+
+      if(highlightX != -1 && highlightY != -1) {
+         int startX = 0;
+         int startY = 0;
+         int endX = bitmap.getWidth();
+         int endY = bitmap.getHeight();
+         int incX = endX - startX / 3;
+         int incY = endY - startY / 4;
+         
+         int left = highlightX * incX + startX;
+         int top = highlightY * incY + startY;
+         int right = left + incX;
+         int bottom = top + incY;
+
+         canvas.drawRect(left, top, right, bottom, darkenP);
+      }
       
       //***
 
@@ -93,7 +112,9 @@ public class ButtonPanelView extends View {
       
       for(int y=startY; y <= endY; y += incY) {
          canvas.drawLine(0, y, bitmap.getWidth(), y, p);
-      }         
+      }    
+      
+      canvas.drawLine(10, 10, 20, 40, p);
 
       
       //***
@@ -101,7 +122,7 @@ public class ButtonPanelView extends View {
 
    @Override
    public boolean onTouchEvent(MotionEvent event) {
-      if((event.getAction() & MotionEvent.ACTION_UP) != 0) {
+      if((event.getAction() & MotionEvent.ACTION_UP) != 0 || (event.getAction() & MotionEvent.ACTION_DOWN) != 0 || (event.getAction() & MotionEvent.ACTION_MOVE) != 0) {
          int startX = 0;
          int startY = 0;
          int endX = bitmap.getWidth();
@@ -130,10 +151,28 @@ public class ButtonPanelView extends View {
          }
          
          if(found) {
-            buttonPressed(buttonX, buttonY);
-            return true;
+            if((event.getAction() & MotionEvent.ACTION_UP) != 0) {
+               highlightX = -1;
+               highlightY = -1;
+               buttonPressed(buttonX, buttonY);
+               postInvalidate();
+               return true;
+            }
+            if((event.getAction() & MotionEvent.ACTION_DOWN) != 0 || (event.getAction() & MotionEvent.ACTION_MOVE) != 0) {
+               highlightX = buttonX;
+               highlightY = buttonY;
+               postInvalidate();
+               return true;
+            }            
          }
       }
+      
+      if((event.getAction() & MotionEvent.ACTION_UP) != 0 || (event.getAction() & MotionEvent.ACTION_CANCEL) != 0 || (event.getAction() & MotionEvent.ACTION_OUTSIDE) != 0) {
+         highlightX = -1;
+         highlightY = -1;
+         postInvalidate();
+         return true;
+      }      
       
       return super.onTouchEvent(event);
    }
