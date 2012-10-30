@@ -248,6 +248,7 @@
 	        android:layout_marginLeft="15dp"/>
     </LinearLayout>
     
+    <!-- 
     <LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="fill_parent"
@@ -262,6 +263,8 @@
 	        android:text="@string/original_board" 
 	        android:layout_marginRight="15dp"/>
     </LinearLayout>
+     -->
+     
     <LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="fill_parent"
