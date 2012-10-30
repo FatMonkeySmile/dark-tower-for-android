@@ -510,7 +510,7 @@ public class DarkTowerThread extends Thread
 	//
 	// verify player position
 	//
-	public void verifyPlayerPosition(int action)
+	public boolean verifyPlayerPosition(int action, boolean move)
 		throws ResetException, DisableException
 	{
 		Player player = getPlayerListItem(playerNo);
@@ -549,6 +549,10 @@ public class DarkTowerThread extends Thread
 
 		if ( player.getEndTerritoryNo() != territoryNo )
 		{
+		   if(!move) {
+		      return false;
+		   }
+		   
 			player.setEndTerritoryNo(territoryNo);
 			do
 			{
@@ -556,6 +560,8 @@ public class DarkTowerThread extends Thread
 			}
 			while ( player.getStartTerritoryNo() != player.getEndTerritoryNo() );
 		}
+		
+		return true;
 	}
 
 	//
@@ -608,8 +614,6 @@ public class DarkTowerThread extends Thread
                }
                break;
             default:
-               play(Audio.WRONG);
-               sleep(100);
                break;
          }
          
@@ -617,114 +621,126 @@ public class DarkTowerThread extends Thread
             com.ridgelineapps.darktower.java.Point centre = terr.getCentre();
             activity.darkTower.thread.addMouseAction(new MouseAction(MouseAction.CLICKED, centre.x, centre.y));
          }
+         else {
+            play(Audio.WRONG);
+            sleep(100);
+         }
       }
       else {
-   		player.getDisplayList().clear();
-   		getDarkTowerView().setFlash(false);
+         if(!verifyPlayerPosition(action, false)) {
+            play(Audio.WRONG);
+            sleep(100);            
+         }
+         else {
+      		player.getDisplayList().clear();
+      		getDarkTowerView().setFlash(false);
+      
+      		int food = player.getFood();
+      		player.setMoves(player.getMoves() + 1);
+      		player.consumeFood();
+      		// player has enough food?
+      		if ( player.getFood() < (player.requiredFood() * 4) )
+      		{
+      			switch ( action )
+      			{
+      				case Button.BAZAAR:
+      				case Button.RUIN:
+      				case Button.MOVE:
+      				case Button.SANCTUARY:
+      				case Button.CITADEL:
+      				case Button.DARKTOWER:
+      				case Button.FRONTIER:
+      				case Button.INVENTORY:
+      					if ( food < player.requiredFood() )
+      					{
+      						paintDarkTower("", Image.BLACK, Audio.PLAGUE);
+      						sleep(3500);
+      					}
+      					else
+      					{
+      						paintDarkTower("", Image.BLACK, Audio.STARVING);
+      						sleep();
+      					}
+      				default:
+      					break;
+      			}
+      		}
+      		
+      		// player cursed?
+      		if ( player.isCursed() )
+      		{
+      			player.setCursed(false);
+      			paintDarkTower("", Image.CURSED, Audio.PLAGUE);
+      			sleep(3000);
+      			
+      			player.getDisplayList().add(Image.WARRIOR);
+      			player.getDisplayList().add(Image.GOLD);
+      			// display items
+      			ActionEvent actionEvent = new Display(this);
+      			actionEvent.run();
+      			
+      			player.setMoveToPrevTerritory(true);
+      			endTurn();
+      			return;
+      		}
+      
+      		// lose?
+      		if ( player.getWarriors() < 1 )
+      		{
+      			endTurn();
+      			return;
+      		}
    
-   		int food = player.getFood();
-   		player.setMoves(player.getMoves() + 1);
-   		player.consumeFood();
-   		// player has enough food?
-   		if ( player.getFood() < (player.requiredFood() * 4) )
-   		{
-   			switch ( action )
-   			{
-   				case Button.BAZAAR:
-   				case Button.RUIN:
-   				case Button.MOVE:
-   				case Button.SANCTUARY:
-   				case Button.CITADEL:
-   				case Button.DARKTOWER:
-   				case Button.FRONTIER:
-   				case Button.INVENTORY:
-   					if ( food < player.requiredFood() )
-   					{
-   						paintDarkTower("", Image.BLACK, Audio.PLAGUE);
-   						sleep(3500);
-   					}
-   					else
-   					{
-   						paintDarkTower("", Image.BLACK, Audio.STARVING);
-   						sleep();
-   					}
-   				default:
-   					break;
-   			}
-   		}
-   		
-   		// player cursed?
-   		if ( player.isCursed() )
-   		{
-   			player.setCursed(false);
-   			paintDarkTower("", Image.CURSED, Audio.PLAGUE);
-   			sleep(3000);
-   			
-   			player.getDisplayList().add(Image.WARRIOR);
-   			player.getDisplayList().add(Image.GOLD);
-   			// display items
-   			ActionEvent actionEvent = new Display(this);
-   			actionEvent.run();
-   			
-   			player.setMoveToPrevTerritory(true);
-   			endTurn();
-   			return;
-   		}
-   
-   		// loose?
-   		if ( player.getWarriors() < 1 )
-   		{
-   			endTurn();
-   			return;
-   		}
-
-   		verifyPlayerPosition(action);
-   
-   		switch ( action )
-   		{
-   			case Button.BAZAAR:
-   				actionEvent = new Bazaar(this);
-   				actionEvent.run();
-   				player.setLastBuildingNo(Territory.BAZAAR);
-   				break;
-   			case Button.RUIN:
-   				actionEvent = new Ruin(this);
-   				actionEvent.run();
-   				player.setLastBuildingNo(Territory.RUIN);
-   				break;
-   			case Button.MOVE:
-   				actionEvent = new Move(this);
-   				actionEvent.run();
-   				break;
-   			case Button.SANCTUARY:
-   				actionEvent = new Sanctuary(this);
-   				actionEvent.run();
-   				player.setLastBuildingNo(Territory.SANCTUARY);
-   				break;
-   			case Button.CITADEL:
-   				actionEvent = new Citadel(this);
-   				actionEvent.run();
-   				player.setLastBuildingNo(Territory.SANCTUARY);
-   				break;
-   			case Button.DARKTOWER:
-   				actionEvent = new Tower(this);
-   				actionEvent.run();
-   				player.setLastBuildingNo(Territory.DARKTOWER);
-   				break;
-   			case Button.FRONTIER:
-   				actionEvent = new Frontier(this);
-   				actionEvent.run();
-   				player.setLastBuildingNo(Territory.FRONTIER);
-   				break;
-   			case Button.INVENTORY:
-   				actionEvent = new Inventory(this);
-   				actionEvent.run();
-   				break;
-   			default:
-   				play(Audio.WRONG);
-   				sleep(100);
-   				break;
-   		}
+      		// Uncomment this verifyPlayerPosition() and comment out the one above to move the player automatically, even if they
+      		// are not next to the location
+      		verifyPlayerPosition(action, true);
+      
+      		switch ( action )
+      		{
+      			case Button.BAZAAR:
+      				actionEvent = new Bazaar(this);
+      				actionEvent.run();
+      				player.setLastBuildingNo(Territory.BAZAAR);
+      				break;
+      			case Button.RUIN:
+      				actionEvent = new Ruin(this);
+      				actionEvent.run();
+      				player.setLastBuildingNo(Territory.RUIN);
+      				break;
+      			case Button.MOVE:
+      				actionEvent = new Move(this);
+      				actionEvent.run();
+      				break;
+      			case Button.SANCTUARY:
+      				actionEvent = new Sanctuary(this);
+      				actionEvent.run();
+      				player.setLastBuildingNo(Territory.SANCTUARY);
+      				break;
+      			case Button.CITADEL:
+      				actionEvent = new Citadel(this);
+      				actionEvent.run();
+      				player.setLastBuildingNo(Territory.SANCTUARY);
+      				break;
+      			case Button.DARKTOWER:
+      				actionEvent = new Tower(this);
+      				actionEvent.run();
+      				player.setLastBuildingNo(Territory.DARKTOWER);
+      				break;
+      			case Button.FRONTIER:
+      				actionEvent = new Frontier(this);
+      				actionEvent.run();
+      				player.setLastBuildingNo(Territory.FRONTIER);
+      				break;
+      			case Button.INVENTORY:
+      				actionEvent = new Inventory(this);
+      				actionEvent.run();
+      				break;
+      			default:
+      				play(Audio.WRONG);
+      				sleep(100);
+      				break;
+      		}
+         }
 		}
 	}
 
