@@ -641,17 +641,18 @@ public class DarkTowerThread extends Thread
                }
                break;
             case Button.MOVE:
-               if(terr.getType() == Territory.STANDARD) {
+                // Is it right to allow move button to move to any for simplicity?
+//               if(terr.getType() == Territory.STANDARD) {
                   valid = true;
-               }
+//               }
                break;
             case Button.SANCTUARY:
-               if(terr.getType() == Territory.SANCTUARY) {
+               if(terr.getType() == Territory.SANCTUARY || terr.getType() == Territory.CITADEL) {
                   valid = true;
                }
                break;
             case Button.CITADEL:
-               if(terr.getType() == Territory.CITADEL) {
+                if(terr.getType() == Territory.SANCTUARY || terr.getType() == Territory.CITADEL) {
                   valid = true;
                }
                break;

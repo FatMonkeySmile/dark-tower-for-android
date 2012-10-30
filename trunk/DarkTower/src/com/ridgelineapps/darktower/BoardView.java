@@ -63,6 +63,8 @@ import com.ridgelineapps.darktower.java.Polygon;
 
 public class BoardView extends View implements OnTouchListener
 {
+    public static final boolean drawTerritoryNumbers = false;
+    
    Resources res;
    Paint paint;
    Paint highlightP1;
@@ -172,7 +174,8 @@ public class BoardView extends View implements OnTouchListener
          
          playerBitmaps[3][0] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
          playerBitmaps[3][1] = BitmapFactory.decodeResource(res, R.drawable.semitrans_p4);
-         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p4);
+         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.orig_p4);
+//         playerBitmaps[3][2] = BitmapFactory.decodeResource(res, R.drawable.glow_p4);
       }
 
       DisplayMetrics dm = new DisplayMetrics();
@@ -315,11 +318,13 @@ public class BoardView extends View implements OnTouchListener
 //            }
 //         }
          
-         for(int i=0; i < territoryList.size(); i++) {
-             territory = (Territory) territoryList.get(i);
-             point = territory.getCentre();
-             canvas.drawText("" + territory.getTerritoryNo(), point.x, point.y, debugP);
-          }         
+          if(drawTerritoryNumbers) {
+             for(int i=0; i < territoryList.size(); i++) {
+                 territory = (Territory) territoryList.get(i);
+                 point = territory.getCentre();
+                 canvas.drawText("" + territory.getTerritoryNo(), point.x, point.y, debugP);
+              }
+          }
       }
 
       // draw dragon
@@ -339,18 +344,20 @@ public class BoardView extends View implements OnTouchListener
       if (playerList != null) {
          for (int i = 0; i < playerList.size(); i++) {
             player = (Player) playerList.get(i);
-            point = nextCoord(player);
-            DrawType drawType = DrawType.NORMAL;
-            if(player.isPerformAction()) {
-               drawType = DrawType.SELECTED;
-            }
-            if(!originalBoard || highlightedTerritoryNo < 1 || !((Territory) territoryList.get(highlightedTerritoryNo - 1)).getCentre().equals(point)) {
-               drawPlayer(canvas, point, i, drawType);
-               
-               if ( player.getStartTerritoryNo() != player.getEndTerritoryNo() ) {
-                  Territory endTerritory = (Territory) territoryList.get(player.getEndTerritoryNo() - 1);
-                  drawPlayer(canvas, endTerritory.getCentre(), i, DrawType.HIGHLIGHT);
-               }
+            if(player.isEnable()) {
+                point = nextCoord(player);
+                DrawType drawType = DrawType.NORMAL;
+                if(player.isPerformAction()) {
+                   drawType = DrawType.SELECTED;
+                }
+                if(!originalBoard || highlightedTerritoryNo < 1 || !((Territory) territoryList.get(highlightedTerritoryNo - 1)).getCentre().equals(point)) {
+                   drawPlayer(canvas, point, i, drawType);
+                   
+                   if ( player.getPlayerType() == Player.NONEPC && player.getStartTerritoryNo() != player.getEndTerritoryNo() ) {
+                      Territory endTerritory = (Territory) territoryList.get(player.getEndTerritoryNo() - 1);
+                      drawPlayer(canvas, endTerritory.getCentre(), i, DrawType.HIGHLIGHT);
+                   }
+                }
             }
          }
       }
@@ -433,39 +440,39 @@ public class BoardView extends View implements OnTouchListener
 			srcTerritory = (Territory) territoryList.get(i);
 			srcNeighborList = new ArrayList();
 			
-			if(OrigTerritories.neighbors.length > i) {
+//			if(OrigTerritories.neighbors.length > i) {
 			    for(int j=0; j < OrigTerritories.neighbors[i].length; j++) {
 			        srcNeighborList.add(OrigTerritories.neighbors[i][j]);
 			    }
-			}
-			else {
-    			for (int j = 0; j < territoryList.size(); j++)
-    			{
-    				if ( i != j )
-    				{
-    					destTerritory = (Territory) territoryList.get(j);
-    					destNumber = new Integer( destTerritory.getTerritoryNo() );
-    					boolean add = false;
-                        if(!originalBoard) {
-        					if ( srcTerritory.intersects(destTerritory) )
-        					{
-        					    add = true;
-        					}
-                        }
-                        else {
-                            if ( srcTerritory.overlaps(destTerritory) )
-                            {
-                                add = true;
-                            }
-                        }
-                        
-                        if(add && !srcNeighborList.contains(destNumber) )
-    					{
-    						srcNeighborList.add(destNumber);
-    					}
-    				}
-    			}
-			}
+//			}
+//			else {
+//    			for (int j = 0; j < territoryList.size(); j++)
+//    			{
+//    				if ( i != j )
+//    				{
+//    					destTerritory = (Territory) territoryList.get(j);
+//    					destNumber = new Integer( destTerritory.getTerritoryNo() );
+//    					boolean add = false;
+//                        if(!originalBoard) {
+//        					if ( srcTerritory.intersects(destTerritory) )
+//        					{
+//        					    add = true;
+//        					}
+//                        }
+//                        else {
+//                            if ( srcTerritory.overlaps(destTerritory) )
+//                            {
+//                                add = true;
+//                            }
+//                        }
+//                        
+//                        if(add && !srcNeighborList.contains(destNumber) )
+//    					{
+//    						srcNeighborList.add(destNumber);
+//    					}
+//    				}
+//    			}
+//			}
 			srcTerritory.setNeighborList(srcNeighborList);
 		}
 	}
@@ -547,8 +554,8 @@ public class BoardView extends View implements OnTouchListener
                 
                 Territory.COLORLIST = new int[] { 
                     Color.rgb(200, 113, 1), 
-                    Color.rgb(167, 160, 128), 
-                    Color.rgb(115, 125, 117), 
+                    Color.rgb(152, 145, 113), 
+                    Color.rgb(85, 95, 87), 
                     Color.rgb(79, 46, 34), 
                 };
 		    }
@@ -1123,8 +1130,8 @@ public class BoardView extends View implements OnTouchListener
 	      MultiImage.drawSubImage(canvas, dragonImageIcon, MultiImage.DRAGON, 28, point.x, point.y);
 	   }
 	   else {
-         int offsetX = -dragonBitmap.getWidth() / 2;
-         int offsetY = -dragonBitmap.getHeight() / 2;
+         int offsetX = -dragonBitmap.getWidth() * 3/5;
+         int offsetY = -dragonBitmap.getHeight() * 4/5;
          canvas.drawBitmap(dragonBitmap, point.x + offsetX, point.y + offsetY, bitmapP);
 	   }
 	}

@@ -58,11 +58,11 @@ public class ActivityGame extends Activity {
    protected void onDestroy() {
        super.onDestroy();
        try {
-//           if(darkTower != null && darkTower.thread != null) {
-//               darkTower.thread.stop();
-//           }
+           if(darkTower != null && darkTower.thread != null) {
+               darkTower.thread.stop();
+           }
            // Not great, but simplest way to stop all threads
-           android.os.Process.killProcess(android.os.Process.myPid());
+//           android.os.Process.killProcess(android.os.Process.myPid());
        }
        catch(Exception e) {
            e.printStackTrace();
