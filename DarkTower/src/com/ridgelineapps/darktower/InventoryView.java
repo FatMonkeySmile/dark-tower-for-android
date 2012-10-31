@@ -58,6 +58,19 @@ public class InventoryView extends View {
    Paint imageP;
    Paint darkenP;
    Paint inventoryTextP;
+   
+   boolean[] enabled = new boolean[4];
+   int[] warriors = new int[4];
+   int[] gold = new int[4];
+   int[] food = new int[4];
+   boolean[] beast = new boolean[4];
+   boolean[] scout = new boolean[4];
+   boolean[] healer = new boolean[4];
+   boolean[] sword = new boolean[4];
+   boolean[] pegasus = new boolean[4];
+   boolean[] brassKey = new boolean[4];
+   boolean[] silverKey = new boolean[4];
+   boolean[] goldKey = new boolean[4];
 
    ActivityGame activity;
    int lineY;
@@ -88,20 +101,37 @@ public class InventoryView extends View {
       inventoryTextP.setFakeBoldText(true);
       inventoryTextP.setAntiAlias(true);
    }
+   
+   public void updateValues() {
+       for(int i=0; i < 4; i++) {
+           Player player = (Player) activity.darkTower.getPlayerList().get(i);
+           enabled[i] = player.isEnable();
+           warriors[i] = player.getWarriors();
+           gold[i] = player.getGold();
+           food[i] = player.getFood();
+           beast[i] = player.hasBeast();
+           scout[i] = player.hasScout();
+           healer[i] = player.hasHealer();
+           sword[i] = player.hasDragonSword();
+           pegasus[i] = player.hasPegasus();
+           brassKey[i] = player.hasBrassKey();
+           silverKey[i] = player.hasSilverKey();
+           goldKey[i] = player.hasGoldKey();
+        }       
+   }
 
    @Override
    protected void onDraw(Canvas canvas) {
       int x = 11;
       int y = 20;
       for(int i=0; i < 4; i++) {
-         Player player = (Player) activity.darkTower.getPlayerList().get(i);
-         y = drawInventory(canvas, x, y, player, Territory.COLORLIST[player.getPlayerNo()]);
-         y += 40;
-      }
+          y = drawInventory(canvas, x, y, i, Territory.COLORLIST[i]);
+          y += 40;
+       }       
    }
    
-   protected int drawInventory(Canvas canvas, int x, int y, Player player, int color) {
-      boolean draw = player.isEnable();
+   protected int drawInventory(Canvas canvas, int x, int y, int player, int color) {
+      boolean draw = enabled[player];
       Rect rect = new Rect();
       if(lineY == 0) {
           inventoryTextP.getTextBounds("Player", 0, 5, rect);
@@ -109,12 +139,12 @@ public class InventoryView extends View {
       }
       if(draw) {
           inventoryTextP.setColor(color);
-          canvas.drawText("Player " + (player.getPlayerNo() + 1), x, y, inventoryTextP);
+          canvas.drawText("Player " + (player + 1), x, y, inventoryTextP);
           inventoryTextP.setColor(Color.LTGRAY);      
       }
       y += lineY;
       if(draw) {
-          canvas.drawText("Warriors-" + player.getWarriors() + "  Gold-" + player.getGold() + "  Food-" + player.getFood(), x, y, inventoryTextP);
+          canvas.drawText("Warriors-" + warriors[player] + "  Gold-" + gold[player] + "  Food-" + food[player], x, y, inventoryTextP);
       }
 //    canvas.drawText("Gold: " + player.getGold(), x, y, inventoryTextP);
 //    y += lineY;
@@ -141,7 +171,7 @@ public class InventoryView extends View {
           bitmap = DarkTowerView.getImage(activity, R.drawable.beast);
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
-          if(!player.hasBeast()) {
+          if(!beast[player]) {
              canvas.drawRect(dest, darkenP);
           }
           
@@ -149,7 +179,7 @@ public class InventoryView extends View {
           bitmap = DarkTowerView.getImage(activity, R.drawable.scout);
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
-          if(!player.hasScout()) {
+          if(!scout[player]) {
              canvas.drawRect(dest, darkenP);
           }
           
@@ -157,7 +187,7 @@ public class InventoryView extends View {
           bitmap = DarkTowerView.getImage(activity, R.drawable.healer);
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
-          if(!player.hasHealer()) {
+          if(!healer[player]) {
              canvas.drawRect(dest, darkenP);
           }
     
@@ -165,7 +195,7 @@ public class InventoryView extends View {
           bitmap = DarkTowerView.getImage(activity, R.drawable.sword);
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
-          if(!player.hasDragonSword()) {
+          if(!sword[player]) {
              canvas.drawRect(dest, darkenP);
           }
       }
@@ -177,7 +207,7 @@ public class InventoryView extends View {
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
           //TODO: can we just use darkenP for the image?
-          if(!player.hasPegasus()) {
+          if(!pegasus[player]) {
              canvas.drawRect(dest, darkenP);
           }      
           
@@ -186,7 +216,7 @@ public class InventoryView extends View {
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
           //TODO: can we just use darkenP for the image?
-          if(!player.hasBrassKey()) {
+          if(!brassKey[player]) {
              canvas.drawRect(dest, darkenP);
           }
     
@@ -195,7 +225,7 @@ public class InventoryView extends View {
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
           //TODO: can we just use darkenP for the image?
-          if(!player.hasSilverKey()) {
+          if(!silverKey[player]) {
              canvas.drawRect(dest, darkenP);
           }
     
@@ -204,7 +234,7 @@ public class InventoryView extends View {
           dest = new Rect(x, y, x + sizex, y + sizey);
           canvas.drawBitmap(bitmap, null, dest, imageP);
           //TODO: can we just use darkenP for the image?
-          if(!player.hasGoldKey()) {
+          if(!goldKey[player]) {
              canvas.drawRect(dest, darkenP);
           }
       }

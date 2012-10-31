@@ -151,13 +151,16 @@ public class DarkTowerThread extends Thread
 	{
 		try
 		{
-//	        play(Audio.INTRO);
-//	        try {
-//	            sleepIfSound(5000);
-//	        }
-//	        catch(Exception e) {
-//	            // Ignore...
-//	        }
+	        activity.getInventoryView().updateValues();
+	        activity.getInventoryView().postInvalidate();
+	        
+	        play(Audio.INTRO);
+	        try {
+	            sleepIfSound(5000);
+	        }
+	        catch(Exception e) {
+	            // Ignore...
+	        }
 		    
 	        Player player = null;
 			while ( !kill && !interrupted() )
@@ -422,11 +425,13 @@ public class DarkTowerThread extends Thread
 		throws InterruptedException, ResetException, DisableException
 	{
 		Player player = getPlayerListItem(playerNo);
-      resetMouseActionQueue();		
-		activity.getInventoryView().postInvalidate();
+		resetMouseActionQueue();		
 
 		if ( player.isPerformAction() )
 		{
+		    activity.getInventoryView().updateValues();
+            activity.getInventoryView().postInvalidate();
+
 			if ( player.isMoveToPrevTerritory() )
 			{
 				player.setMoveToPrevTerritory(false);
