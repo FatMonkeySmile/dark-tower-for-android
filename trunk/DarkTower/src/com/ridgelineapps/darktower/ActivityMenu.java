@@ -50,6 +50,7 @@ public class ActivityMenu extends Activity {
                 i.putExtra("mute_sound", getMuteSound());
                 i.putExtra("original_board", getOriginalBoard());
                 startActivity(i);
+                finish();
             }
         });
 

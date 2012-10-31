@@ -79,6 +79,8 @@ public class DarkTowerThread extends Thread
 	private Dragon lastDragon = null;
 	private boolean reset = false;
 	
+	public boolean kill = false;
+	
 	ActivityGame activity;
 
 	public DarkTowerThread(ActivityGame activity, DarkTower darkTower)
@@ -149,17 +151,20 @@ public class DarkTowerThread extends Thread
 	{
 		try
 		{
-	        play(Audio.INTRO);
-	        try {
-	            sleepIfSound(5000);
-	        }
-	        catch(Exception e) {
-	            // Ignore...
-	        }
+//	        play(Audio.INTRO);
+//	        try {
+//	            sleepIfSound(5000);
+//	        }
+//	        catch(Exception e) {
+//	            // Ignore...
+//	        }
 		    
-			while ( !interrupted() )
+	        Player player = null;
+			while ( !kill && !interrupted() )
 			{
-				Player player = (Player) playerList.get(playerNo);
+//			    Thread.yield();
+			    Thread.sleep(10);
+				player = (Player) playerList.get(playerNo);
 				getDarkTowerView().setFlash(true);
 
 				try
@@ -170,8 +175,9 @@ public class DarkTowerThread extends Thread
 					storePlayers();
 					if ( !isBoardVisible() )
 					{
-						if ( !isActionQueueEmpty() )
+						if ( !isActionQueueEmpty() ) {
 							performAction(getAction());
+						}
 						else if ( reset )
 							init();
 					}
@@ -180,12 +186,15 @@ public class DarkTowerThread extends Thread
 						// none pc
 						if ( player.getPlayerType() == Player.NONEPC )
 						{
-							if ( !isMouseActionQueueEmpty() )
+							if ( !isMouseActionQueueEmpty() ) {
 								performMouseAction(getMouseAction());
-							else if ( !isActionQueueEmpty() )
+							}
+							else if ( !isActionQueueEmpty() ) {
 								performAction(getAction());
-							else if ( reset )
+							}
+							else if ( reset ) {
 								init();
+							}
 						}
 						// pc
 						else
@@ -1295,7 +1304,7 @@ public class DarkTowerThread extends Thread
 	public void paintDarkTower(int count, int imageNo, int audioNo)
 		throws ResetException, DisableException
 	{
-	   while(!isBoardVisible()) {
+	   while(!kill && !isBoardVisible()) {
 	      try {
 	         //TODO: run this on separate thread and re-call on UI thread if necessary?
 	         Thread.sleep(750);
@@ -1305,7 +1314,9 @@ public class DarkTowerThread extends Thread
 	      }
 	   }
 	   
-		paintDarkTower(count, imageNo, audioNo, false, false);
+	   if(!kill) {
+	       paintDarkTower(count, imageNo, audioNo, false, false);
+	   }
 	}
 
 	public void paintDarkTower(int count, int imageNo, int audioNo,
