@@ -121,6 +121,35 @@ public class BoardView extends View implements OnTouchListener
 	  init(true);
    }
    
+   public void destroy() {
+       Util.recycleBitmap(boardBitmap);
+       boardBitmap = null;
+       Util.recycleBitmap(grayBoardBitmap);
+       grayBoardBitmap = null;
+       Util.recycleBitmap(classmImageIcon);
+       classmImageIcon = null;
+       Util.recycleBitmap(dragonImageIcon);
+       dragonImageIcon = null;
+       Util.recycleBitmap(isoImageIcon);
+       isoImageIcon = null;
+       for(Bitmap b : kingdomBitmap) {
+           Util.recycleBitmap(b);
+       }
+       kingdomBitmap = null;
+       Util.recycleBitmap(frontierBitmap);
+       frontierBitmap = null;
+       Util.recycleBitmap(darkTowerBitmap);
+       darkTowerBitmap = null;
+       for(Bitmap[] bs : playerBitmaps) {
+           for(Bitmap b : bs) {
+               Util.recycleBitmap(b);
+           }
+       }
+       playerBitmaps = null;
+       Util.recycleBitmap(dragonBitmap);
+       dragonBitmap = null;
+   }
+   
    public void init(boolean originalBoard) {
       this.originalBoard = originalBoard;
 	   res = activity.getResources();
@@ -225,7 +254,6 @@ public class BoardView extends View implements OnTouchListener
 	
    @Override
    protected void onDraw(Canvas canvas) {
-
       if (!inited) {
           //TODO: figure out how to call from activity
 //          init(activity.originalBoard);

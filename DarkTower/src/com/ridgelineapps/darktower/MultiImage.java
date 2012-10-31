@@ -68,11 +68,11 @@ public class MultiImage {
    public static Bitmap getBitmap(Resources res, int imageNo) {
       switch(imageNo) {
          case CLASSM:
-            return BitmapFactory.decodeResource(res, R.drawable.dg_classm32);
+            return null; //BitmapFactory.decodeResource(res, R.drawable.dg_classm32);
          case DRAGON:
-            return BitmapFactory.decodeResource(res, R.drawable.dg_dragon32);
+            return null; //BitmapFactory.decodeResource(res, R.drawable.dg_dragon32);
          case ISO:
-            return BitmapFactory.decodeResource(res, R.drawable.dg_iso32);
+            return null; //BitmapFactory.decodeResource(res, R.drawable.dg_iso32);
          default:
             return null;
       }

@@ -40,7 +40,7 @@
 
 package com.ridgelineapps.darktower;
 
-import java.lang.String;
+import android.graphics.Bitmap;
 
 public class Util
 {
@@ -68,5 +68,16 @@ public class Util
 		}
 		
 		return false;
+	}
+	
+	public static void recycleBitmap(Bitmap bitmap) {
+	    try {
+	        if(bitmap != null && !bitmap.isRecycled())
+	        {
+	            bitmap.recycle();
+	        }
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 }

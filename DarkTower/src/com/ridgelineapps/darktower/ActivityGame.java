@@ -18,8 +18,11 @@
 package com.ridgelineapps.darktower;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -48,18 +51,57 @@ public class ActivityGame extends Activity {
 //      ((BoardView) findViewById(R.layout.game)).init(originalBoard);
       
       if(darkTower != null && darkTower.thread != null) {
-          darkTower.thread.stop();
+          darkTower.thread.kill = true;
       }
       
       darkTower = new DarkTower(this);
    }
    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.exit: 
+                finish();
+                return true;
+        } 
+        return false; //should never happen
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.layout.game_menu, menu);
+    }
+
+
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+       super.onCreateOptionsMenu(menu);
+       getMenuInflater().inflate(R.layout.game_menu, menu);
+       return true;
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+           switch (item.getItemId()) {
+               case R.id.exit: 
+                   finish();
+                   return true;
+           } 
+           return false; //should never happen
+   }
+
    @Override
    protected void onDestroy() {
        super.onDestroy();
        try {
-           if(darkTower != null && darkTower.thread != null) {
-               darkTower.thread.stop();
+           if(darkTower != null) {
+               if(darkTower.getBoardView() != null) {
+                   darkTower.getBoardView().destroy();
+               }
+               if(darkTower.thread != null) {
+                   darkTower.thread.kill = true;
+               }
            }
            // Not great, but simplest way to stop all threads
 //           android.os.Process.killProcess(android.os.Process.myPid());
@@ -93,7 +135,7 @@ public class ActivityGame extends Activity {
       }
       else {
          lastBackClick = now;
-         Toast.makeText(this, "Hit back again to quit game and return to start menu.", Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "Hit back again to exit the game.", Toast.LENGTH_SHORT).show();
       }
       return;
    }
