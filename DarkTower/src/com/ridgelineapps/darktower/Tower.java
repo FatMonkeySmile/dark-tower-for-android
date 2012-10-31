@@ -62,7 +62,7 @@ public class Tower extends ActionEvent
 		int action = Button.NA;
 
 		thread.paintDarkTower("", Image.BLACK, Audio.DARKTOWER);
-		thread.sleep(3500);
+		thread.sleepIfSound(3500);
 
 		if ( ( player.hasBrassKey() ) && ( player.hasSilverKey() ) && 
 		     ( player.hasGoldKey() ) )

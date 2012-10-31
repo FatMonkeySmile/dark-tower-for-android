@@ -173,7 +173,7 @@ public class Battle extends ActionEvent
 		else
 		{
 			thread.paintDarkTower("", Image.WARRIORS, Audio.PLAGUE);
-			thread.sleep(4000);
+			thread.sleepIfSound(4000);
 		}
 	}
 }
