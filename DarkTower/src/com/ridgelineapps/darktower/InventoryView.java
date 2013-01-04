@@ -80,10 +80,9 @@ public class InventoryView extends View {
       activity = (ActivityGame) context;
 
       imageP = new Paint();
-//      imageP.setAntiAlias(true);
-      
-//      imageP.setFilterBitmap(true);
-//      imageP.setDither(true);
+      imageP.setAntiAlias(true);
+      imageP.setFilterBitmap(true);
+      imageP.setDither(true);
       
       imageP.setARGB(255, 0, 0, 0);
 
@@ -91,9 +90,9 @@ public class InventoryView extends View {
       backgroundP.setARGB(255, 0, 0, 0);
 
       darkenP = new Paint();
-//      darkenP.setAntiAlias(true);
-//      darkenP.setFilterBitmap(true);
-//      darkenP.setDither(true);
+      darkenP.setAntiAlias(true);
+      darkenP.setFilterBitmap(true);
+      darkenP.setDither(true);
       darkenP.setARGB(175, 0, 0, 0);
       
       inventoryTextP = new Paint();

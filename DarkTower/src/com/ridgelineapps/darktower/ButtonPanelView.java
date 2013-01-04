@@ -71,12 +71,15 @@ public class ButtonPanelView extends View implements OnTouchListener {
       activity = (ActivityGame) context;
 
       imageP = new Paint();
-//      imageP.setAntiAlias(true);
-//      imageP.setFilterBitmap(true);
-//      imageP.setDither(true);
+      imageP.setAntiAlias(true);
+      imageP.setFilterBitmap(true);
+      imageP.setDither(true);
       imageP.setARGB(255, 0, 0, 0);
 
       darkenP = new Paint();
+      darkenP.setAntiAlias(true);
+      darkenP.setFilterBitmap(true);
+      darkenP.setDither(true);      
       darkenP.setARGB(128, 0, 0, 0);
       
       bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.panel);

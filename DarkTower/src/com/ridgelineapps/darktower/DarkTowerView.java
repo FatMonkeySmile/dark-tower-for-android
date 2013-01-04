@@ -82,9 +82,9 @@ public class DarkTowerView extends View {
       textP.setColor(Color.RED);
 
       imageP = new Paint();
-//      imageP.setAntiAlias(true);
-//      imageP.setFilterBitmap(true);
-//      imageP.setDither(true);
+      imageP.setAntiAlias(true);
+      imageP.setFilterBitmap(true);
+      imageP.setDither(true);
       imageP.setARGB(255, 0, 0, 0);
 
       backgroundP = new Paint();
