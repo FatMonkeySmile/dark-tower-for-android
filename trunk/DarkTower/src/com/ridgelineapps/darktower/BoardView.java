@@ -170,9 +170,9 @@ public class BoardView extends View implements OnTouchListener
       borderP.setStyle(Paint.Style.STROKE);
       
       bitmapP = new Paint();
-//      bitmapP.setDither(true);
-//      bitmapP.setFilterBitmap(true);
-//      bitmapP.setAntiAlias(true);
+      bitmapP.setDither(true);
+      bitmapP.setFilterBitmap(true);
+      bitmapP.setAntiAlias(true);
       
       debugP = new Paint();
       debugP.setStyle(Paint.Style.STROKE);
