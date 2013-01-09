@@ -18,7 +18,9 @@
 package com.ridgelineapps.darktower;
 
 import android.app.Activity;
+import android.graphics.Matrix;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -53,6 +55,11 @@ public class ActivityGame extends Activity {
       if(darkTower != null && darkTower.thread != null) {
           darkTower.thread.kill = true;
       }
+      
+      DisplayMetrics metrics = new DisplayMetrics();
+      getWindowManager().getDefaultDisplay().getMetrics(metrics);
+      Util.matrix = new Matrix();
+      Util.matrixScale = 1 / metrics.scaledDensity;
       
       darkTower = new DarkTower(this);
    }

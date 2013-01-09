@@ -41,9 +41,39 @@
 package com.ridgelineapps.darktower;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 
 public class Util
 {
+   static Matrix matrix;
+   static float matrixScale;
+   
+   public static void drawBitmap(Canvas canvas, Bitmap bitmap, int x, int y, Paint paint) {
+      if(matrix == null) {
+         return;
+      } 
+      
+      matrix.reset();
+      matrix.postScale(matrixScale, matrixScale);
+      matrix.postTranslate(x, y);
+      
+      canvas.drawBitmap(bitmap, matrix, paint);
+   }
+   
+   public static void drawBitmap(Canvas canvas, Bitmap bitmap, int x, int y, float scale, Paint paint) {
+      if(matrix == null) {
+         return;
+      }
+      
+      matrix.reset();
+      matrix.postScale(scale, scale);
+      matrix.postTranslate(x, y);
+      
+      canvas.drawBitmap(bitmap, matrix, paint);
+   }
+   
 	public static int getInteger(String nm)
 	{
 		try

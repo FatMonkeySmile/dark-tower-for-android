@@ -50,6 +50,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Region;
 import android.util.AttributeSet;
@@ -271,7 +272,7 @@ public class BoardView extends View implements OnTouchListener
       Point point = null;
       int r = (int) (getTerritoryRadius() * 0.7);
 
-      canvas.drawBitmap(boardBitmap, 0, 0, paint);
+      Util.drawBitmap(canvas, boardBitmap, 0, 0, paint);
 
       if (!originalBoard) {
          // draw highlighted territory
@@ -693,17 +694,17 @@ public class BoardView extends View implements OnTouchListener
     			{
     				case Territory.DARKTOWER:
     					canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-    					canvas.drawBitmap(darkTowerBitmap, 0, 0, p);
+    					Util.drawBitmap(canvas, darkTowerBitmap, 0, 0, p);
     					break;
     				case Territory.FRONTIER:
                    canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-                   canvas.drawBitmap(frontierBitmap, 0, 0, p);
+                   Util.drawBitmap(canvas, frontierBitmap, 0, 0, p);
                    canvas.drawPath(territory.getPath(), shadeP);
                    canvas.drawPath(territory.getPath(), outlineP);
     					break;
     				default:
                    canvas.clipPath(territory.getPath(), Region.Op.REPLACE);
-                   canvas.drawBitmap(kingdomBitmap[territory.getKingdomNo()], 0, 0, p);
+                   Util.drawBitmap(canvas, kingdomBitmap[territory.getKingdomNo()], 0, 0, p);
     
                    canvas.drawPath(territory.getPath(), shadeP);
                    
@@ -1161,7 +1162,7 @@ public class BoardView extends View implements OnTouchListener
 	   else {
          int offsetX = -dragonBitmap.getWidth() * 3/5;
          int offsetY = -dragonBitmap.getHeight() * 4/5;
-         canvas.drawBitmap(dragonBitmap, point.x + offsetX, point.y + offsetY, bitmapP);
+         Util.drawBitmap(canvas, dragonBitmap, point.x + offsetX, point.y + offsetY, bitmapP);
 	   }
 	}
 
@@ -1173,7 +1174,7 @@ public class BoardView extends View implements OnTouchListener
          Bitmap bitmap = playerBitmaps[player][drawType.index]; 
          int offsetX = -bitmap.getWidth() / 2;
          int offsetY = -bitmap.getHeight() * 5/6;
-         canvas.drawBitmap(bitmap, point.x + offsetX, point.y + offsetY, bitmapP);
+         Util.drawBitmap(canvas, bitmap, point.x + offsetX, point.y + offsetY, bitmapP);
       }
    }
 }
