@@ -136,31 +136,23 @@ public class DarkTowerView extends View {
 
    @Override
    protected void onDraw(Canvas canvas) {
-      int width = canvas.getWidth();
-      int height = canvas.getHeight();
-
       if (flash)
          flashInterval++;
       else
          flashInterval = 0;
 
-      canvas.drawRect(0, 0, width, height, backgroundP);
+      canvas.drawRect(0, 0, getWidth(), getHeight(), backgroundP);
       if (flashInterval % 2 == 0) {
          // g.setFont(font);
-         float textWidth = textP.measureText(label);
+//         float textWidth = textP.measureText(label);
          int labelx = 120; //(width - (int) textWidth) / 2;
          int labely = 215;
          canvas.drawText(label, labelx, labely, textP);
       }
       if (enabled && bitmap != null) {
-         int imagex = border;
-         int imagey = border;
-         int destWidth = canvas.getWidth() - border * 2;
-         Rect src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-         int newBitmapY = (int) (((float) destWidth / bitmap.getWidth()) * bitmap.getHeight());
-//         Rect dest = new Rect(imagex, imagey, imagex + (int) (bitmap.getWidth() * 1.13), imagey + (int) (bitmap.getHeight() * 1.13));
-         Rect dest = new Rect(imagex, imagey, imagex + destWidth, imagey + newBitmapY);
-         canvas.drawBitmap(bitmap, src, dest, imageP);
+         int destWidth = getWidth() - border * 2;
+         float scale = (float) destWidth / bitmap.getWidth();
+         Util.drawBitmap(canvas, bitmap, border, border, scale, imageP); 
       }
    }
    

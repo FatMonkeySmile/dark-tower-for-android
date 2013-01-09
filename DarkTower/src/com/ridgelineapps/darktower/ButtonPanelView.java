@@ -93,7 +93,7 @@ public class ButtonPanelView extends View implements OnTouchListener {
            offsetY = 5; //(getWidth() - bitmap.getWidth()) / 2;
        }
        
-      canvas.drawBitmap(bitmap, offsetX, offsetY, imageP);
+      Util.drawBitmap(canvas, bitmap, offsetX, offsetY, imageP);
 
       if(highlightX != -1 && highlightY != -1) {
          int startX = offsetX + startFudge;
